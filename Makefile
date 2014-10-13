@@ -20,7 +20,10 @@
 CC=g++
 
 # Flags to specify the compilation startegy
-CFLAGS=-c -O3 -std=c++11
+CFLAGS=-c -std=c++11
+
+# Flags if debugging is required
+DEBUG=-g
 
 # Flags to specify the inclusion of external libraries
 # INLCUDES=-I/usr/local/include/boost_1_56_0
@@ -41,4 +44,4 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CC) $(INLCUDES) $(CFLAGS) $< -o $@
+	$(CC) $(INLCUDES) $(CFLAGS) $(DEBUG) $< -o $@
