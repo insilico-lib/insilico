@@ -1,3 +1,6 @@
+# Output files
+*.dat
+
 # Compiled Object files
 *.slo
 *.lo
