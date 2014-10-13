@@ -35,7 +35,9 @@ typedef class neuron_network {
 	public:
 		static int variables_per_neuron;
 		static long int network_strength;
-		static int id(int n_id, int var_id) { return n_id*variables_per_neuron+var_id; }
+		int id(int n_id, int var_id) {
+			return n_id*variables_per_neuron+var_id;
+		}
 }nn_;
 int nn_::variables_per_neuron = 4;
 long int nn_::network_strength = 1;
@@ -48,7 +50,7 @@ class value {
 	public:
 		value() { datum = 0.0; }
 		value(long double datum) { this->datum = datum; }
-		long double get() { return datum; }
+		long double get() const { return datum; }
 		void set(long double datum) {	this->datum = datum; }
 };
 
@@ -93,15 +95,22 @@ class na_conductance: public conductance {
 			this->m = m; this->h = h;
 		}
 		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			for(int i=0; i<nn_::network_strength; i++) {
-				double alpha_m = 	(2.5-0.1*variables[nn_::id(i,0)])/(exp(2.5-0.1*variables[nn_::id(i,0)])-1.0);
-				double beta_m =  	4.0*exp(-variables[nn_::id(i,0)]/18.0);
-				double alpha_h = 	0.07*exp(-variables[nn_::id(i,0)]/20.0);
-				double beta_h =  	1.0/(exp(3-0.1*variables[nn_::id(i,0)])+1);
+			double alpha_m, beta_m, alpha_h, beta_h;
+			double val_v, val_m, val_h;
+			// nn_ nn;
+			// for(int i=0; i<nn_::network_strength; i++) {
+			// 	val_v = variables[nn.id(i,0)];
+			// 	val_m = variables[nn.id(i,2)];
+			// 	val_h = variables[nn.id(i,3)];
 
-				dxdt[nn_::id(i,2)]=(alpha_m*(1-variables[nn_::id(i,2)])-beta_m*variables[nn_::id(i,2)]);
-				dxdt[nn_::id(i,3)]=(alpha_h*(1-variables[nn_::id(i,3)])-beta_h*variables[nn_::id(i,3)]);
-			}
+				alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
+				beta_m =  	4.0*exp(-variables[0]/18.0);
+			  alpha_h = 	0.07*exp(-variables[0]/20.0);
+				beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
+
+				dxdt[2]=(alpha_m*(1-variables[2])-beta_m*variables[2]);
+				dxdt[3]=(alpha_h*(1-variables[3])-beta_h*variables[3]);
+			// }
 		}
 };
 
@@ -122,12 +131,17 @@ class k_conductance: public conductance {
 			this->n = n;
 		}
 		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			for(int i=0; i<nn_::network_strength; i++) {
-				double alpha_n = (0.1-0.01*variables[nn_::id(i,0)])/(exp(1-0.1*variables[nn_::id(i,0)])-1.0);
-				double beta_n = 0.125*exp(-variables[nn_::id(i,0)]/80.0);
+			double alpha_n, beta_n;
+			double val_v, val_n;
+			// nn_ nn;
+			// for(int i=0; i<nn_::network_strength; i++) {
+				// val_v = variables[nn.id(i,0)];
+				// val_n = variables[nn.id(i,1)];
+				alpha_n = (0.1-0.01*variables[0])/(exp(1-0.1*variables[0])-1.0);
+				beta_n = 0.125*exp(-variables[0]/80.0);
 
-				dxdt[nn_::id(i,1)]=(alpha_n*(1 - variables[nn_::id(i,1)]-beta_n*variables[nn_::id(i,1)]));
-			}
+				dxdt[1]=(alpha_n*(1-variables[1])-beta_n*variables[1]);
+			// }
 		}
 };
 
@@ -154,7 +168,7 @@ struct configuration {
 class simulation_support_engine {
 	public:
 		template<typename t>
-		static state_type stage_variables(t &neurons) {
+		static state_type stage_variables(const t& neurons) {
 			return neurons.get_variables();
 		}
 };
@@ -171,48 +185,50 @@ class hudgkin_huxley_neuron: public neuron {
 			ena.set  (0.0);	ek.set (0.0);	el.set (0.0);
 			iext.set (0.0);	v.set  (0.0);
 		}
-		state_type get_variables() {
+		state_type get_variables() const {
 			state_type nvars = {v.get(), gk.n.get(), gna.m.get(), gna.h.get()};
 			return nvars;
 		}
 		void operator()(const state_type &variables, state_type &dxdt,
 			const double time) {
 			double val_v, val_n, val_m, val_h;
-			for(int i=0; i<nn_::network_strength; i++) {
-				val_v = variables[nn_::id(i,0)];
-				val_n = variables[nn_::id(i,1)];
-				val_m = variables[nn_::id(i,2)];
-				val_h = variables[nn_::id(i,3)];
+			// nn_ nn;
+			// for(int i=0; i<nn_::network_strength; i++) {
+			// 	val_v = variables[nn.id(i,0)];
+			// 	val_n = variables[nn.id(i,1)];
+			// 	val_m = variables[nn.id(i,2)];
+			// 	val_h = variables[nn.id(i,3)];
 
-				dxdt[nn_::id(i,0)] = - gna.get()*pow(val_m,3)*val_h*(val_v-ena.get())
-					-gk.get()*pow(val_n,4)*(val_v-ek.get())
-					-gl.get()*(val_v-el.get())+iext.get();
+				dxdt[0] = -gna.get()*pow(variables[2],3)*variables[3]*(val_v-ena.get())
+					-gk.get()*pow(variables[1],4)*(variables[0]-ek.get())
+					-gl.get()*(variables[0]-el.get())+iext.get();
 
 				gna.ode_set(variables, dxdt, time);
 				gk.ode_set(variables, dxdt, time);
 				gl.ode_set(variables, dxdt, time);
-			}
+			// }
 		}
 };
 
 int main(int argc, char* argv[])
 {
 	if(argc != 2) {
-		std::cout<<"usage: "<<argv[0]<<" <outputfile>";
+		std::cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<std::endl;
 		return -1;
 	}
-	// neuron
 
 	// Neuronal Network is WIP (work in progress)
-	neuron_network::network_strength = 1;
-	neuron_network::variables_per_neuron = 4;
+	// neuron_network::network_strength = 1;
+	// neuron_network::variables_per_neuron = 4;
 
-	std::vector<hudgkin_huxley_neuron> neurons;
+	// std::vector<hudgkin_huxley_neuron> neurons(1);
+	hudgkin_huxley_neuron neuron;
 
-	state_type variables, t_variables;
+	state_type variables;
+	// state_type t_variables;
 
-	//parameters for the neuron
-	for(hudgkin_huxley_neuron neuron : neurons) {
+	// parameters for the neuron
+	// for(hudgkin_huxley_neuron neuron : neurons) {
 		neuron.gna.set(120.0);
 		neuron.ena.set(115);
 		neuron.gk.set(36);
@@ -225,19 +241,20 @@ int main(int argc, char* argv[])
 		neuron.gna.h.set(0.0);
 		neuron.gk.n.set(0.0);
 
-		t_variables = simulation_support_engine::stage_variables(neuron);
-		variables.insert(variables.end(), t_variables.begin(), t_variables.end());
-	}
+		variables = simulation_support_engine::stage_variables(neuron);
+		// variables.insert(variables.end(), t_variables.begin(), t_variables.end());
+	// }
 
 	std::string filename = argv[1];
 	std::ofstream file(filename);
 	assert(file.is_open());
 
 	using namespace boost::numeric::odeint;
-	integrate_const(runge_kutta4<state_type>() , neurons[0], variables,
-										0.0, 100.0, 0.05, configuration(file));
+	// integrate_const(runge_kutta4<state_type>(), neurons[0], variables,
+	// 								0.0, 100.0, 0.05, configuration(file));
+	integrate_const(runge_kutta4<state_type>(), neuron, variables,
+									0.0, 100.0, 0.05, configuration(file));
 
 	file.close();
-
 	return 0;
 }
