@@ -1,7 +1,7 @@
 //
 // 		 main.cpp - nsim source supporting models and main()
 //
-//     Copyright (C) 2014 	Pranav Kulkarni
+//     Copyright (C) 2014 Pranav Kulkarni
 //
 //     This program is free software: you can redistribute it and/or modify
 //     it under the terms of the GNU General Public License as published by
@@ -178,28 +178,28 @@ class hudgkin_huxley_neuron: public neuron {
 			state_type nvars = {v.get(), gk.n.get(), gna.m.get(), gna.h.get()};
 			return nvars;
 		}
-		void operator()(const state_type &variables, state_type &dxdt,
-			const double time) {
+		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
 			double val_v, val_n, val_m, val_h;
-			dxdt[0] = -gna.get()*pow(variables[2],3)*variables[3]*(val_v-ena.get())
+			dxdt[0] = -gna.get()*pow(variables[2],3)*variables[3]*(variables[0]-ena.get())
 				-gk.get()*pow(variables[1],4)*(variables[0]-ek.get())
 				-gl.get()*(variables[0]-el.get())+iext.get();
-
+		}
+		void operator()(const state_type &variables, state_type &dxdt,
+			const double time) {
+			ode_set(variables, dxdt, time);
 			gna.ode_set(variables, dxdt, time);
 			gk.ode_set(variables, dxdt, time);
 			gl.ode_set(variables, dxdt, time);
 		}
 };
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	if(argc != 2) {
 		std::cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<std::endl;
 		return -1;
 	}
 
 	hudgkin_huxley_neuron neuron;
-
 	state_type variables;
 
 	neuron.gna.set(120.0);
