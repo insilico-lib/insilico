@@ -19,7 +19,7 @@ make
 
 Run the following command on terminal to execute the code.
 
-* Linux
+* Linux / Mac OS
 
 ```bash
 ./main <outputfile>.dat
