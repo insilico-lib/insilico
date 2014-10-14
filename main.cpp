@@ -135,14 +135,14 @@ class simulation_support_engine {
 		}
 };
 
-class hudgkin_huxley_neuron: public neuron {
+class hodgkin_huxley_neuron: public neuron {
 	public:
 		na_conductance gna;
 		k_conductance gk;
 		leak_conductance gl;
 		voltage ena, ek, el, v;
 		current iext;
-		hudgkin_huxley_neuron() {
+		hodgkin_huxley_neuron() {
 			gna.set  (0.0); gk.set (0.0); gl.set (0.0);
 			ena.set  (0.0);	ek.set (0.0);	el.set (0.0);
 			iext.set (0.0);	v.set  (0.0);
@@ -160,8 +160,8 @@ class hudgkin_huxley_neuron: public neuron {
 		void operator()(const state_type &variables, state_type &dxdt,
 			const double time) {
 			ode_set(variables, dxdt, time);
-			gna.ode_set(variables, dxdt, time);
 			gk.ode_set(variables, dxdt, time);
+			gna.ode_set(variables, dxdt, time);
 			gl.ode_set(variables, dxdt, time);
 		}
 };
@@ -172,7 +172,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	hudgkin_huxley_neuron neuron;
+	hodgkin_huxley_neuron neuron;
 	state_type variables;
 
 	neuron.gna.set(120.0);
