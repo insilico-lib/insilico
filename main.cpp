@@ -80,20 +80,6 @@ class na_conductance: public conductance {
 	public:
 		probability_variable m, h;
 		na_conductance(): conductance{0.0} { m.set(0.0); h.set(0.0); }
-		na_conductance(long double conductance_value): conductance{conductance_value} {
-			m.set(0.0); h.set(0.0);
-		}
-		na_conductance(long double conductance_value, long double m_value,
-			long double h_value): conductance{conductance_value} {
-			m.set(m_value); h.set(h_value);
-		}
-		na_conductance(probability_variable m, probability_variable h): conductance{0.0} {
-			this->m = m; this->h = h;
-		}
-		na_conductance(long double conductance_value, probability_variable m,
-			probability_variable h): conductance{conductance_value} {
-			this->m = m; this->h = h;
-		}
 		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
 			double alpha_m, beta_m, alpha_h, beta_h;
 			double val_v, val_m, val_h;
@@ -112,18 +98,6 @@ class k_conductance: public conductance {
 	public:
 		probability_variable n;
 		k_conductance(): conductance{0.0} { n.set(0.0); }
-		k_conductance(long double conductance_value): conductance{conductance_value} {
-			n.set(0.0);
-		}
-		k_conductance(long double conductance_value, long double n_value):
-			conductance{conductance_value} {
-			n.set(n_value);
-		}
-		k_conductance(probability_variable n): conductance{0.0} { this->n = n; }
-		k_conductance(long double conductance_value, probability_variable n):
-			conductance{0.0} {
-			this->n = n;
-		}
 		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
 			double alpha_n, beta_n;
 			double val_v, val_n;
@@ -137,7 +111,6 @@ class k_conductance: public conductance {
 class leak_conductance: public conductance {
 	public:
 		leak_conductance(): conductance{0.0} {}
-		leak_conductance(long double conductance_value): conductance{conductance_value} {}
 		void ode_set(const state_type &variables, state_type &dxdt, const double t) {}
 };
 
