@@ -26,8 +26,8 @@ CFLAGS=-c -std=c++11
 DEBUG=-g
 
 # Flags to specify the inclusion of external libraries
-# INLCUDES=-I/usr/local/include/boost_1_56_0
-INLCUDES=-IC:\MinGW\lib\gcc\mingw32\4.8.1\include\boost_1_56_0
+INLCUDES=-I/usr/local/boost_1_56_0
+#INLCUDES=-IC:\MinGW\lib\gcc\mingw32\4.8.1\include\boost_1_56_0
 
 # All project sources that need to be compiled
 SOURCES=main.cpp
@@ -36,7 +36,7 @@ SOURCES=main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 
 # Target excutables
-EXECUTABLE=main
+EXECUTABLE=main.out
 
 all: $(SOURCES) $(EXECUTABLE)
 
