@@ -19,7 +19,16 @@ make
 
 Run the following command on terminal to execute the code.
 
+* Linux
+
+```bash
+./main <outputfile>.dat
+```
+
+* Windows
+
 ```bash
 main <outputfile>.dat
 ```
-For example: main sim_out.dat
+
+For example: ./main sim_out.dat
