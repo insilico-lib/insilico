@@ -33,6 +33,10 @@
 using namespace boost;
 using namespace std;
 
+typedef vector<long double> state_type;
+typedef boost::range_iterator<state_type>::type boost_iter;
+typedef boost::range_iterator<const state_type>::type boost_citer;
+
 typedef class neuron {}n_;
 
 typedef class neuron_network {
@@ -45,10 +49,6 @@ typedef class neuron_network {
 }nn_;
 int nn_::variables_per_neuron = 4;
 long int nn_::network_strength = 1;
-
-typedef vector<long double> state_type;
-typedef boost::range_iterator<state_type>::type boost_iter;
-typedef boost::range_iterator<const state_type>::type boost_citer;
 
 class value {
 	private:
