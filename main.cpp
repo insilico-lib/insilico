@@ -30,6 +30,9 @@
 #include <ctime>
 #include <vector>
 
+using namespace boost;
+using namespace std;
+
 typedef class neuron {}n_;
 
 typedef class neuron_network {
@@ -43,7 +46,7 @@ typedef class neuron_network {
 int nn_::variables_per_neuron = 4;
 long int nn_::network_strength = 1;
 
-typedef std::vector<long double> state_type;
+typedef vector<long double> state_type;
 typedef boost::range_iterator<state_type>::type boost_iter;
 typedef boost::range_iterator<const state_type>::type boost_citer;
 
@@ -113,15 +116,15 @@ class leak_conductance: public conductance {
 };
 
 struct configuration {
-	std::ofstream &stream;
-	configuration(std::ofstream &file): stream(file) {}
+	ofstream &stream;
+	configuration(ofstream &file): stream(file) {}
 	void operator()(const state_type &variables, const double t) {
 		assert(stream.is_open());
 		stream<<t;
 		for(double variable: variables){
 			stream<<','<<variable;
 		}
-		stream<<std::endl;
+		stream<<endl;
 	}
 };
 
@@ -168,7 +171,7 @@ class hodgkin_huxley_neuron: public neuron {
 
 int main(int argc, char* argv[]) {
 	if(argc != 2) {
-		std::cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<std::endl;
+		cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<endl;
 		return -1;
 	}
 
@@ -189,8 +192,8 @@ int main(int argc, char* argv[]) {
 
 	variables = simulation_support_engine::stage_variables(neuron);
 
-	std::string filename = argv[1];
-	std::ofstream file(filename);
+	string filename = argv[1];
+	ofstream file(filename);
 	assert(file.is_open());
 
 	using namespace boost::numeric::odeint;
