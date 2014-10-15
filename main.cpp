@@ -90,7 +90,7 @@ class na_conductance: public conductance {
 		void ode_set(boost_citer &variables, boost_iter &dxdt, const double t) {
 			double alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
 			double beta_m =  	4.0*exp(-variables[0]/18.0);
-		  double alpha_h = 	0.07*exp(-variables[0]/20.0);
+			double alpha_h = 	0.07*exp(-variables[0]/20.0);
 			double beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
 
 			dxdt[2]=(alpha_m*(1-variables[2])-beta_m*variables[2]);
