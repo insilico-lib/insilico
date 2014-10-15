@@ -22,13 +22,13 @@ Run the following command on terminal to execute the code.
 * Linux / Mac OS
 
 ```bash
-./main <outputfile>.dat
+./main.out <outputfile>.dat
 ```
 
 * Windows
 
 ```bash
-main <outputfile>.dat
+main.out <outputfile>.dat
 ```
 
 For example: ./main sim_out.dat
