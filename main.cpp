@@ -18,6 +18,7 @@
 //
 
 #include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/support/pair.hpp>
 #include <boost/numeric/odeint.hpp>
 
 #include <algorithm>
@@ -43,6 +44,8 @@ int nn_::variables_per_neuron = 4;
 long int nn_::network_strength = 1;
 
 typedef std::vector<long double> state_type;
+typedef boost::range_iterator<state_type>::type boost_iter;
+typedef boost::range_iterator<const state_type>::type boost_citer;
 
 class value {
 	private:
@@ -80,14 +83,11 @@ class na_conductance: public conductance {
 	public:
 		probability_variable m, h;
 		na_conductance(): conductance{0.0} { m.set(0.0); h.set(0.0); }
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			double alpha_m, beta_m, alpha_h, beta_h;
-			double val_v, val_m, val_h;
-
-			alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
-			beta_m =  	4.0*exp(-variables[0]/18.0);
-		  alpha_h = 	0.07*exp(-variables[0]/20.0);
-			beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
+		void ode_set(boost_citer &variables, boost_iter &dxdt, const double t) {
+			double alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
+			double beta_m =  	4.0*exp(-variables[0]/18.0);
+		  double alpha_h = 	0.07*exp(-variables[0]/20.0);
+			double beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
 
 			dxdt[2]=(alpha_m*(1-variables[2])-beta_m*variables[2]);
 			dxdt[3]=(alpha_h*(1-variables[3])-beta_h*variables[3]);
@@ -98,11 +98,9 @@ class k_conductance: public conductance {
 	public:
 		probability_variable n;
 		k_conductance(): conductance{0.0} { n.set(0.0); }
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			double alpha_n, beta_n;
-			double val_v, val_n;
-			alpha_n = (0.1-0.01*variables[0])/(exp(1-0.1*variables[0])-1.0);
-			beta_n = 0.125*exp(-variables[0]/80.0);
+		void ode_set(boost_citer &variables, boost_iter &dxdt, const double t) {
+			double alpha_n = (0.1-0.01*variables[0])/(exp(1-0.1*variables[0])-1.0);
+			double beta_n = 0.125*exp(-variables[0]/80.0);
 
 			dxdt[1]=(alpha_n*(1-variables[1])-beta_n*variables[1]);
 		}
@@ -111,7 +109,7 @@ class k_conductance: public conductance {
 class leak_conductance: public conductance {
 	public:
 		leak_conductance(): conductance{0.0} {}
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {}
+		void ode_set(boost_citer &variables, boost_iter &dxdt, const double t) {}
 };
 
 struct configuration {
@@ -151,14 +149,16 @@ class hodgkin_huxley_neuron: public neuron {
 			state_type nvars = {v.get(), gk.n.get(), gna.m.get(), gna.h.get()};
 			return nvars;
 		}
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			double val_v, val_n, val_m, val_h;
+		void ode_set(boost_citer &variables, boost_iter &dxdt, const double t) {
 			dxdt[0] = -gna.get()*pow(variables[2],3)*variables[3]*(variables[0]-ena.get())
 				-gk.get()*pow(variables[1],4)*(variables[0]-ek.get())
 				-gl.get()*(variables[0]-el.get())+iext.get();
 		}
-		void operator()(const state_type &variables, state_type &dxdt,
+		void operator()(const state_type &variables_, state_type &dxdt_,
 			const double time) {
+			decltype(boost::begin(variables_)) variables = boost::begin(variables_);
+			decltype(boost::begin(dxdt_)) dxdt = boost::begin(dxdt_);
+
 			ode_set(variables, dxdt, time);
 			gk.ode_set(variables, dxdt, time);
 			gna.ode_set(variables, dxdt, time);
