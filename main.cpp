@@ -37,8 +37,6 @@ using namespace std;
 
 typedef std::vector<long double> state_type;
 
-typedef class neuron {}n_;
-
 typedef class neuron_network {
 	public:
 		static int variables_per_neuron;
@@ -107,36 +105,42 @@ class na_conductance: public conductance {
 	public:
 		probability_variable m, h;
 		na_conductance(): conductance{0.0} { m.set(0.0); h.set(0.0); }
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			double alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
-			double beta_m =  	4.0*exp(-variables[0]/18.0);
-			double alpha_h = 	0.07*exp(-variables[0]/20.0);
-			double beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
-
-			dxdt[2]=(alpha_m*(1-variables[2])-beta_m*variables[2]);
-			dxdt[3]=(alpha_h*(1-variables[3])-beta_h*variables[3]);
-		}
+		void ode_set(const state_type &variables, state_type &dxdt, const double t);
 };
+
+void na_conductance::ode_set(const state_type &variables, state_type &dxdt, const double t) {
+	double alpha_m = 	(2.5-0.1*variables[0])/(exp(2.5-0.1*variables[0])-1.0);
+	double beta_m =  	4.0*exp(-variables[0]/18.0);
+	double alpha_h = 	0.07*exp(-variables[0]/20.0);
+	double beta_h =  	1.0/(exp(3-0.1*variables[0])+1);
+
+	dxdt[2]=(alpha_m*(1-variables[2])-beta_m*variables[2]);
+	dxdt[3]=(alpha_h*(1-variables[3])-beta_h*variables[3]);
+}
 
 class k_conductance: public conductance {
 	public:
 		probability_variable n;
 		k_conductance(): conductance{0.0} { n.set(0.0); }
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
-			double alpha_n = (0.1-0.01*variables[0])/(exp(1-0.1*variables[0])-1.0);
-			double beta_n = 0.125*exp(-variables[0]/80.0);
-
-			dxdt[1]=(alpha_n*(1-variables[1])-beta_n*variables[1]);
-		}
+		void ode_set(const state_type &variables, state_type &dxdt, const double t);
 };
+
+void k_conductance::ode_set(const state_type &variables, state_type &dxdt, const double t) {
+	double alpha_n = (0.1-0.01*variables[0])/(exp(1-0.1*variables[0])-1.0);
+	double beta_n = 0.125*exp(-variables[0]/80.0);
+
+	dxdt[1]=(alpha_n*(1-variables[1])-beta_n*variables[1]);
+}
 
 class leak_conductance: public conductance {
 	public:
 		leak_conductance(): conductance{0.0} {}
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {}
+		void ode_set(const state_type &variables, state_type &dxdt, const double t);
 };
 
-class hodgkin_huxley_neuron: public neuron {
+void leak_conductance::ode_set(const state_type &variables, state_type &dxdt, const double t) {}
+
+class hodgkin_huxley_neuron {
 	public:
 		na_conductance gna;
 		k_conductance gk;
@@ -152,14 +156,15 @@ class hodgkin_huxley_neuron: public neuron {
 			state_type nvars = {v.get(), gk.n.get(), gna.m.get(), gna.h.get()};
 			return nvars;
 		}
-		void ode_set(const state_type &variables, state_type &dxdt, const double t) {
+		void ode_set(const state_type &variables, state_type &dxdt, const double t,
+			int start_index, int end_index) {
 			dxdt[0] = -gna.get()*pow(variables[2],3)*variables[3]*(variables[0]-ena.get())
 				-gk.get()*pow(variables[1],4)*(variables[0]-ek.get())
 				-gl.get()*(variables[0]-el.get())+iext.get();
 		}
 		void operator()(const state_type &variables, state_type &dxdt,
 			const double time) {
-			ode_set(variables, dxdt, time);
+			ode_set(variables, dxdt, time, 0, 0);
 			gk.ode_set(variables, dxdt, time);
 			gna.ode_set(variables, dxdt, time);
 			gl.ode_set(variables, dxdt, time);
@@ -172,30 +177,30 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	hodgkin_huxley_neuron neuron;
+        std::vector<hodgkin_huxley_neuron> neuron(1);
 	state_type variables;
 
-	neuron.gna.set(120.0);
-	neuron.ena.set(115);
-	neuron.gk.set(36);
-	neuron.ek.set(-12.0);
-	neuron.gl.set(0.3);
-	neuron.el.set(10.6);
-	neuron.iext.set(10);
-	neuron.v.set(-30.0);
-	neuron.gna.m.set(0.0);
-	neuron.gna.h.set(0.0);
-	neuron.gk.n.set(0.0);
+	neuron[0].gna.set(120.0);
+	neuron[0].ena.set(115);
+	neuron[0].gk.set(36);
+	neuron[0].ek.set(-12.0);
+	neuron[0].gl.set(0.3);
+	neuron[0].el.set(10.6);
+	neuron[0].iext.set(10);
+	neuron[0].v.set(-30.0);
+	neuron[0].gna.m.set(0.0);
+	neuron[0].gna.h.set(0.0);
+	neuron[0].gk.n.set(0.0);
 
-	variables = simulation_support_engine::stage_variables(neuron);
+	variables = simulation_support_engine::stage_variables(neuron[0]);
 
 	string filename = argv[1];
 	ofstream file(filename);
 	assert(file.is_open());
 
 	using namespace boost::numeric::odeint;
-	integrate_const(runge_kutta4<state_type>(), neuron, variables,
-									0.0, 100.0, 0.05, configuration(file));
+	integrate_const(runge_kutta4<state_type>(), neuron[0], variables,
+                        0.0, 100.0, 0.05, configuration(file));
 
 	file.close();
 	return 0;
