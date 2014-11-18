@@ -18,32 +18,40 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Target excutables
+TARGET   = main.out
+
 # Compiler to use
-CC=g++
+CC       = g++ -c
 
 # Flags to specify the compilation startegy
-CFLAGS=-c -std=c++11
+CFLAGS   = -std=c++11 -Wall -I.
 
-# Flags if debugging is required
-DEBUG=-g
+# Linker to use
+LINKER   = g++ -o
 
-# Flags to specify the inclusion of external libraries
-#INLCUDES=-I/usr/local/boost_1_56_0
-#INLCUDES=-IC:\MinGW\lib\gcc\mingw32\4.8.1\include\boost_1_56_0
+# Flags to specify the linker startegy
+LFLAGS   = -Wall
 
 # All project sources that need to be compiled
-SOURCES=main.cpp
+SOURCES  := $(wildcard *.cpp)
+
+# Flags to specify the inclusion of external libraries
+INCLUDES := $(wildcard *.hpp)
 
 # Target objects
-OBJECTS=$(SOURCES:.cpp=.o)
+OBJECTS  := $(SOURCES:.cpp=*.o)
 
-# Target excutables
-EXECUTABLE=main.out
+# Cleaning forcefully
+rm       = rm -f
 
-all: $(SOURCES) $(EXECUTABLE)
+$(TARGET): objects
+	$(LINKER) $(TARGET) $(LFLAGS) $(OBJECTS)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $@
+objects: $(SOURCES) $(INCLUDES)
+	$(CC) $(CFLAGS) $(SOURCES)
 
-.cpp.o:
-	$(CC) $(INLCUDES) $(CFLAGS) $(DEBUG) $< -o $@
+clean:
+	$(rm) $(OBJECTS)
+
+

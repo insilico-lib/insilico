@@ -30,171 +30,13 @@
 #include <string>
 #include <ctime>
 #include <vector>
-#include <array>
 
-#define NEURON 1
-#define SYNAPSE 2
+#include <nnet.hpp>
 
 using namespace boost;
 using namespace std;
 
-typedef std::vector<long double> state_type;
-
-typedef class neuronal_network {
- public:
-  static vector<long> neuron_start_list_ids, neuron_end_list_ids;
-  static vector<long> synapse_start_list_ids, synapse_end_list_ids;
-  static vector<long> pre_neuron, post_neuron;
-  static vector<string> var_list_ids;
-  static state_type var_vals;
-  static state_type get_variables() {
-    return var_vals;
-  }
-  static long get_index(long id, string variable, int mode) {
-    long startindex, endindex;
-    switch(mode) {
-      case NEURON: {
-        startindex = neuron_start_list_ids.at(id);
-        endindex = neuron_end_list_ids.at(id);
-        break;
-      }
-      case SYNAPSE: {
-        startindex = synapse_start_list_ids.at(id);
-        endindex = synapse_end_list_ids.at(id);
-        break;
-      }
-    }
-    for(long iter=startindex;iter<endindex;++iter) {
-      if(variable.compare(var_list_ids[iter]) == 0) {
-        return iter;
-      }
-    }
-    cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
-        <<"Arguments were: id= "<<id<<" variable= "<<variable<<" mode= "
-        <<mode<<" (1 - NEURON, 2 - SYNAPSE, Other - UNKNOWN)"<<endl<<"Exiting.";
-    exit(0);
-  }
-  static double get_value(long index) {
-    return var_vals.at(index);
-  }
-  static double get(long id, string variable, int mode) {
-    return get_value(get_index(id, variable, mode));
-  }
-  static double get_sum(long neuron_id, string variable, int mode=SYNAPSE) {
-   double sum = 0;
-    for(long index = 0; index < post_neuron.size(); ++index) {
-      if(neuron_id == post_neuron.at(index)) {
-        sum += get(index, variable, SYNAPSE);
-      }
-    }
-    return sum;
-  }
-  static double get_diff(long synapse_id, string first_variable, string second_variable, int mode=NEURON) {
-    return get(pre_neuron.at(synapse_id)-1,first_variable,NEURON) -
-        get(pre_neuron.at(synapse_id)-1,second_variable,NEURON);
-  }
-  static vector<long> get_indices(long neuron_id, string variable, int mode=SYNAPSE) {
-    vector<long> indices = {};
-    for(long index = 0; index < post_neuron.size(); ++index) {
-      if(neuron_id == post_neuron.at(index)) {
-        indices.push_back(get_index(index, variable, SYNAPSE));
-      }
-    }
-    return indices;
-  }
-  static double get_count(long neuron_id, string variable, int mode=SYNAPSE) {
-    long count = 0;
-    for(long index = 0; index < post_neuron.size(); ++index) {
-      if(neuron_id == post_neuron.at(index)) {
-        if(get_index(index, variable, SYNAPSE) >= 0) {
-          ++count;
-        }
-      }
-    }
-    return count;
-  }
-  static void read(string neuron_file, string synapse_file)
-  {
-    string str = "", c_var = "";
-    long ncount = 0;
-    ifstream neuron_stream(neuron_file), synapse_stream(synapse_file);
-    assert(neuron_stream.is_open()); // safety check
-    assert(synapse_stream.is_open()); // safety check
-
-    while(getline(neuron_stream,str) > 0) {
-      neuron_start_list_ids.push_back(ncount);
-      for (int str_index=0; str_index<str.length();++str_index) {
-        c_var = "";
-        while(str_index<str.length() && str.at(str_index)!=':') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        var_list_ids.push_back(c_var);
-        c_var = "";
-        ++str_index;
-        while(str_index<str.length() && str.at(str_index)!=',') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        size_t sz;
-        var_vals.push_back(stod(c_var,&sz));
-        ++ncount;
-      }
-      neuron_end_list_ids.push_back(ncount);
-    }
-    bool pre=false, post=false;
-    while(getline(synapse_stream,str) > 0){
-      synapse_start_list_ids.push_back(ncount);
-      for (int str_index=0; str_index<str.length(); ++str_index) {
-        c_var = "";
-        while(str_index<str.length() && str.at(str_index)!=':') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        if(c_var.compare("pre")==0){
-          pre=true; post=false;
-        }
-        else if(c_var.compare("post")==0){
-          pre=false; post=true;
-        }
-        else {
-          var_list_ids.push_back(c_var);
-          pre=false; post=false;
-        }      
-        c_var = "";
-        ++str_index;
-        while(str_index<str.length() && str.at(str_index)!=',') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        size_t sz;
-        if(pre==true) {
-          pre_neuron.push_back(stoi(c_var,&sz));
-        }
-        else if(post==true){
-          post_neuron.push_back(stoi(c_var,&sz));
-        }
-        else {
-          var_vals.push_back(stod(c_var,&sz));
-          ++ncount;
-        }  
-      }
-      synapse_end_list_ids.push_back(ncount);
-    }
-    neuron_stream.close();
-    synapse_stream.close();
-  }
-  void operator()(const state_type &variables, state_type &dxdt, const double time);
-}nnet;
-
-vector<long> nnet::neuron_start_list_ids;
-vector<long> nnet::neuron_end_list_ids;
-vector<long> nnet::synapse_start_list_ids;
-vector<long> nnet::synapse_end_list_ids;
-vector<long> nnet::pre_neuron;
-vector<long> nnet::post_neuron;
-vector<string> nnet::var_list_ids;
-state_type nnet::var_vals;
+typedef vector<long double> state_type;
 
 struct configuration {
   ofstream &stream;
@@ -305,15 +147,14 @@ class hodgkin_huxley_neuron {
     double el = nnet::get(index, "el", NEURON);
     double iext = nnet::get(index, "iext", NEURON);
   
-    long multiple_esyn_count = nnet::get_count(index, "esyn", SYNAPSE);
     vector<long> g1_indices = nnet::get_indices(index, "g1", SYNAPSE);
     vector<long> esyn_indices = nnet::get_indices(index, "esyn", SYNAPSE);    
     double isyn = 0;
 
-    for(long iterator = 0; iterator < g1_indices.size(); ++iterator) {
+    for(unsigned long iterator = 0; iterator < g1_indices.size(); ++iterator) {
       isyn = isyn + variables[g1_indices.at(iterator)] * (v - variables[esyn_indices.at(iterator)]); 
     }
-    if(index == 1) cout<<t<<" "<<isyn<<endl;
+
     // ODE
     dxdt[v_index] = -gna*pow(m,3)*h*(v-ena)-gk*pow(n,4)*(v-ek)-gl*(v-el)+iext+isyn;
 
@@ -378,7 +219,7 @@ void nnet::operator()(const state_type &variables, state_type &dxdt,
   for(long neuron_index = 0; neuron_index < network_size; ++neuron_index) {
     hodgkin_huxley_neuron::ode_set(variables, dxdt, time, neuron_index);
   }
-  for (long synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
+  for(long synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
     synapse_x::ode_set(variables, dxdt, time, synapse_index);
   }
 }
