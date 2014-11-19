@@ -163,6 +163,7 @@ class hodgkin_huxley_neuron {
     leak_conductance::ode_set(variables, dxdt, t, index);
 
     // For synapse
+    /* .. code temporarily out of service ..
     long prev_v_index = nnet::get_index(index, "prev_v", NEURON);
     long spike_t_index = nnet::get_index(index, "spike_t", NEURON);
     long spike_flag_index = nnet::get_index(index, "spike_flag", NEURON);
@@ -185,6 +186,7 @@ class hodgkin_huxley_neuron {
     }
     dxdt[prev_v_index] = v;
     dxdt[spike_flag_index] = spike_flag;
+    */
   }
 };
 
@@ -202,10 +204,12 @@ class synapse_x {
     double tau2 = nnet::get(index, "tau2", SYNAPSE);
     double gsyn = nnet::get(index, "gsyn", SYNAPSE);
 
-    //double delay = nnet::get(index, "delay", SYNAPSE);
-    //double spike_time_diff = nnet::get_diff(index, "v", "prev_v", NEURON);
-    double xt = 1;//(spike_time_diff >= delay) ? 1 : 0;
-
+    /* .. code temporarily out of service
+    double delay = nnet::get(index, "delay", SYNAPSE);
+    double spike_time_diff = nnet::get_diff(index, "v", "prev_v", NEURON);
+    double xt = (spike_time_diff >= delay) ? 1 : 0;
+    */
+    double xt = 1;
     dxdt[g1_index] = g2;
     dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt; 
   }
