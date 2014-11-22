@@ -7,6 +7,8 @@ int main() {
   int i = -5, prev_i = -5;
   int t = 0, thresh = 2;
   int state = -10, spike = 0;
+
+  // loop through all the timesteps
   while(t < 100) {
     if(state == -10) { prev_i=i; i++; if(i==5) state=5; }
     else if(state == 5) { prev_i=i; i--; if(i==-10) state=-10; }
