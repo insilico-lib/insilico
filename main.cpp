@@ -217,12 +217,15 @@ class synapse_x {
 
 void nnet::operator()(const state_type &variables, state_type &dxdt,
                        const double time) {
+  // spawn the mpi procs
   long network_size = neuron_start_list_ids.size();
   long synapse_count = synapse_start_list_ids.size();
 
+  // divide the rank+1 jobs here
   for(long neuron_index = 0; neuron_index < network_size; ++neuron_index) {
     hodgkin_huxley_neuron::ode_set(variables, dxdt, time, neuron_index);
   }
+  // seperate synapse division
   for(long synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
     synapse_x::ode_set(variables, dxdt, time, synapse_index);
   }
