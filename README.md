@@ -6,6 +6,8 @@
 * g++ 4.8.1+
 * make 3.8+
 
+The installation should be in standard directories. 
+
 ### Build
 
 Clone the source and run the following commands on terminal.
