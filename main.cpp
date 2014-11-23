@@ -161,32 +161,6 @@ class hodgkin_huxley_neuron {
     k_conductance::ode_set(variables, dxdt, t, index);
     na_conductance::ode_set(variables, dxdt, t, index);
     leak_conductance::ode_set(variables, dxdt, t, index);
-
-    // For synapse
-    /* .. code temporarily out of service ..
-    long prev_v_index = nnet::get_index(index, "prev_v", NEURON);
-    long spike_t_index = nnet::get_index(index, "spike_t", NEURON);
-    long spike_flag_index = nnet::get_index(index, "spike_flag", NEURON);
-    long prev_spike_t_index = nnet::get_index(index, "prev_spike_t", NEURON);
-    
-    double prev_v = variables[prev_v_index];
-    int spike_flag = variables[spike_flag_index];
-    double spike_t = variables[spike_t_index];
-    double prev_spike_t = variables[prev_spike_t_index];
-
-    double thresh = nnet::get(index, "thresh", NEURON);
-    
-    if(prev_v > thresh && v > thresh && prev_v < v && spike_flag < 1) {
-      if(prev_spike_t < -9998.0) dxdt[prev_spike_t_index] = spike_t;
-      dxdt[spike_t_index] = t;
-      spike_flag++;
-    }
-    else {
-      spike_flag = 0;
-    }
-    dxdt[prev_v_index] = v;
-    dxdt[spike_flag_index] = spike_flag;
-    */
   }
 };
 
@@ -204,11 +178,6 @@ class synapse_x {
     double tau2 = nnet::get(index, "tau2", SYNAPSE);
     double gsyn = nnet::get(index, "gsyn", SYNAPSE);
 
-    /* .. code temporarily out of service
-    double delay = nnet::get(index, "delay", SYNAPSE);
-    double spike_time_diff = nnet::get_diff(index, "v", "prev_v", NEURON);
-    double xt = (spike_time_diff >= delay) ? 1 : 0;
-    */
     double xt = 1;
     dxdt[g1_index] = g2;
     dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt; 
