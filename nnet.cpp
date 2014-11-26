@@ -105,14 +105,11 @@ double neuronal_network::get_count(long neuron_id, string variable, int mode) {
   return count;
 }
 
-void neuronal_network::read(string neuron_file, string synapse_file)
-{
+void neuronal_network::read(string neuron_file, string synapse_file="") {
   string str = "", c_var = "";
   long ncount = 0;
-  ifstream neuron_stream(neuron_file), synapse_stream(synapse_file);
-  assert(neuron_stream.is_open()); // safety check
-  assert(synapse_stream.is_open()); // safety check
-
+  ifstream neuron_stream(neuron_file);
+  
   while(getline(neuron_stream,str) > 0) {
     neuron_start_list_ids.push_back(ncount);
     for (unsigned int str_index=0; str_index<str.length();++str_index) {
@@ -134,47 +131,51 @@ void neuronal_network::read(string neuron_file, string synapse_file)
     }
     neuron_end_list_ids.push_back(ncount);
   }
-  bool pre=false, post=false;
-  while(getline(synapse_stream,str) > 0){
-    synapse_start_list_ids.push_back(ncount);
-    for (unsigned int str_index=0; str_index<str.length(); ++str_index) {
-      c_var = "";
-      while(str_index<str.length() && str.at(str_index)!=':') {
-        c_var+=str.at(str_index);
-        ++str_index;
-      }
-      if(c_var.compare("pre")==0){
-        pre=true; post=false;
-      }
-      else if(c_var.compare("post")==0){
-        pre=false; post=true;
-      }
-      else {
-        var_list_ids.push_back(c_var);
-        pre=false; post=false;
-      }      
-      c_var = "";
-      ++str_index;
-      while(str_index<str.length() && str.at(str_index)!=',') {
-        c_var+=str.at(str_index);
-        ++str_index;
-      }
-      size_t sz;
-      if(pre==true) {
-        pre_neuron.push_back(stoi(c_var,&sz));
-      }
-      else if(post==true){
-        post_neuron.push_back(stoi(c_var,&sz));
-      }
-      else {
-        var_vals.push_back(stod(c_var,&sz));
-        ++ncount;
-      }  
-    }
-    synapse_end_list_ids.push_back(ncount);
-  }
   neuron_stream.close();
-  synapse_stream.close();
+
+  if(synapse_file.length()!=0) {
+    ifstream synapse_stream(synapse_file);
+    bool pre=false, post=false;
+    while(getline(synapse_stream,str) > 0){
+      synapse_start_list_ids.push_back(ncount);
+      for (unsigned int str_index=0; str_index<str.length(); ++str_index) {
+        c_var = "";
+        while(str_index<str.length() && str.at(str_index)!=':') {
+          c_var+=str.at(str_index);
+          ++str_index;
+        }
+        if(c_var.compare("pre")==0){
+          pre=true; post=false;
+        }
+        else if(c_var.compare("post")==0){
+          pre=false; post=true;
+        }
+        else {
+          var_list_ids.push_back(c_var);
+          pre=false; post=false;
+        }      
+        c_var = "";
+        ++str_index;
+        while(str_index<str.length() && str.at(str_index)!=',') {
+          c_var+=str.at(str_index);
+          ++str_index;
+        }
+        size_t sz;
+        if(pre==true) {
+          pre_neuron.push_back(stoi(c_var,&sz));
+        }
+        else if(post==true){
+          post_neuron.push_back(stoi(c_var,&sz));
+        }
+        else {
+          var_vals.push_back(stod(c_var,&sz));
+          ++ncount;
+        }  
+      }
+      synapse_end_list_ids.push_back(ncount);
+    }
+    synapse_stream.close();
+  }
 }
 
 std::vector<long> nnet::neuron_start_list_ids;
