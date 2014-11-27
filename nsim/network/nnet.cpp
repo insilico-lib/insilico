@@ -54,8 +54,8 @@ long neuronal_network::get_index(long id, string variable, int mode) {
     }
   }
   std::cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
-           <<"Arguments were: id= "<<id<<" variable= "<<variable<<" mode= "
-           <<mode<<" (1 - NEURON, 2 - SYNAPSE, Other - UNKNOWN)"<<endl<<"Exiting.";
+           <<"Arguments were: [id = "<<id<<"][variable = "<<variable<<"][mode= "
+           <<mode<<"] (mode can be {1 - NEURON, 2 - SYNAPSE, Other - UNKNOWN})"<<std::endl<<"Exiting."<<std::endl;
   exit(0);
 }
 
@@ -83,8 +83,23 @@ double neuronal_network::get_diff(long synapse_id, string first_variable,
       get(pre_neuron.at(synapse_id)-1,second_variable,NEURON);
 }
 
-vector<long> neuronal_network::get_indices(long neuron_id, string variable, int mode) {
-  vector<long> indices = {};
+vector<long> neuronal_network::get_indices(string variable) {
+  vector<long> indices;
+  for(vector<long>::size_type index = 0; index < var_list_ids.size(); ++index) {
+    if(variable.compare(var_list_ids[index]) == 0) {
+      indices.push_back(index);
+    }
+  }
+  if(indices.size() == 0) {
+    std::cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
+             <<"Searching for all indices of variable = "<<variable<<std::endl<<"Exiting."<<std::endl;
+    exit(0);
+  }
+  return indices;
+}
+
+vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string variable, int mode) {
+  vector<long> indices;
   for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
       indices.push_back(get_index(index, variable, SYNAPSE));
