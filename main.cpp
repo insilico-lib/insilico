@@ -51,39 +51,7 @@ struct configuration {
   }
 };
 
-class value {
- private:
-  long double datum;
- public:
-  value() { datum = 0.0; }
-  value(long double datum) { this->datum = datum; }
-  long double get() const { return datum; }
-  void set(long double datum) {	this->datum = datum; }
-};
-
-class current: public value {};
-
-class voltage: public value {};
-
-class conductance: public value {
- public:
-  conductance(): value{0.0} {}
-  conductance(long double conductance_value): value{conductance_value} {}
-  void ode_set() {}
-};
-
-class probability_variable : public value {
- private:
-  bool valid;
- public:
-  probability_variable() : value{0.0} { valid = true; }
-  probability_variable(long double probability_value): value{probability_value} {
-    valid = (probability_value < 0 || probability_value > 1);
-  }
-  bool is_valid() { return valid; }
-};
-
-class na_conductance: public conductance {
+class na_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) { 
     long v_index = nnet::get_index(index, "v", NEURON);
@@ -104,7 +72,7 @@ class na_conductance: public conductance {
   }
 };
 
-class k_conductance: public conductance {
+class k_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) {
     long v_index = nnet::get_index(index, "v", NEURON);
@@ -120,7 +88,7 @@ class k_conductance: public conductance {
   }
 };
 
-class leak_conductance: public conductance {
+class leak_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) {}
 };
