@@ -46,7 +46,7 @@ typedef class neuronal_network {
   static double get_diff(long synapse_id, std::string first_variable, std::string second_variable, int mode=NEURON);
   static std::vector<long> get_indices(long neuron_id, std::string variable, int mode=SYNAPSE);
   static double get_count(long neuron_id, std::string variable, int mode=SYNAPSE);
-  static void read(std::string neuron_file, std::string synapse_file);
+  static void read(std::string neuron_file, std::string synapse_file="");
   void operator()(const state_type &variables, state_type &dxdt, const double time);
 }nnet;
 

@@ -105,7 +105,7 @@ double neuronal_network::get_count(long neuron_id, string variable, int mode) {
   return count;
 }
 
-void neuronal_network::read(string neuron_file, string synapse_file="") {
+void neuronal_network::read(string neuron_file, string synapse_file) {
   string str = "", c_var = "";
   long ncount = 0;
   ifstream neuron_stream(neuron_file);
