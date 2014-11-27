@@ -42,10 +42,11 @@ struct configuration {
   ofstream &stream;
   configuration(ofstream &file): stream(file) {}
   void operator()(const state_type &variables, const double t) {
+    vector<long> indices = nnet::get_indices("v");
     assert(stream.is_open());
     stream<<t;
-    for(double variable: variables){
-      stream<<','<<variable;
+    for(vector<long>::size_type iter = 0; iter < indices.size(); ++iter) {
+      stream<<','<<variables[indices[iter]];
     }
     stream<<endl;
   }
