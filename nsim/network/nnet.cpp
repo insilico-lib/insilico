@@ -126,6 +126,7 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
   ifstream neuron_stream(neuron_file);
   
   while(getline(neuron_stream,str) > 0) {
+    if(str.length()==0) continue;
     neuron_start_list_ids.push_back(ncount);
     for (size_t str_index=0; str_index<str.length();++str_index) {
       c_var = "";
@@ -152,6 +153,7 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
     ifstream synapse_stream(synapse_file);
     bool pre=false, post=false;
     while(getline(synapse_stream,str) > 0){
+      if(str.length()==0) continue;
       synapse_start_list_ids.push_back(ncount);
       for (size_t str_index=0; str_index<str.length(); ++str_index) {
         c_var = "";
