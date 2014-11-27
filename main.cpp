@@ -138,20 +138,15 @@ class hodgkin_huxley_neuron {
     double n = variables[n_index];
     double m = variables[m_index];
     double h = variables[h_index];
-
-    double gna = nnet::get(index, "gna", NEURON);
-    double ena = nnet::get(index, "ena", NEURON);
-    double gk = nnet::get(index, "gk", NEURON);
-    double ek = nnet::get(index, "ek", NEURON);
-    double gl = nnet::get(index, "gl", NEURON);
-    double el = nnet::get(index, "el", NEURON);
+    
+    double gna = 120, ena = 115, gk = 36, ek = -12, gl = 0.3, el = 10.6;
     double iext = nnet::get(index, "iext", NEURON);
   
     vector<long> g1_indices = nnet::get_indices(index, "g1", SYNAPSE);
     vector<long> esyn_indices = nnet::get_indices(index, "esyn", SYNAPSE);    
     double isyn = 0;
 
-    for(unsigned long iterator = 0; iterator < g1_indices.size(); ++iterator) {
+    for(vector<long>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
       isyn = isyn + variables[g1_indices.at(iterator)] * (v - variables[esyn_indices.at(iterator)]); 
     }
 

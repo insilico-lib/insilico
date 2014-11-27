@@ -69,7 +69,7 @@ double neuronal_network::get(long id, string variable, int mode) {
 
 double neuronal_network::get_sum(long neuron_id, string variable, int mode) {
   double sum = 0;
-  for(unsigned long index = 0; index < post_neuron.size(); ++index) {
+  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
       sum += get(index, variable, SYNAPSE);
     }
@@ -85,7 +85,7 @@ double neuronal_network::get_diff(long synapse_id, string first_variable,
 
 vector<long> neuronal_network::get_indices(long neuron_id, string variable, int mode) {
   vector<long> indices = {};
-  for(unsigned long index = 0; index < post_neuron.size(); ++index) {
+  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
       indices.push_back(get_index(index, variable, SYNAPSE));
     }
@@ -95,7 +95,7 @@ vector<long> neuronal_network::get_indices(long neuron_id, string variable, int 
 
 double neuronal_network::get_count(long neuron_id, string variable, int mode) {
   long count = 0;
-  for(unsigned long index = 0; index < post_neuron.size(); ++index) {
+  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
       if(get_index(index, variable, SYNAPSE) >= 0) {
         ++count;
@@ -112,7 +112,7 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
   
   while(getline(neuron_stream,str) > 0) {
     neuron_start_list_ids.push_back(ncount);
-    for (unsigned int str_index=0; str_index<str.length();++str_index) {
+    for (size_t str_index=0; str_index<str.length();++str_index) {
       c_var = "";
       while(str_index<str.length() && str.at(str_index)!=':') {
         c_var+=str.at(str_index);
@@ -138,7 +138,7 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
     bool pre=false, post=false;
     while(getline(synapse_stream,str) > 0){
       synapse_start_list_ids.push_back(ncount);
-      for (unsigned int str_index=0; str_index<str.length(); ++str_index) {
+      for (size_t str_index=0; str_index<str.length(); ++str_index) {
         c_var = "";
         while(str_index<str.length() && str.at(str_index)!=':') {
           c_var+=str.at(str_index);
