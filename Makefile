@@ -21,6 +21,9 @@
 # Target excutables
 TARGET   = main.out
 
+# Compile directory
+OBJDIR	 = nsim/lib
+
 # Compiler to use
 CC       = g++ -c
 
@@ -34,24 +37,22 @@ LINKER   = g++ -o
 LFLAGS   = -Wall
 
 # All project sources that need to be compiled
-SOURCES  := $(wildcard *.cpp)
+SOURCES  := main.cpp nsim/network/nnet.cpp
 
 # Flags to specify the inclusion of external libraries
-INCLUDES := $(wildcard *.hpp)
+INCLUDES := nsim/network/nnet.hpp
 
 # Target objects
-OBJECTS  := $(SOURCES:.cpp=*.o)
+OBJECTS  := main.o nnet.o
 
 # Cleaning forcefully
-rm       = rm -f
+mv       = mv -f
+
+clean: $(TARGET)
+	$(mv) $(OBJECTS) $(OBJDIR)
 
 $(TARGET): objects
 	$(LINKER) $(TARGET) $(LFLAGS) $(OBJECTS)
 
 objects: $(SOURCES) $(INCLUDES)
 	$(CC) $(CFLAGS) $(SOURCES)
-
-clean:
-	$(rm) $(OBJECTS)
-
-

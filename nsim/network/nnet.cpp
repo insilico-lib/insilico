@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-#include <nnet.hpp>
+#include <nsim/network/nnet.hpp>
 
 using namespace std;
 
