@@ -178,6 +178,14 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
   }
 }
 
+long neuronal_network::neuron_count() {
+  return neuron_start_list_ids.size();
+}
+
+long neuronal_network::synapse_count() {
+  return synapse_start_list_ids.size();
+}
+
 std::vector<long> nnet::neuron_start_list_ids;
 std::vector<long> nnet::neuron_end_list_ids;
 std::vector<long> nnet::synapse_start_list_ids;

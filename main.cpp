@@ -187,8 +187,8 @@ class synapse_x {
 void nnet::operator()(const state_type &variables, state_type &dxdt,
                        const double time) {
   // spawn the mpi procs
-  long network_size = neuron_start_list_ids.size();
-  long synapse_count = synapse_start_list_ids.size();
+  long network_size = nnet::neuron_count();
+  long synapse_count = nnet::synapse_count();
 
   // divide the rank+1 jobs here
   for(long neuron_index = 0; neuron_index < network_size; ++neuron_index) {
