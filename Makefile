@@ -49,6 +49,7 @@ OBJECTS  := main.o nnet.o
 mv       = mv -f
 
 clean: $(TARGET)
+	mkdir -p $(OBJDIR)
 	$(mv) $(OBJECTS) $(OBJDIR)
 
 $(TARGET): objects
