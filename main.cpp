@@ -18,8 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/fusion/container/vector.hpp>
-#include <boost/fusion/support/pair.hpp>
 #include <boost/numeric/odeint.hpp>
 
 #include <algorithm>
