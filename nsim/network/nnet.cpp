@@ -35,7 +35,7 @@ state_type neuronal_network::get_variables() {
 }
 
 long neuronal_network::get_index(long id, string variable, int mode) {
-  long startindex, endindex;
+  long startindex = 0, endindex = 0;
   switch(mode) {
     case NEURON: {
       startindex = neuron_start_list_ids.at(id);
