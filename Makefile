@@ -28,7 +28,7 @@ OBJDIR	 = nsim/lib
 CC       = g++ -c
 
 # Flags to specify the compilation startegy
-CFLAGS   = -std=c++11 -Wall -I.
+CFLAGS   = -O3 -std=c++11 -Wall -I.
 
 # Linker to use
 LINKER   = g++ -o
