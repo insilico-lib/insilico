@@ -23,10 +23,10 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <ctime>
 #include <vector>
 
 #include <nsim/network/nnet.hpp>
@@ -148,15 +148,12 @@ class synapse_x {
 
 void nnet::operator()(const state_type &variables, state_type &dxdt,
                        const double time) {
-  // spawn the mpi procs
   long network_size = nnet::neuron_count();
   long synapse_count = nnet::synapse_count();
 
-  // divide the rank+1 jobs here
   for(long neuron_index = 0; neuron_index < network_size; ++neuron_index) {
     hodgkin_huxley_neuron::ode_set(variables, dxdt, time, neuron_index);
   }
-  // seperate synapse division
   for(long synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
     synapse_x::ode_set(variables, dxdt, time, synapse_index);
   }
@@ -173,7 +170,7 @@ int main(int argc, char* argv[]) {
   state_type variables = nnet::get_variables();
   string output_filename = argv[1];
   ofstream output_file(output_filename);
-  assert(output_file.is_open()); // safety check
+  assert(output_file.is_open());
   
   using namespace boost::numeric::odeint;
   integrate_const(runge_kutta4<state_type>(), network, variables,
