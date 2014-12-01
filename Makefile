@@ -25,7 +25,7 @@ TARGET   = main.out
 OBJDIR	 = nsim/lib
 
 # Compiler to use
-CC       = g++ -c
+CC       = g++
 
 # Flags to specify the compilation startegy
 CFLAGS   = -O3 -std=c++11 -Wall -I.
@@ -37,7 +37,10 @@ LINKER   = g++ -o
 LFLAGS   = -Wall
 
 # All project sources that need to be compiled
-SOURCES  := main.cpp nsim/network/nnet.cpp
+SOURCES  := main.cpp
+
+# Header source
+HSOURCES  := nsim/network/nnet.cpp
 
 # Flags to specify the inclusion of external libraries
 INCLUDES := nsim/network/nnet.hpp
@@ -48,12 +51,14 @@ OBJECTS  := main.o nnet.o
 # Cleaning forcefully
 mv       = mv -f
 
-clean: $(TARGET)
-	mkdir -p $(OBJDIR)
-	$(mv) $(OBJECTS) $(OBJDIR)
+all: $(TARGET)
 
 $(TARGET): objects
-	$(LINKER) $(TARGET) $(LFLAGS) $(OBJECTS)
+	$(LINKER) $@ $(LFLAGS) $(OBJECTS)
 
-objects: $(SOURCES) $(INCLUDES)
-	$(CC) $(CFLAGS) $(SOURCES)
+objects: $(SOURCES) $(HSOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) $(HSOURCES)
+
+clean:
+	mkdir -p $(OBJDIR)
+	$(mv) $(OBJECTS) $(OBJDIR)
