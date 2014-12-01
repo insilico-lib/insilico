@@ -25,7 +25,7 @@ TARGET   = main.out
 OBJDIR	 = nsim/lib
 
 # Compiler to use
-CC       = g++
+CC       = g++ -c
 
 # Flags to specify the compilation startegy
 CFLAGS   = -O3 -std=c++11 -Wall -I.
