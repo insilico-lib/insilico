@@ -132,17 +132,31 @@ class synapse_x {
                long index) {
     long g1_index = nnet::get_index(index, "g1", SYNAPSE);
     long g2_index = nnet::get_index(index, "g2", SYNAPSE);
+    long pre_index = nnet::get_index(index, "pre", SYNAPSE);
+    long neuron_index = variables[pre_index];
+
+    long last_spiked_index = nnet::get_index(index, "last_spike", SYNAPSE);
+    long v_index = nnet::get_index(neuron_index, "v", NEURON);
 
     double g1 = variables[g1_index];
     double g2 = variables[g2_index];
+    double last_spiked = variables[last_spiked_index];
+    double V = variables[v_index];
+    double def_delay = .004;
+    double thresh = 20.0;
+    double xt = 0.0;
+
+    if((V > thresh) && (t-last_spiked)>def_delay){
+      xt = 1.0;
+      dxdt[last_spiked_index] = t*(1.0/0.05);
+    }
 
     double tau1 = nnet::get(index, "tau1", SYNAPSE);
     double tau2 = nnet::get(index, "tau2", SYNAPSE);
     double gsyn = nnet::get(index, "gsyn", SYNAPSE);
 
-    double xt = 1;
     dxdt[g1_index] = g2;
-    dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt; 
+    dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt;
   }
 };
 
