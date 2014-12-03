@@ -67,22 +67,6 @@ double neuronal_network::get(long id, string variable, int mode) {
   return get_value(get_index(id, variable, mode));
 }
 
-double neuronal_network::get_sum(long neuron_id, string variable, int mode) {
-  double sum = 0;
-  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
-    if(neuron_id == post_neuron.at(index)) {
-      sum += get(index, variable, SYNAPSE);
-    }
-  }
-  return sum;
-}
-
-double neuronal_network::get_diff(long synapse_id, string first_variable,
-                                         string second_variable, int mode) {
-  return get(pre_neuron.at(synapse_id),first_variable,NEURON) -
-      get(pre_neuron.at(synapse_id),second_variable,NEURON);
-}
-
 vector<long> neuronal_network::get_indices(string variable) {
   vector<long> indices;
   for(vector<long>::size_type index = 0; index < var_list_ids.size(); ++index) {
@@ -106,18 +90,6 @@ vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string var
     }
   }
   return indices;
-}
-
-double neuronal_network::get_count(long neuron_id, string variable, int mode) {
-  long count = 0;
-  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
-    if(neuron_id == post_neuron.at(index)) {
-      if(get_index(index, variable, SYNAPSE) >= 0) {
-        ++count;
-      }
-    }
-  }
-  return count;
 }
 
 void neuronal_network::read(string neuron_file, string synapse_file) {
