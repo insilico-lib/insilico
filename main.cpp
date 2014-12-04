@@ -54,9 +54,9 @@ struct configuration {
 class na_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) { 
-    long v_index = nnet::get_index(index, "v", NEURON);
-    long m_index = nnet::get_index(index, "m", NEURON);
-    long h_index = nnet::get_index(index, "h", NEURON);
+    long v_index = nnet::neuron_index(index, "v");
+    long m_index = nnet::neuron_index(index, "m");
+    long h_index = nnet::neuron_index(index, "h");
     
     double v = variables[v_index];
     double m = variables[m_index];
@@ -75,8 +75,8 @@ class na_conductance {
 class k_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) {
-    long v_index = nnet::get_index(index, "v", NEURON);
-    long n_index = nnet::get_index(index, "n", NEURON);
+    long v_index = nnet::neuron_index(index, "v");
+    long n_index = nnet::neuron_index(index, "n");
 
     double v = variables[v_index];
     double n = variables[n_index];
@@ -97,18 +97,18 @@ class hodgkin_huxley_neuron {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                long index) {
-    long v_index = nnet::get_index(index, "v", NEURON);
-    long n_index = nnet::get_index(index, "n", NEURON);
-    long m_index = nnet::get_index(index, "m", NEURON);
-    long h_index = nnet::get_index(index, "h", NEURON);
-        
+    long v_index = nnet::neuron_index(index, "v");
+    long n_index = nnet::neuron_index(index, "n");
+    long m_index = nnet::neuron_index(index, "m");
+    long h_index = nnet::neuron_index(index, "h");
+
     double v = variables[v_index];
     double n = variables[n_index];
     double m = variables[m_index];
     double h = variables[h_index];
     
     double gna = 120, ena = 115, gk = 36, ek = -12, gl = 0.3, el = 10.6;
-    double iext = nnet::get(index, "iext", NEURON);
+    double iext = nnet::neuron_value(index, "iext");
   
     vector<long> g1_indices = nnet::get_pre_neuron_indices(index, "g1", SYNAPSE);
     vector<long> esyn_indices = nnet::get_pre_neuron_indices(index, "esyn", SYNAPSE);
@@ -131,30 +131,31 @@ class synapse_x {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                long index) {
-    long g1_index = nnet::get_index(index, "g1", SYNAPSE);
-    long g2_index = nnet::get_index(index, "g2", SYNAPSE);
-    long pre_index = nnet::get_index(index, "pre", SYNAPSE);
+    long g1_index = nnet::synapse_index(index, "g1");
+    long g2_index = nnet::synapse_index(index, "g2");
+    long pre_index = nnet::synapse_index(index, "pre");
     long neuron_index = variables[pre_index];
 
-    long last_spiked_index = nnet::get_index(index, "last_spike", SYNAPSE);
-    long v_index = nnet::get_index(neuron_index, "v", NEURON);
+    long last_spiked_index = nnet::synapse_index(index, "last_spike");
+    long v_index = nnet::neuron_index(neuron_index, "v");
 
     double g1 = variables[g1_index];
     double g2 = variables[g2_index];
     double last_spiked = variables[last_spiked_index];
     double V = variables[v_index];
-    double def_delay = .004;
-    double thresh = 20.0;
-    double xt = 0.0;
 
+    double def_delay = .004, thresh = 20.0, xt = 0.0; // constants to function
+
+    // synapse logic for decay
     if((V > thresh) && (t-last_spiked)>def_delay){
       xt = 1.0;
       dxdt[last_spiked_index] = t*(1.0/0.05);
     }
 
-    double tau1 = nnet::get(index, "tau1", SYNAPSE);
-    double tau2 = nnet::get(index, "tau2", SYNAPSE);
-    double gsyn = nnet::get(index, "gsyn", SYNAPSE);
+    // constants from file
+    double tau1 = nnet::synapse_value(index, "tau1");
+    double tau2 = nnet::synapse_value(index, "tau2");
+    double gsyn = nnet::synapse_value(index, "gsyn");
 
     dxdt[g1_index] = g2;
     dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt;
