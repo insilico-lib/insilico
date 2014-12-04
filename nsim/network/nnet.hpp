@@ -22,6 +22,7 @@
 #define INCLUDED_NNET_HPP
 
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 
 #define NEURON 1
@@ -31,6 +32,8 @@ typedef std::vector<long double> state_type;
 
 typedef class neuronal_network {
  public:
+  static std::unordered_map<std::string, long> index_map;
+  static std::unordered_map<std::string, long double> value_map;
   static std::vector<long> neuron_start_list_ids;
   static std::vector<long> neuron_end_list_ids;
   static std::vector<long> synapse_start_list_ids;
@@ -40,6 +43,10 @@ typedef class neuronal_network {
   static state_type var_vals;
   static state_type get_variables();
   static long get_index(long, std::string, int);
+  static long neuron_index(long id, std::string variable);
+  static long double neuron_value(long id, std::string variable);
+  static long synapse_index(long id, std::string variable);
+  static long double synapse_value(long id, std::string variable);
   static double get_value(long index);
   static double get(long id, std::string variable, int mode);
   static std::vector<long> get_indices(std::string variable);
