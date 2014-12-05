@@ -29,11 +29,9 @@
 
 #include <nsim/network/nnet.hpp>
 
-using namespace std;
+//#define MAP
 
-state_type neuronal_network::get_variables() {
-  return var_vals;
-}
+using namespace std;
 
 long neuronal_network::get_index(long id, string variable, int mode) {
   long startindex = 0, endindex = 0;
@@ -60,7 +58,12 @@ long neuronal_network::get_index(long id, string variable, int mode) {
   exit(0);
 }
 
+state_type neuronal_network::get_variables() {
+  return var_vals;
+}
+
 long neuronal_network::neuron_index(long id, string variable) {
+#ifdef MAP
   try {
     return index_map["n"+to_string(id)+variable];
   }
@@ -70,21 +73,39 @@ long neuronal_network::neuron_index(long id, string variable) {
     cout<<"C++ Exception"<<msg;
   }
   return 0;
+#else
+  long startindex = 0, endindex = 0;
+  startindex = neuron_start_list_ids.at(id);
+  endindex = neuron_end_list_ids.at(id);
+  
+  for(long iter=startindex;iter<endindex;++iter) {
+    if(variable.compare(var_list_ids[iter]) == 0) {
+      return iter;
+    }
+  }
+  cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
+      <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+  exit(0);  
+#endif
 }
 
 long double neuronal_network::neuron_value(long id, string variable) {
+#ifdef MAP
   try {
     return value_map["n"+to_string(id)+variable];
   }
   catch(const char* msg) {
     cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_value method supplied with incorrect arguments."
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    cout<<"C++ Exception"<<msg;
   }
   return 0;
+#else
+  return get_value(get_index(id, variable, NEURON));
+#endif
 }
 
 long neuronal_network::synapse_index(long id, string variable) {
+#ifdef MAP
   try {
     return index_map["s"+to_string(id)+variable];
   }
@@ -94,9 +115,24 @@ long neuronal_network::synapse_index(long id, string variable) {
     cout<<"C++ Exception: "<<msg;
   }
   return 0;
+#else
+  long startindex = 0, endindex = 0;
+  startindex = synapse_start_list_ids.at(id);
+  endindex = synapse_end_list_ids.at(id);
+
+  for(long iter=startindex;iter<endindex;++iter) {
+    if(variable.compare(var_list_ids[iter]) == 0) {
+      return iter;
+    }
+  }
+  cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
+      <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+  exit(0);
+#endif
 }
 
 long double neuronal_network::synapse_value(long id, string variable) {
+#ifdef MAP  
   try {
     return value_map["s"+to_string(id)+variable];
   }
@@ -106,6 +142,9 @@ long double neuronal_network::synapse_value(long id, string variable) {
     cout<<"C++ Exception: "<<msg;
   }
   return 0;
+#else
+  return get_value(get_index(id, variable, SYNAPSE));
+#endif
 }
 
 double neuronal_network::get_value(long index) {
@@ -143,13 +182,14 @@ vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string var
 
 void neuronal_network::read(string neuron_file, string synapse_file) {
   string str = "", c_var = "";
-  // MAP start
+#ifdef MAP
   string key;
-  // MAP end
+  long ntrack = 0;
+  long strack = 0;
+#endif
   long ncount = 0;
   ifstream neuron_stream(neuron_file);
 
-  long ntrack = 0;
   while(getline(neuron_stream,str) > 0) {
     if(str.length()==0) continue;
     neuron_start_list_ids.push_back(ncount);
@@ -160,9 +200,9 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
         ++str_index;
       }
       var_list_ids.push_back(c_var);
-      // MAP start
+#ifdef MAP
       key = "n" + to_string(ntrack) + c_var;
-      // MAP end
+#endif
       c_var = "";
       ++str_index;
       while(str_index<str.length() && str.at(str_index)!=',') {
@@ -171,20 +211,19 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
       }
       size_t sz;
       var_vals.push_back(stod(c_var,&sz));
-      // MAP start
+#ifdef MAP
       index_map[key] = ncount;
       value_map[key] = stod(c_var,&sz);
-      // MAP end
+#endif
       ++ncount;
     }
-    // MAP start
+#ifdef MAP
     ntrack+=1;
-    // MAP end
+#endif
     neuron_end_list_ids.push_back(ncount);
   }
   neuron_stream.close();
 
-  long strack = 0;
   if(synapse_file.length()!=0) {
     ifstream synapse_stream(synapse_file);
     bool pre=false, post=false;
@@ -198,9 +237,9 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
           ++str_index;
         }
         var_list_ids.push_back(c_var);
-        // MAP start
+#ifdef MAP
         key = "s" + to_string(strack) + c_var;
-        // MAP end
+#endif
         if(c_var.compare("pre")==0){
           pre=true; post=false;
         }
@@ -224,15 +263,15 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
           post_neuron.push_back(stoi(c_var,&sz));
         }
         var_vals.push_back(stod(c_var,&sz));
-        // MAP start
+#ifdef MAP
         index_map[key] = ncount;
         value_map[key] = stod(c_var,&sz);
-        // MAP end
+#endif
         ++ncount;
       }
-      // MAP start
+#ifdef MAP
       strack+=1;
-      // MAP end
+#endif
       synapse_end_list_ids.push_back(ncount);
     }
     synapse_stream.close();
