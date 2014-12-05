@@ -110,8 +110,8 @@ class hodgkin_huxley_neuron {
     double gna = 120, ena = 115, gk = 36, ek = -12, gl = 0.3, el = 10.6;
     double iext = nnet::neuron_value(index, "iext");
   
-    vector<long> g1_indices = nnet::get_pre_neuron_indices(index, "g1", SYNAPSE);
-    vector<long> esyn_indices = nnet::get_pre_neuron_indices(index, "esyn", SYNAPSE);
+    vector<long> g1_indices = nnet::get_pre_neuron_indices(index, "g1");
+    vector<long> esyn_indices = nnet::get_pre_neuron_indices(index, "esyn");
     double isyn = 0;
 
     for(vector<long>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {

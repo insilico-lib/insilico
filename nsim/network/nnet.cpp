@@ -131,7 +131,7 @@ vector<long> neuronal_network::get_indices(string variable) {
   return indices;
 }
 
-vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string variable, int mode) {
+vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string variable) {
   vector<long> indices;
   for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
