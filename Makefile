@@ -31,7 +31,7 @@ CC       = g++ -c
 CFLAGS   = -O3 -pthread -std=c++11 -Wall -I.
 
 # Linker to use
-LINKER   = g++ -O3 -pthread -o
+LINKER   = g++ -o
 
 # Flags to specify the linker startegy
 LFLAGS   = -Wall
