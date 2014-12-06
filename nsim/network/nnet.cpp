@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -32,6 +33,8 @@
 //#define MAP
 
 using namespace std;
+
+char key[128];
 
 long neuronal_network::get_index(long id, string variable, int mode) {
   long startindex = 0, endindex = 0;
@@ -65,14 +68,15 @@ state_type neuronal_network::get_variables() {
 long neuronal_network::neuron_index(long id, string variable) {
 #ifdef MAP
   try {
-    return index_map["n"+to_string(id)+variable];
+    sprintf(key, "n%ld%s", id, variable.c_str());
+    return index_map[key];
   }
   catch(const char* msg) {
     cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception"<<msg;
   }
-  return 0;
+  exit(0);
 #else
   long startindex = 0, endindex = 0;
   startindex = neuron_start_list_ids.at(id);
@@ -85,20 +89,21 @@ long neuronal_network::neuron_index(long id, string variable) {
   }
   cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
       <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-  exit(0);  
+  exit(0);
 #endif
 }
 
 long double neuronal_network::neuron_value(long id, string variable) {
 #ifdef MAP
   try {
-    return value_map["n"+to_string(id)+variable];
+    sprintf(key, "n%ld%s", id, variable.c_str());
+    return value_map[key];
   }
   catch(const char* msg) {
     cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_value method supplied with incorrect arguments."
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
   }
-  return 0;
+  exit(0);
 #else
   return get_value(get_index(id, variable, NEURON));
 #endif
@@ -107,14 +112,15 @@ long double neuronal_network::neuron_value(long id, string variable) {
 long neuronal_network::synapse_index(long id, string variable) {
 #ifdef MAP
   try {
-    return index_map["s"+to_string(id)+variable];
+    sprintf(key, "s%ld%s", id, variable.c_str());
+    return index_map[key];
   }
   catch(const char* msg) {
     cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
         <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception: "<<msg;
   }
-  return 0;
+  exit(0);
 #else
   long startindex = 0, endindex = 0;
   startindex = synapse_start_list_ids.at(id);
@@ -134,14 +140,15 @@ long neuronal_network::synapse_index(long id, string variable) {
 long double neuronal_network::synapse_value(long id, string variable) {
 #ifdef MAP  
   try {
-    return value_map["s"+to_string(id)+variable];
+    sprintf(key, "s%ld%s", id, variable.c_str());
+    return value_map[key];
   }
   catch(const char* msg) {
     cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_value method supplied with incorrect arguments."
         <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception: "<<msg;
   }
-  return 0;
+  exit(0);
 #else
   return get_value(get_index(id, variable, SYNAPSE));
 #endif
