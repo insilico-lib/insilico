@@ -37,20 +37,6 @@ using namespace std;
 
 typedef vector<long double> state_type;
 
-struct configuration {
-  ofstream &stream;
-  configuration(ofstream &file): stream(file) {}
-  void operator()(const state_type &variables, const double t) {
-    vector<long> indices = nnet::get_indices("v");
-    assert(stream.is_open());
-    stream<<t;
-    for(vector<long>::size_type iter = 0; iter < indices.size(); ++iter) {
-      stream<<','<<variables[indices[iter]];
-    }
-    stream<<endl;
-  }
-};
-
 class na_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, long index) { 
