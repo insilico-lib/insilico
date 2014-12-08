@@ -28,7 +28,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <nsim/network/nnet.hpp>
+#include <network/nnet.hpp>
 
 //#define MAP
 
