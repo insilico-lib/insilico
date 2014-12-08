@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-#include <nsim/network/nnet.hpp>
+#include <network/nnet.hpp>
 
 using namespace boost;
 using namespace std;
@@ -160,6 +160,20 @@ void nnet::operator()(const state_type &variables, state_type &dxdt,
     synapse_x::ode_set(variables, dxdt, time, synapse_index);
   }
 }
+
+struct configuration {
+  ofstream &stream;
+  configuration(ofstream &file): stream(file) {}
+  void operator()(const state_type &variables, const double t) {
+    vector<long> indices = nnet::get_indices("v");
+    assert(stream.is_open());
+    stream<<t;
+    for(vector<long>::size_type iter = 0; iter < indices.size(); ++iter) {
+      stream<<','<<variables[indices[iter]];
+    }
+    stream<<endl;
+  }
+};
 
 int main(int argc, char* argv[]) {
   if(argc != 2) {
