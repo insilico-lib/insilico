@@ -37,13 +37,13 @@ LINKER   = g++ -o
 LFLAGS   = -Wall
 
 # All project sources that need to be compiled
-SOURCES  := main.cpp
+SOURCES  := examples/SquidAxon_HH1952/main.cpp
 
 # Header source
-HSOURCES  := nsim/network/nnet.cpp
+HSOURCES := network/nnet.cpp
 
 # Flags to specify the inclusion of external libraries
-INCLUDES := nsim/network/nnet.hpp
+INCLUDES := network/nnet.hpp
 
 # Target objects
 OBJECTS  := main.o nnet.o
