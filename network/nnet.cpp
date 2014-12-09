@@ -72,7 +72,7 @@ long neuronal_network::neuron_index(long id, string variable) {
     return index_map[key];
   }
   catch(const char* msg) {
-    cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
+    cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception"<<msg;
   }
@@ -87,7 +87,7 @@ long neuronal_network::neuron_index(long id, string variable) {
       return iter;
     }
   }
-  cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
+  cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
       <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
   exit(0);
 #endif
@@ -100,7 +100,7 @@ long double neuronal_network::neuron_value(long id, string variable) {
     return value_map[key];
   }
   catch(const char* msg) {
-    cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::neuron_value method supplied with incorrect arguments."
+    cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_value method supplied with incorrect arguments."
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
   }
   exit(0);
@@ -116,7 +116,7 @@ long neuronal_network::synapse_index(long id, string variable) {
     return index_map[key];
   }
   catch(const char* msg) {
-    cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
+    cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
         <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception: "<<msg;
   }
@@ -131,7 +131,7 @@ long neuronal_network::synapse_index(long id, string variable) {
       return iter;
     }
   }
-  cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
+  cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
       <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
   exit(0);
 #endif
@@ -144,7 +144,7 @@ long double neuronal_network::synapse_value(long id, string variable) {
     return value_map[key];
   }
   catch(const char* msg) {
-    cout<<endl<<"Runtime Failure\nSimulator Exception: nnet::synapse_value method supplied with incorrect arguments."
+    cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_value method supplied with incorrect arguments."
         <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     cout<<"C++ Exception: "<<msg;
   }
@@ -196,6 +196,10 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
 #endif
   long ncount = 0;
   ifstream neuron_stream(neuron_file);
+  if(neuron_stream.is_open() == false) {
+    cout<<"Runtime Failure\nSimulation Exception: nnet::read supplied with file ("<< neuron_file <<") that does not exists."<<endl;
+    exit(0);
+  }
 
   while(getline(neuron_stream,str) > 0) {
     if(str.length()==0) continue;
@@ -233,6 +237,11 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
 
   if(synapse_file.length()!=0) {
     ifstream synapse_stream(synapse_file);
+    if(synapse_stream.is_open() == false) {
+      cout<<"Runtime Failure\nSimulation Exception: nnet::read supplied with file ("<< synapse_file <<") that does not exists."<<endl;
+      exit(0);
+    }
+
     bool pre=false, post=false;
     while(getline(synapse_stream,str) > 0){
       if(str.length()==0) continue;
