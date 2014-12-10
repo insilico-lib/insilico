@@ -21,9 +21,6 @@
 # Target excutables
 TARGET   = main.out
 
-# Compile directory
-OBJDIR	 = nsim/lib
-
 # Compiler to use
 CC       = g++ -c
 
@@ -46,19 +43,18 @@ HSOURCES := network/nnet.cpp
 INCLUDES := network/nnet.hpp
 
 # Target objects
-OBJECTS  := main.o nnet.o
+OBJECTS  := $(wildcard *.o)
 
 # Cleaning forcefully
-mv       = mv -f
+rm       = rm -f
 
-all: $(TARGET)
+all: $(TARGET) clean
+
+clean:
+	$(rm) $(OBJECTS)
 
 $(TARGET): objects
 	$(LINKER) $@ $(LFLAGS) $(OBJECTS)
 
 objects: $(SOURCES) $(HSOURCES)
 	$(CC) $(CFLAGS) $(SOURCES) $(HSOURCES)
-
-clean:
-	mkdir -p $(OBJDIR)
-	$(mv) $(OBJECTS) $(OBJDIR)
