@@ -48,7 +48,7 @@ OBJECTS  := $(wildcard *.o)
 # Cleaning forcefully
 rm       = rm -f
 
-all: $(TARGET) clean
+all: $(TARGET)
 
 clean:
 	$(rm) $(OBJECTS)
