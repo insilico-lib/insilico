@@ -43,18 +43,18 @@ HSOURCES := network/nnet.cpp
 INCLUDES := network/nnet.hpp
 
 # Target objects
-OBJECTS  := $(wildcard *.o)
+OBJECTS  := main.o nnet.o
 
 # Cleaning forcefully
 rm       = rm -f
 
 all: $(TARGET)
 
-clean:
-	$(rm) $(OBJECTS)
-
 $(TARGET): objects
 	$(LINKER) $@ $(LFLAGS) $(OBJECTS)
 
 objects: $(SOURCES) $(HSOURCES)
 	$(CC) $(CFLAGS) $(SOURCES) $(HSOURCES)
+
+clean:
+	$(rm) $(OBJECTS)
