@@ -158,6 +158,16 @@ vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string var
   return indices;
 }
 
+vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string variable) {
+  vector<long> values;
+  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
+    if(neuron_id == post_neuron.at(index)) {
+      values.push_back(synapse_value(index, variable));
+    }
+  }
+  return values;
+}
+
 void neuronal_network::read(string neuron_file, string synapse_file) {
   string str = "", c_var = "";
 #ifdef MAP
