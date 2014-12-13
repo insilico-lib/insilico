@@ -25,9 +25,6 @@
 #include <unordered_map>
 #include <vector>
 
-#define NEURON 1
-#define SYNAPSE 2
-
 typedef std::vector<long double> state_type;
 
 typedef class neuronal_network {
@@ -42,13 +39,11 @@ typedef class neuronal_network {
   static std::vector<std::string> var_list_ids;
   static state_type var_vals;
   static state_type get_variables();
-  static long get_index(long, std::string, int);
   static long neuron_index(long id, std::string variable);
   static long double neuron_value(long id, std::string variable);
   static long synapse_index(long id, std::string variable);
   static long double synapse_value(long id, std::string variable);
   static double get_value(long index);
-  static double get(long id, std::string variable, int mode);
   static std::vector<long> get_indices(std::string variable);
   static std::vector<long> get_pre_neuron_indices(long neuron_id, std::string variable);
   static void read(std::string neuron_file, std::string synapse_file="");

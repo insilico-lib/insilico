@@ -36,31 +36,6 @@ using namespace std;
 
 char key[128];
 
-long neuronal_network::get_index(long id, string variable, int mode) {
-  long startindex = 0, endindex = 0;
-  switch(mode) {
-    case NEURON: {
-      startindex = neuron_start_list_ids.at(id);
-      endindex = neuron_end_list_ids.at(id);
-      break;
-    }
-    case SYNAPSE: {
-      startindex = synapse_start_list_ids.at(id);
-      endindex = synapse_end_list_ids.at(id);
-      break;
-    }
-  }
-  for(long iter=startindex;iter<endindex;++iter) {
-    if(variable.compare(var_list_ids[iter]) == 0) {
-      return iter;
-    }
-  }
-  cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
-      <<"Arguments were: [id = "<<id<<"][variable = "<<variable<<"][mode= "
-      <<mode<<"] (mode can be {1 - NEURON, 2 - SYNAPSE, Other - UNKNOWN})"<<endl<<"Exiting."<<endl;
-  exit(0);
-}
-
 state_type neuronal_network::get_variables() {
   return var_vals;
 }
@@ -158,10 +133,6 @@ double neuronal_network::get_value(long index) {
   return var_vals.at(index);
 }
 
-double neuronal_network::get(long id, string variable, int mode) {
-  return get_value(get_index(id, variable, mode));
-}
-
 vector<long> neuronal_network::get_indices(string variable) {
   vector<long> indices;
   for(vector<long>::size_type index = 0; index < var_list_ids.size(); ++index) {
@@ -181,7 +152,7 @@ vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string var
   vector<long> indices;
   for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
     if(neuron_id == post_neuron.at(index)) {
-      indices.push_back(get_index(index, variable, SYNAPSE));
+      indices.push_back(synapse_index(index, variable));
     }
   }
   return indices;
