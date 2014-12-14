@@ -31,6 +31,7 @@
 #include <network/nnet.hpp>
 
 //#define MAP
+#define MREAD
 
 using namespace std;
 
@@ -69,7 +70,7 @@ long neuronal_network::neuron_index(long id, string variable) {
 }
 
 long double neuronal_network::neuron_value(long id, string variable) {
-#ifdef MAP
+#ifdef MREAD
   try {
     sprintf(key, "n%ld%s", id, variable.c_str());
     return value_map[key];
@@ -113,7 +114,7 @@ long neuronal_network::synapse_index(long id, string variable) {
 }
 
 long double neuronal_network::synapse_value(long id, string variable) {
-#ifdef MAP  
+#ifdef MREAD
   try {
     sprintf(key, "s%ld%s", id, variable.c_str());
     return value_map[key];
@@ -169,13 +170,12 @@ vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string vari
 }
 
 void neuronal_network::read(string neuron_file, string synapse_file) {
-  string str = "", c_var = "";
-#ifdef MAP
-  string key;
-  long ntrack = 0;
-  long strack = 0;
-#endif
+  string str="", c_var="", key="";
+  long ntrack = 0, strack = 0;
   long ncount = 0;
+  bool dxdt_read = false;
+  long dxdt_count = 0;
+
   ifstream neuron_stream(neuron_file);
   if(neuron_stream.is_open() == false) {
     cout<<"Runtime Failure\nSimulation Exception: nnet::read supplied with file ("<< neuron_file <<") that does not exists."<<endl;
@@ -191,10 +191,13 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
         c_var+=str.at(str_index);
         ++str_index;
       }
-      var_list_ids.push_back(c_var);
-#ifdef MAP
+      if(c_var.compare("dxdt")==0) {
+        dxdt_read = true;
+      }
+      else if(dxdt_count > 0) {
+        var_list_ids.push_back(c_var);
+      }
       key = "n" + to_string(ntrack) + c_var;
-#endif
       c_var = "";
       ++str_index;
       while(str_index<str.length() && str.at(str_index)!=',') {
@@ -202,28 +205,31 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
         ++str_index;
       }
       size_t sz;
-      var_vals.push_back(stod(c_var,&sz));
-#ifdef MAP
-      index_map[key] = ncount;
       value_map[key] = stod(c_var,&sz);
-#endif
-      ++ncount;
+      if(dxdt_read == true) {
+        dxdt_count = stod(c_var,&sz);
+        dxdt_read = false;
+      }
+      else if(dxdt_count > 0){
+        index_map[key] = ncount;
+        var_vals.push_back(stod(c_var,&sz));
+        ++ncount;
+        --dxdt_count;
+      }
     }
-#ifdef MAP
     ntrack+=1;
-#endif
     neuron_end_list_ids.push_back(ncount);
   }
   neuron_stream.close();
 
   if(synapse_file.length()!=0) {
     ifstream synapse_stream(synapse_file);
+    bool pre=false, post=false;
     if(synapse_stream.is_open() == false) {
       cout<<"Runtime Failure\nSimulation Exception: nnet::read supplied with file ("<< synapse_file <<") that does not exists."<<endl;
       exit(0);
     }
 
-    bool pre=false, post=false;
     while(getline(synapse_stream,str) > 0){
       if(str.length()==0) continue;
       synapse_start_list_ids.push_back(ncount);
@@ -233,10 +239,13 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
           c_var+=str.at(str_index);
           ++str_index;
         }
-        var_list_ids.push_back(c_var);
-#ifdef MAP
+        if(c_var.compare("dxdt") == 0) {
+          dxdt_read = true;
+        }
+        else if(dxdt_count > 0) {
+          var_list_ids.push_back(c_var);
+        }
         key = "s" + to_string(strack) + c_var;
-#endif
         if(c_var.compare("pre")==0){
           pre=true; post=false;
         }
@@ -256,19 +265,22 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
         if(pre==true) {
           pre_neuron.push_back(stoi(c_var,&sz));
         }
-        else if(post==true){
+        else if(post==true) {
           post_neuron.push_back(stoi(c_var,&sz));
         }
-        var_vals.push_back(stod(c_var,&sz));
-#ifdef MAP
-        index_map[key] = ncount;
         value_map[key] = stod(c_var,&sz);
-#endif
-        ++ncount;
+        if(dxdt_read == true) {
+          dxdt_count = stod(c_var,&sz);
+          dxdt_read = false;
+        }
+        else if(dxdt_count > 0) {
+          index_map[key] = ncount;
+          var_vals.push_back(stod(c_var,&sz));
+          ++ncount;
+          --dxdt_count;
+        }
       }
-#ifdef MAP
       strack+=1;
-#endif
       synapse_end_list_ids.push_back(ncount);
     }
     synapse_stream.close();
