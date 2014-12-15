@@ -97,11 +97,11 @@ class hodgkin_huxley_neuron {
     double iext = nnet::neuron_value(index, "iext");
   
     vector<long> g1_indices = nnet::get_pre_neuron_indices(index, "g1");
-    vector<long> esyn_indices = nnet::get_pre_neuron_indices(index, "esyn");
+    vector<long> esyn_values = nnet::get_pre_neuron_values(index, "esyn");
     double isyn = 0;
 
     for(vector<long>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
-      isyn = isyn + variables[g1_indices.at(iterator)] * (v - variables[esyn_indices.at(iterator)]); 
+      isyn = isyn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
 
     // ODE
@@ -119,8 +119,7 @@ class synapse_x {
                long index) {
     long g1_index = nnet::synapse_index(index, "g1");
     long g2_index = nnet::synapse_index(index, "g2");
-    long pre_index = nnet::synapse_index(index, "pre");
-    long neuron_index = variables[pre_index];
+    long neuron_index = nnet::synapse_value(index, "pre");
 
     long last_spiked_index = nnet::synapse_index(index, "last_spike");
     long v_index = nnet::neuron_index(neuron_index, "v");
