@@ -151,20 +151,16 @@ vector<long> neuronal_network::get_indices(string variable) {
 
 vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string variable) {
   vector<long> indices;
-  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
-    if(neuron_id == post_neuron.at(index)) {
-      indices.push_back(synapse_index(index, variable));
-    }
+  for(vector<long>::size_type index = 0; index < pre_neuron_lists[neuron_id].size(); ++index) {
+    indices.push_back(synapse_index(pre_neuron_lists[neuron_id][index], variable));
   }
   return indices;
 }
 
 vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string variable) {
   vector<long> values;
-  for(vector<long>::size_type index = 0; index < post_neuron.size(); ++index) {
-    if(neuron_id == post_neuron.at(index)) {
-      values.push_back(synapse_value(index, variable));
-    }
+  for(vector<long>::size_type index = 0; index < pre_neuron_lists[neuron_id].size(); ++index) {
+    values.push_back(synapse_value(pre_neuron_lists[neuron_id][index], variable));
   }
   return values;
 }
