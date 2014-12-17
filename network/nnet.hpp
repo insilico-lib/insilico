@@ -35,6 +35,7 @@ typedef class neuronal_network {
   static std::vector<long> neuron_end_list_ids;
   static std::vector<long> synapse_start_list_ids;
   static std::vector<long> synapse_end_list_ids;
+  static std::vector< std::vector<long> > pre_neuron_lists;
   static std::vector<long> pre_neuron, post_neuron;
   static std::vector<std::string> var_list_ids;
   static state_type var_vals;
@@ -48,6 +49,7 @@ typedef class neuronal_network {
   static std::vector<long> get_pre_neuron_indices(long neuron_id, std::string variable);
   static std::vector<long> get_pre_neuron_values(long neuron_id, std::string variable);
   static void read(std::string neuron_file, std::string synapse_file="");
+  static void populate_pre_synaptic_lists();
   static long neuron_count();
   static long synapse_count();
   void operator()(const state_type &variables, state_type &dxdt, const double time);

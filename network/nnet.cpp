@@ -169,6 +169,16 @@ vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string vari
   return values;
 }
 
+void neuronal_network::populate_pre_synaptic_lists() {
+  auto max_post_neuron = *max_element(post_neuron.begin(), post_neuron.end());
+
+  pre_neuron_lists.resize( max_post_neuron + 1 );
+
+  for(vector<long>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
+    pre_neuron_lists[ post_neuron[iterator] ].push_back( iterator );
+  }
+}
+
 void neuronal_network::read(string neuron_file, string synapse_file) {
   string str="", c_var="", key="";
   long ntrack = 0, strack = 0;
@@ -285,6 +295,7 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
     }
     synapse_stream.close();
   }
+  populate_pre_synaptic_lists();
 }
 
 long neuronal_network::neuron_count() {
@@ -303,5 +314,6 @@ vector<long> nnet::synapse_start_list_ids;
 vector<long> nnet::synapse_end_list_ids;
 vector<long> nnet::pre_neuron;
 vector<long> nnet::post_neuron;
+vector< vector<long> > nnet::pre_neuron_lists;
 vector<std::string> nnet::var_list_ids;
 state_type nnet::var_vals;
