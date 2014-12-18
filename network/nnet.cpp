@@ -41,10 +41,10 @@ state_type neuronal_network::get_variables() {
   return var_vals;
 }
 
-long neuronal_network::neuron_index(long id, string variable) {
+int neuronal_network::neuron_index(int id, string variable) {
 #ifdef MREAD
   try {
-    sprintf(key, "n%ld%s", id, variable.c_str());
+    sprintf(key, "n%d%s", id, variable.c_str());
     return index_map[key];
   }
   catch(const char* msg) {
@@ -54,9 +54,9 @@ long neuronal_network::neuron_index(long id, string variable) {
   }
   exit(0);
 #else
-  long startindex = neuron_start_list_ids.at(id);
-  long endindex = neuron_end_list_ids.at(id);
-  for(long iter=startindex;iter<endindex;++iter) {
+  int startindex = neuron_start_list_ids.at(id);
+  int endindex = neuron_end_list_ids.at(id);
+  for(int iter=startindex;iter<endindex;++iter) {
     if(variable.compare(var_list_ids[iter]) == 0) {
       return iter;
     }
@@ -67,9 +67,9 @@ long neuronal_network::neuron_index(long id, string variable) {
 #endif
 }
 
-long double neuronal_network::neuron_value(long id, string variable) {
+float neuronal_network::neuron_value(int id, string variable) {
   try {
-    sprintf(key, "n%ld%s", id, variable.c_str());
+    sprintf(key, "n%d%s", id, variable.c_str());
     return value_map[key];
   }
   catch(const char* msg) {
@@ -79,10 +79,10 @@ long double neuronal_network::neuron_value(long id, string variable) {
   exit(0);
 }
 
-long neuronal_network::synapse_index(long id, string variable) {
+int neuronal_network::synapse_index(int id, string variable) {
 #ifdef MAP
   try {
-    sprintf(key, "s%ld%s", id, variable.c_str());
+    sprintf(key, "s%d%s", id, variable.c_str());
     return index_map[key];
   }
   catch(const char* msg) {
@@ -92,9 +92,9 @@ long neuronal_network::synapse_index(long id, string variable) {
   }
   exit(0);
 #else
-  long startindex = synapse_start_list_ids.at(id);
-  long endindex = synapse_end_list_ids.at(id);
-  for(long iter=startindex;iter<endindex;++iter) {
+  int startindex = synapse_start_list_ids.at(id);
+  int endindex = synapse_end_list_ids.at(id);
+  for(int iter=startindex;iter<endindex;++iter) {
     if(variable.compare(var_list_ids[iter]) == 0) {
       return iter;
     }
@@ -105,9 +105,9 @@ long neuronal_network::synapse_index(long id, string variable) {
 #endif
 }
 
-long double neuronal_network::synapse_value(long id, string variable) {
+float neuronal_network::synapse_value(int id, string variable) {
   try {
-    sprintf(key, "s%ld%s", id, variable.c_str());
+    sprintf(key, "s%d%s", id, variable.c_str());
     return value_map[key];
   }
   catch(const char* msg) {
@@ -118,10 +118,10 @@ long double neuronal_network::synapse_value(long id, string variable) {
   exit(0);
 }
 
-vector<long> neuronal_network::get_indices(string variable) {
-  vector<long> indices;
-  long total_size = neuron_count();
-  for(long index = 0; index < total_size; ++index) {
+vector<int> neuronal_network::get_indices(string variable) {
+  vector<int> indices;
+  int total_size = neuron_count();
+  for(int index = 0; index < total_size; ++index) {
     indices.push_back(neuron_index(index,variable));
   }
   if(indices.empty()) {
@@ -132,32 +132,32 @@ vector<long> neuronal_network::get_indices(string variable) {
   return indices;
 }
 
-vector<long> neuronal_network::get_pre_neuron_indices(long neuron_id, string variable) {
-  vector<long> indices;
-  for(vector<long>::size_type index = 0; index < pre_neuron_lists[neuron_id].size(); ++index) {
-    indices.push_back(synapse_index(pre_neuron_lists[neuron_id][index], variable));
+vector<int> neuronal_network::get_pre_neuron_indices(int neuron_id, string variable) {
+  vector<int> indices;
+  for(vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
+    indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], variable));
   }
   return indices;
 }
 
-vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string variable) {
-  vector<long> values;
-  for(vector<long>::size_type index = 0; index < pre_neuron_lists[neuron_id].size(); ++index) {
-    values.push_back(synapse_value(pre_neuron_lists[neuron_id][index], variable));
+vector<int> neuronal_network::get_pre_neuron_values(int neuron_id, string variable) {
+  vector<int> values;
+  for(vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
+    values.push_back(synapse_value(pre_synaptic_lists[neuron_id][index], variable));
   }
   return values;
 }
 
 void neuronal_network::populate_pre_synaptic_lists() {
-  pre_neuron_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
-  for(vector<long>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
-    pre_neuron_lists[ post_neuron[iterator] ].push_back( iterator );
+  pre_synaptic_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
+  for(vector<int>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
+    pre_synaptic_lists[ post_neuron[iterator] ].push_back( iterator );
   }
 }
 
 void neuronal_network::read(string neuron_file, string synapse_file) {
   string str="", c_var="", key="";
-  long ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
+  int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
   bool dxdt_read = false;
 
   ifstream neuron_stream(neuron_file);
@@ -272,22 +272,22 @@ void neuronal_network::read(string neuron_file, string synapse_file) {
   populate_pre_synaptic_lists();
 }
 
-long neuronal_network::neuron_count() {
+int neuronal_network::neuron_count() {
   return neuron_start_list_ids.size();
 }
 
-long neuronal_network::synapse_count() {
+int neuronal_network::synapse_count() {
   return synapse_start_list_ids.size();
 }
 
-unordered_map<std::string, long> nnet::index_map;
-unordered_map<string, long double> nnet::value_map;
-vector<long> nnet::neuron_start_list_ids;
-vector<long> nnet::neuron_end_list_ids;
-vector<long> nnet::synapse_start_list_ids;
-vector<long> nnet::synapse_end_list_ids;
-vector<long> nnet::pre_neuron;
-vector<long> nnet::post_neuron;
-vector< vector<long> > nnet::pre_neuron_lists;
+unordered_map<std::string, int> nnet::index_map;
+unordered_map<string, float> nnet::value_map;
+vector<int> nnet::neuron_start_list_ids;
+vector<int> nnet::neuron_end_list_ids;
+vector<int> nnet::synapse_start_list_ids;
+vector<int> nnet::synapse_end_list_ids;
+vector<int> nnet::pre_neuron;
+vector<int> nnet::post_neuron;
+vector< vector<int> > nnet::pre_synaptic_lists;
 vector<std::string> nnet::var_list_ids;
 state_type nnet::var_vals;

@@ -25,33 +25,39 @@
 #include <unordered_map>
 #include <vector>
 
-typedef std::vector<long double> state_type;
+typedef std::vector<float> state_type;
 
 typedef class neuronal_network {
  public:
-  static std::unordered_map<std::string, long> index_map;
-  static std::unordered_map<std::string, long double> value_map;
-  static std::vector<long> neuron_start_list_ids;
-  static std::vector<long> neuron_end_list_ids;
-  static std::vector<long> synapse_start_list_ids;
-  static std::vector<long> synapse_end_list_ids;
-  static std::vector< std::vector<long> > pre_neuron_lists;
-  static std::vector<long> pre_neuron, post_neuron;
+  static std::unordered_map<std::string, int> index_map;
+  static std::unordered_map<std::string, float> value_map;
+  static std::vector<int> neuron_start_list_ids;
+  static std::vector<int> neuron_end_list_ids;
+  static std::vector<int> synapse_start_list_ids;
+  static std::vector<int> synapse_end_list_ids;
+  static std::vector< std::vector<int> > pre_synaptic_lists;
+  static std::vector<int> pre_neuron;
+  static std::vector<int> post_neuron;
   static std::vector<std::string> var_list_ids;
   static state_type var_vals;
   static state_type get_variables();
-  static long neuron_index(long id, std::string variable);
-  static long double neuron_value(long id, std::string variable);
-  static long synapse_index(long id, std::string variable);
-  static long double synapse_value(long id, std::string variable);
-  static double get_value(long index);
-  static std::vector<long> get_indices(std::string variable);
-  static std::vector<long> get_pre_neuron_indices(long neuron_id, std::string variable);
-  static std::vector<long> get_pre_neuron_values(long neuron_id, std::string variable);
-  static void read(std::string neuron_file, std::string synapse_file="");
+
+  static int neuron_index(int id, std::string variable);
+  static float neuron_value(int id, std::string variable);
+
+  static int synapse_index(int id, std::string variable);
+  static float synapse_value(int id, std::string variable);
+
+  static std::vector<int> get_indices(std::string variable);
+  static std::vector<int> get_pre_neuron_indices(int neuron_id, std::string variable);
+  static std::vector<int> get_pre_neuron_values(int neuron_id, std::string variable);
   static void populate_pre_synaptic_lists();
-  static long neuron_count();
-  static long synapse_count();
+
+  static void read(std::string neuron_file, std::string synapse_file="");
+  
+  static int neuron_count();
+  static int synapse_count();
+
   void operator()(const state_type &variables, state_type &dxdt, const double time);
 }nnet;
 
