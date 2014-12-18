@@ -30,7 +30,6 @@
 
 #include <network/nnet.hpp>
 
-//#define MAP
 #define MREAD
 
 using namespace std;
