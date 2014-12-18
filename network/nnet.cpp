@@ -42,7 +42,7 @@ state_type neuronal_network::get_variables() {
 }
 
 long neuronal_network::neuron_index(long id, string variable) {
-#ifdef MAP
+#ifdef MREAD
   try {
     sprintf(key, "n%ld%s", id, variable.c_str());
     return index_map[key];
@@ -54,10 +54,8 @@ long neuronal_network::neuron_index(long id, string variable) {
   }
   exit(0);
 #else
-  long startindex = 0, endindex = 0;
-  startindex = neuron_start_list_ids.at(id);
-  endindex = neuron_end_list_ids.at(id);
-  
+  long startindex = neuron_start_list_ids.at(id);
+  long endindex = neuron_end_list_ids.at(id);
   for(long iter=startindex;iter<endindex;++iter) {
     if(variable.compare(var_list_ids[iter]) == 0) {
       return iter;
@@ -70,7 +68,6 @@ long neuronal_network::neuron_index(long id, string variable) {
 }
 
 long double neuronal_network::neuron_value(long id, string variable) {
-#ifdef MREAD
   try {
     sprintf(key, "n%ld%s", id, variable.c_str());
     return value_map[key];
@@ -80,9 +77,6 @@ long double neuronal_network::neuron_value(long id, string variable) {
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
   }
   exit(0);
-#else
-  return get_value(get_index(id, variable, NEURON));
-#endif
 }
 
 long neuronal_network::synapse_index(long id, string variable) {
@@ -98,10 +92,8 @@ long neuronal_network::synapse_index(long id, string variable) {
   }
   exit(0);
 #else
-  long startindex = 0, endindex = 0;
-  startindex = synapse_start_list_ids.at(id);
-  endindex = synapse_end_list_ids.at(id);
-
+  long startindex = synapse_start_list_ids.at(id);
+  long endindex = synapse_end_list_ids.at(id);
   for(long iter=startindex;iter<endindex;++iter) {
     if(variable.compare(var_list_ids[iter]) == 0) {
       return iter;
@@ -114,7 +106,6 @@ long neuronal_network::synapse_index(long id, string variable) {
 }
 
 long double neuronal_network::synapse_value(long id, string variable) {
-#ifdef MREAD
   try {
     sprintf(key, "s%ld%s", id, variable.c_str());
     return value_map[key];
@@ -125,23 +116,15 @@ long double neuronal_network::synapse_value(long id, string variable) {
     cout<<"C++ Exception: "<<msg;
   }
   exit(0);
-#else
-  return get_value(get_index(id, variable, SYNAPSE));
-#endif
-}
-
-double neuronal_network::get_value(long index) {
-  return var_vals.at(index);
 }
 
 vector<long> neuronal_network::get_indices(string variable) {
   vector<long> indices;
-  for(vector<long>::size_type index = 0; index < var_list_ids.size(); ++index) {
-    if(variable.compare(var_list_ids[index]) == 0) {
-      indices.push_back(index);
-    }
+  long total_size = neuron_count();
+  for(long index = 0; index < total_size; ++index) {
+    indices.push_back(neuron_index(index,variable));
   }
-  if(indices.size() == 0) {
+  if(indices.empty()) {
     cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
         <<"Searching for all indices of variable = "<<variable<<endl<<"Exiting."<<endl;
     exit(0);
@@ -166,10 +149,7 @@ vector<long> neuronal_network::get_pre_neuron_values(long neuron_id, string vari
 }
 
 void neuronal_network::populate_pre_synaptic_lists() {
-  auto max_post_neuron = *max_element(post_neuron.begin(), post_neuron.end());
-
-  pre_neuron_lists.resize( max_post_neuron + 1 );
-
+  pre_neuron_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
   for(vector<long>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
     pre_neuron_lists[ post_neuron[iterator] ].push_back( iterator );
   }
@@ -177,10 +157,8 @@ void neuronal_network::populate_pre_synaptic_lists() {
 
 void neuronal_network::read(string neuron_file, string synapse_file) {
   string str="", c_var="", key="";
-  long ntrack = 0, strack = 0;
-  long ncount = 0;
+  long ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
   bool dxdt_read = false;
-  long dxdt_count = 0;
 
   ifstream neuron_stream(neuron_file);
   if(neuron_stream.is_open() == false) {
