@@ -19,18 +19,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <boost/numeric/odeint.hpp>
+#include "network/nnet.hpp"
 
-#include <algorithm>
+#include <boost/numeric/odeint.hpp>
 #include <cassert>
-#include <cmath>
-#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include <network/nnet.hpp>
 
 using namespace boost;
 using namespace std;
