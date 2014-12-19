@@ -278,14 +278,14 @@ int neuronal_network::synapse_count() {
   return synapse_start_list_ids.size();
 }
 
-unordered_map<std::string, int> nnet::index_map;
-unordered_map<string, float> nnet::value_map;
-vector<int> nnet::neuron_start_list_ids;
-vector<int> nnet::neuron_end_list_ids;
-vector<int> nnet::synapse_start_list_ids;
-vector<int> nnet::synapse_end_list_ids;
-vector<int> nnet::pre_neuron;
-vector<int> nnet::post_neuron;
-vector< vector<int> > nnet::pre_synaptic_lists;
-vector<std::string> nnet::var_list_ids;
-state_type nnet::var_vals;
+unordered_map<string, int> neuronal_network::index_map;
+unordered_map<string, float> neuronal_network::value_map;
+vector<int> neuronal_network::neuron_start_list_ids;
+vector<int> neuronal_network::neuron_end_list_ids;
+vector<int> neuronal_network::synapse_start_list_ids;
+vector<int> neuronal_network::synapse_end_list_ids;
+vector<int> neuronal_network::pre_neuron;
+vector<int> neuronal_network::post_neuron;
+vector< vector<int> > neuronal_network::pre_synaptic_lists;
+vector<string> neuronal_network::var_list_ids;
+state_type neuronal_network::var_vals;
