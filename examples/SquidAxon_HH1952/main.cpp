@@ -29,6 +29,7 @@
 #include <vector>
 
 using namespace boost;
+using namespace insilico;
 using namespace std;
 
 class na_conductance {
