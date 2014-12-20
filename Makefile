@@ -30,9 +30,6 @@ CFLAGS   = -O3 -pthread -std=c++11 -Wall -I. -o
 # All project sources that need to be compiled
 SOURCES  := examples/SquidAxon_HH1952/main.cpp
 
-# Cleaning forcefully
-rm       = rm -f
-
 all: $(TARGET)
 
 $(TARGET):
