@@ -22,39 +22,18 @@
 TARGET   = main.out
 
 # Compiler to use
-CC       = g++ -c
+CC       = g++
 
 # Flags to specify the compilation startegy
-CFLAGS   = -O3 -pthread -std=c++11 -Wall -I.
-
-# Linker to use
-LINKER   = g++ -o
-
-# Flags to specify the linker startegy
-LFLAGS   = -Wall
+CFLAGS   = -O3 -pthread -std=c++11 -Wall -I. -o
 
 # All project sources that need to be compiled
 SOURCES  := examples/SquidAxon_HH1952/main.cpp
-
-# Header source
-HSOURCES := network/nnet.cpp
-
-# Flags to specify the inclusion of external libraries
-INCLUDES := network/nnet.hpp
-
-# Target objects
-OBJECTS  := main.o nnet.o
 
 # Cleaning forcefully
 rm       = rm -f
 
 all: $(TARGET)
 
-$(TARGET): objects
-	$(LINKER) $@ $(LFLAGS) $(OBJECTS)
-
-objects: $(SOURCES) $(HSOURCES)
-	$(CC) $(CFLAGS) $(SOURCES) $(HSOURCES)
-
-clean:
-	$(rm) $(OBJECTS)
+$(TARGET):
+	$(CC) $(CFLAGS) $(TARGET) $(SOURCES)
