@@ -20,7 +20,7 @@
 */
 
 #include "network/nnet.hpp"
-#include "support/configuration.hpp"
+#include "simulator/configuration.hpp"
 
 #include <boost/numeric/odeint.hpp>
 #include <cassert>
