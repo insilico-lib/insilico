@@ -25,13 +25,11 @@ Run the following command on terminal to execute the code.
 
 * Linux / Mac OS
 
-  ./main.out <outputfile>.dat
+  ./insilico.out <outputfile>.dat
 
 * Windows
 
-  main.out <outputfile>.dat
-
-For example: ./main sim_out.dat
+  insilico.out <outputfile>.dat
 
 Contributing
 ============
