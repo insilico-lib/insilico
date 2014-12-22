@@ -2,7 +2,9 @@
 nsim - Neuronal Simulator
 =========================
 
-Software Pre-requisites
+Official homepage: http://www.iiserpune.ac.in/~collins/insilico/
+
+Software Pre-requisites:
 
 * Boost 1.56.0+
 * g++ 4.8.1+
