@@ -16,7 +16,7 @@ Build
 Clone the source and run the following commands on terminal.
 Please make sure the Boost library location mentioned in Makefile matches with your system's Boost location.
 
-   make
+   make SOURCE="path/to/source/file.cpp"
 
 Execute
 =======
