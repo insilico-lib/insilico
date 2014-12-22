@@ -20,6 +20,7 @@
 */
 
 #include "network/nnet.hpp"
+#include "support/configuration.hpp"
 
 #include <boost/numeric/odeint.hpp>
 #include <cassert>
@@ -155,18 +156,14 @@ void nnet::operator()(const state_type &variables, state_type &dxdt,
   }
 }
 
-struct configuration {
-  ofstream &stream;
-  configuration(ofstream &file): stream(file) {}
-  void operator()(const state_type &variables, const double t) {
-    vector<int> indices = nnet::get_indices("v");
-    assert(stream.is_open());
-    stream<<t;
-    for(vector<int>::size_type iter = 0; iter < indices.size(); ++iter) {
-      stream<<','<<variables[indices[iter]];
-    }
-    stream<<endl;
+void configuration::observer::operator()(const state_type &variables, const double t) {
+  vector<int> indices = nnet::get_indices("v");
+  assert(stream.is_open());
+  stream<<t;
+  for(vector<int>::size_type iter = 0; iter < indices.size(); ++iter) {
+    stream<<','<<variables[indices[iter]];
   }
+  stream<<endl;
 };
 
 int main(int argc, char* argv[]) {
@@ -184,8 +181,9 @@ int main(int argc, char* argv[]) {
   
   using namespace boost::numeric::odeint;
   integrate_const(runge_kutta4<state_type>(), network, variables,
-                  0.0, 100.0, 0.05, configuration(output_file));
+                  0.0, 100.0, 0.05, configuration::observer(output_file));
 
   output_file.close();
+
   return 0;
 }
