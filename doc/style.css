@@ -55,14 +55,6 @@ a {
     font-size: 20px;
     font-family: Arial;
 }
-section {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    font-family: Arial;    
-}
 .sidebar {
     border-left: 1px dotted;
     padding-left: 10px; 
@@ -77,24 +69,29 @@ section {
 }
 .conttable {
     border: 2px solid lightgray;
-    padding: 5px;
-    width: 80%;
+    margin: 10px;
+    padding: 20px;
     font-size: 15px;
     text-align: left;
+    tr {
+	color: #02a9c0;
+    }
+    a {
+	color: #1263ac;
+	text-decoration: none;	
+    }
 }
-.conttable tr {
-    color: #02a9c0;
-}
-.conttable a {
-    color: #1263ac;
-    text-decoration: none;
+.level1 { 
+    padding-left: 20px;
 }
 .level2 { 
     padding-left: 30px;
 }
 .lastrevised {
+    border: 0.5px dotted lightgray;
     padding: 10px;
-    font-size: 10px;
+    font-size: 12px;
+    float: right;
 }
 .release {
     padding: 5px;
@@ -122,5 +119,30 @@ section {
     border-top: solid 1px; 
     width: 100%;
     float: left;
+}
+section h2 {
+    color: #1263ac;
+}
+section p {
+    padding-left: 10px;
+    font-family: sans-serif;
+    font-style: normal;
+}
+.code {
+    font-size: 14px;
+    font-family: monospace;
+    color: navy;
+    padding: 10px;
+    border: 1px dotted lightblue;
+}
+.comment {
+    color: green;
+}
+.alert {
+    width: 50%;
+    margin: 10px auto;
     text-align: center;
+    border: 1px dotted red;
+    padding: 5px;
+    color: red;
 }
