@@ -4,6 +4,7 @@
     border: 0px;
 }
 body {
+    margin: 0px;
     background: #fcfcfc;
     font-family: Arial, sans-serif;
 }
@@ -13,13 +14,13 @@ a {
 }
 .appname {
     width: 100%;
-    border-bottom: 2px solid #000;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
     font-size: 18px;
-    background: -webkit-linear-gradient(left, white , darkgreen); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(right, white , darkgreen); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(right, white , darkgreen); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to right, white , darkgreen); /* Standard syntax */
+    background: -webkit-linear-gradient(left, white , #cedff2); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, white , #cedff2); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, white , #cedff2); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom, white , #cedff2); /* Standard syntax */
 } 
 .appname a {
     color: #1263ac;
@@ -29,7 +30,7 @@ a {
     text-shadow: 5px 5px 5px lightgray;
 }
 .appname span {
-    color: lightgray;
+    color: black;
     padding: 10px;
     font-size: 18px;
     float: right;
@@ -48,7 +49,7 @@ a {
     float: left;
     width: 72%;
 }
-.paratitle span{
+.paratitle span {
     padding: 5px;
     font-weight: bold;
     font-size: 20px;
