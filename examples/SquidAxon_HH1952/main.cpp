@@ -19,8 +19,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "network/nnet.hpp"
-#include "simulator/configuration.hpp"
+#include "network/neuronal_network.hpp"
+#include "core/configuration.hpp"
 
 #include <boost/numeric/odeint.hpp>
 #include <cassert>
