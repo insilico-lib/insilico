@@ -18,19 +18,19 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Source files
+SOURCE = main.cpp
+
 # Target excutables
-TARGET   = main.out
+TARGET = insilico.out
 
 # Compiler to use
-CC       = g++
+CC = g++
 
 # Flags to specify the compilation startegy
-CFLAGS   = -O3 -pthread -std=c++11 -Wall -I. -o
-
-# All project sources that need to be compiled
-SOURCES  := examples/SquidAxon_HH1952/main.cpp
+CFLAGS = -O3 -pthread -std=c++11 -Wall -I. -o
 
 all: $(TARGET)
 
 $(TARGET):
-	$(CC) $(CFLAGS) $(TARGET) $(SOURCES)
+	$(CC) $(CFLAGS) $(TARGET) $(SOURCE)
