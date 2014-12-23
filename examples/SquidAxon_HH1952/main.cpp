@@ -167,10 +167,8 @@ void configuration::observer::operator()(const state_type &variables, const doub
 };
 
 int main(int argc, char* argv[]) {
-  if(argc != 2) {
-    cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<endl;
-    return -1;
-  }
+  configuration::initialize(argc, argv);
+  configuration::read("nsets.conf","ssets.conf");
   
   nnet network;
   nnet::read("nsets.conf","ssets.conf");
@@ -180,10 +178,10 @@ int main(int argc, char* argv[]) {
   assert(output_file.is_open());
   
   using namespace boost::numeric::odeint;
-  integrate_const(runge_kutta4<state_type>(), network, variables,
-                  0.0, 100.0, 0.05, configuration::observer(output_file));
+  integrate_const(runge_kutta4<state_type>(), engine(), variables,
+                  0.0, 100.0, 0.05, configuration::observer(configuration::outstream));
 
-  output_file.close();
+  configuration::finalize();
 
   return 0;
 }
