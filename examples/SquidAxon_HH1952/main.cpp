@@ -166,7 +166,7 @@ void configuration::observer::operator()(const state_type &variables, const doub
   stream<<endl;
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
   configuration::initialize(argc, argv);
   configuration::read("nsets.conf","ssets.conf");
   
