@@ -36,9 +36,9 @@ using namespace std;
 class na_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, int index) { 
-    int v_index = nnet::neuron_index(index, "v");
-    int m_index = nnet::neuron_index(index, "m");
-    int h_index = nnet::neuron_index(index, "h");
+    int v_index = engine::neuron_index(index, "v");
+    int m_index = engine::neuron_index(index, "m");
+    int h_index = engine::neuron_index(index, "h");
     
     float v = variables[v_index];
     float m = variables[m_index];
@@ -57,8 +57,8 @@ class na_conductance {
 class k_conductance {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t, int index) {
-    int v_index = nnet::neuron_index(index, "v");
-    int n_index = nnet::neuron_index(index, "n");
+    int v_index = engine::neuron_index(index, "v");
+    int n_index = engine::neuron_index(index, "n");
 
     float v = variables[v_index];
     float n = variables[n_index];
@@ -79,10 +79,10 @@ class hodgkin_huxley_neuron {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                int index) {
-    int v_index = nnet::neuron_index(index, "v");
-    int n_index = nnet::neuron_index(index, "n");
-    int m_index = nnet::neuron_index(index, "m");
-    int h_index = nnet::neuron_index(index, "h");
+    int v_index = engine::neuron_index(index, "v");
+    int n_index = engine::neuron_index(index, "n");
+    int m_index = engine::neuron_index(index, "m");
+    int h_index = engine::neuron_index(index, "h");
 
     float v = variables[v_index];
     float n = variables[n_index];
@@ -90,10 +90,10 @@ class hodgkin_huxley_neuron {
     float h = variables[h_index];
     
     float gna = 120, ena = 115, gk = 36, ek = -12, gl = 0.3, el = 10.6;
-    float iext = nnet::neuron_value(index, "iext");
+    float iext = engine::neuron_value(index, "iext");
   
-    vector<int> g1_indices = nnet::get_pre_neuron_indices(index, "g1");
-    vector<int> esyn_values = nnet::get_pre_neuron_values(index, "esyn");
+    vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
+    vector<int> esyn_values = engine::get_pre_neuron_values(index, "esyn");
     float isyn = 0;
 
     for(vector<int>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
@@ -113,12 +113,12 @@ class synapse_x {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                int index) {
-    int g1_index = nnet::synapse_index(index, "g1");
-    int g2_index = nnet::synapse_index(index, "g2");
-    int neuron_index = nnet::synapse_value(index, "pre");
+    int g1_index = engine::synapse_index(index, "g1");
+    int g2_index = engine::synapse_index(index, "g2");
+    int neuron_index = engine::synapse_value(index, "pre");
 
-    int last_spiked_index = nnet::synapse_index(index, "last_spike");
-    int v_index = nnet::neuron_index(neuron_index, "v");
+    int last_spiked_index = engine::synapse_index(index, "last_spike");
+    int v_index = engine::neuron_index(neuron_index, "v");
 
     float g1 = variables[g1_index];
     float g2 = variables[g2_index];
@@ -134,19 +134,19 @@ class synapse_x {
     }
 
     // constants from file
-    float tau1 = nnet::synapse_value(index, "tau1");
-    float tau2 = nnet::synapse_value(index, "tau2");
-    float gsyn = nnet::synapse_value(index, "gsyn");
+    float tau1 = engine::synapse_value(index, "tau1");
+    float tau2 = engine::synapse_value(index, "tau2");
+    float gsyn = engine::synapse_value(index, "gsyn");
 
     dxdt[g1_index] = g2;
     dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt;
   }
 };
 
-void nnet::operator()(const state_type &variables, state_type &dxdt,
+void engine::operator()(const state_type &variables, state_type &dxdt,
                        const double time) {
-  int network_size = nnet::neuron_count();
-  int synapse_count = nnet::synapse_count();
+  int network_size = engine::neuron_count();
+  int synapse_count = engine::synapse_count();
 
   for(int neuron_index = 0; neuron_index < network_size; ++neuron_index) {
     hodgkin_huxley_neuron::ode_set(variables, dxdt, time, neuron_index);
@@ -157,7 +157,7 @@ void nnet::operator()(const state_type &variables, state_type &dxdt,
 }
 
 void configuration::observer::operator()(const state_type &variables, const double t) {
-  vector<int> indices = nnet::get_indices("v");
+  vector<int> indices = engine::get_indices("v");
   assert(stream.is_open());
   stream<<t;
   for(vector<int>::size_type iter = 0; iter < indices.size(); ++iter) {
@@ -170,12 +170,7 @@ int main(int argc, char* argv[]) {
   configuration::initialize(argc, argv);
   configuration::read("nsets.conf","ssets.conf");
   
-  nnet network;
-  nnet::read("nsets.conf","ssets.conf");
-  state_type variables = nnet::get_variables();
-  string output_filename = argv[1];
-  ofstream output_file(output_filename);
-  assert(output_file.is_open());
+  state_type variables = engine::get_variables();
   
   using namespace boost::numeric::odeint;
   integrate_const(runge_kutta4<state_type>(), engine(), variables,
