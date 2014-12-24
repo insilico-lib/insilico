@@ -51,6 +51,7 @@ class configuration {
   } // function initialize
 
   static void finalize() {
+    cout<<endl<<"Done. Cleaning up."<<endl;
     outstream.close();
   } // function finalize
 
