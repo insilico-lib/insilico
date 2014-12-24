@@ -35,8 +35,6 @@
 using namespace insilico;
 using namespace std;
 
-typedef vector<float> state_type;
-
 namespace insilico {
 
 class configuration {
