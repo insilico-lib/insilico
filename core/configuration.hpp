@@ -44,14 +44,14 @@ class configuration {
 
   static void initialize(int argc, char** argv) {
     if(argc != 2) {
-      cout<<"USAGE: "<<argv[0]<<" <outputfile>.dat"<<endl;
+      cout<<"[insilico/configuration/initialize] USAGE: "<<argv[0]<<" <outputfile>.dat"<<endl;
       exit(0);
     }
     outstream.open(argv[1], ios::out);
   } // function initialize
 
   static void finalize() {
-    cout<<endl<<"SUCCESS: Simulation complete."<<endl;
+    cout<<endl<<"[insilico/configuration/finalize] SUCCESS: Simulation complete."<<endl;
     outstream.close();
   } // function finalize
 
@@ -174,7 +174,7 @@ class configuration {
       synapse_stream.close();
     }
 
-    cout << "SUCCESS: Input file read complete.";
+    cout << "[insilico/configuration/read] SUCCESS: Input file read complete.";
 
     engine::populate_pre_synaptic_lists();
 
