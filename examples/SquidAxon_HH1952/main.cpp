@@ -30,6 +30,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 
@@ -55,7 +56,7 @@ void configuration::observer::operator()(const state_type &variables, const doub
   assert(stream.is_open());
   stream<<t;
   for(vector<int>::size_type iter = 0; iter < indices.size(); ++iter) {
-    stream<<','<<variables[indices[iter]];
+    stream << ',' << setprecision(3) << fixed << variables[indices[iter]];
   }
   stream<<endl;
 };
