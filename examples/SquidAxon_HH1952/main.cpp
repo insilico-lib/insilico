@@ -62,7 +62,8 @@ void configuration::observer::operator()(const state_type &variables, const doub
 
 int main(int argc, char** argv) {
   configuration::initialize(argc, argv);
-  configuration::read("nsets.conf","ssets.conf");
+  configuration::read("examples/SquidAxon_HH1952/nsets.conf",
+                      "examples/SquidAxon_HH1952/ssets.conf");
   
   state_type variables = engine::get_variables();
   
