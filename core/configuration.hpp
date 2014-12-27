@@ -44,14 +44,14 @@ class configuration {
 
   static void initialize(int argc, char** argv) {
     if(argc != 2) {
-      cout<<"Usage: "<<argv[0]<<" <outputfile>.dat"<<endl;
+      cout<<"USAGE: "<<argv[0]<<" <outputfile>.dat"<<endl;
       exit(0);
     }
     outstream.open(argv[1], ios::out);
   } // function initialize
 
   static void finalize() {
-    cout<<endl<<"Done. Cleaning up."<<endl;
+    cout<<endl<<"SUCCESS: Simulation complete."<<endl;
     outstream.close();
   } // function finalize
 
@@ -173,7 +173,11 @@ class configuration {
       }
       synapse_stream.close();
     }
+
+    cout << "SUCCESS: Input file read complete.";
+
     engine::populate_pre_synaptic_lists();
+
   } // function read
 
   struct observer {
