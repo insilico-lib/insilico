@@ -6,27 +6,42 @@
 body {
     margin: 0px;
     background: #fcfcfc;
-    font-family: Arial, sans-serif;
+    font-family: Sans, "sans-serif";
+    font-weight: 500;
+    align: center;
+}
+.header {
+    width: 50%;
+    margin: 10px auto;
 }
 a {
     color: #1263ac;
     text-decoration: none;
 }
-.appname {
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    font-size: 18px;
+h2, h3 {
+    font-weight: normal;
+}
+.appnamehead {
     background: -webkit-linear-gradient(left, white , #cedff2); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(right, white , #cedff2); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(right, white , #cedff2); /* For Firefox 3.6 to 15 */
     background: linear-gradient(to bottom, white , #cedff2); /* Standard syntax */
+    box-shadow: 0px 10px 10px #888888;
+}
+.appname {
+    position:relative;
+    width: 50%;
+    margin: 0px auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    overflow:hidden;
 } 
 .appname a {
     color: #1263ac;
     font-family: monospace;
-    font-size: 40px;
-    padding: 20px;
+    font-size: 220%;
+    padding: 10px;
     text-shadow: 5px 5px 5px lightgray;
 }
 .appname span {
@@ -42,23 +57,24 @@ a {
 .appsubname {
     color: #1263ac;
     font-family: monospace;
-    font-size: x-large;
+    font-size: 130%;
 }
 .contents {
     margin: 10px;
     float: left;
     width: 72%;
+    top: 7%;
 }
-.paratitle span {
+.paratitle {
     padding: 5px;
-    font-weight: bold;
-    font-size: 20px;
-    font-family: Arial;
+    font-size: 150%;
+    font-family: Sans, "Sans-Serif";
+    border-bottom: 0.5px dotted lightblue;
 }
 .sidebar {
     border-left: 1px dotted;
     padding-left: 10px; 
-    width: 18%;
+    width: 23%;
     margin: 10px;
     float: right;
 }
@@ -139,10 +155,15 @@ section p {
     color: green;
 }
 .alert {
-    width: 50%;
-    margin: 10px auto;
+    margin: 0px auto;
     text-align: center;
     border: 1px dotted red;
     padding: 5px;
     color: red;
+    //position: fixed;
+    //height: 2%;
+    //top: 98%;
+    //left: 0px;
+    //right: 0px;
+    //bottom: 0%;    
 }
