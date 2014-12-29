@@ -6,7 +6,7 @@
 body {
     margin: 0px;
     background: #fcfcfc;
-    font-family: Arial, Sans, "sans-serif";
+    font-family: arial, "sans-serif";
     font-weight: 500;
     align: center;
 }
@@ -39,7 +39,7 @@ h2, h3 {
 } 
 .appname a {
     color: #1263ac;
-    font-family: monospace;
+    font-family: monospace, courier;
     font-size: 220%;
     padding: 10px;
     text-shadow: 5px 5px 5px lightgray;
@@ -56,7 +56,7 @@ h2, h3 {
 }
 .appsubname {
     color: #1263ac;
-    font-family: monospace;
+    font-family: monospace, courier;
     font-size: 130%;
 }
 .contents {
@@ -68,7 +68,7 @@ h2, h3 {
 .paratitle {
     padding: 5px;
     font-size: 150%;
-    font-family: Sans, "Sans-Serif";
+    font-family: arial, "sans-serif";
     border-bottom: 0.5px dotted lightblue;
 }
 .sidebar {
@@ -141,12 +141,12 @@ section h2 {
 }
 section p {
     padding-left: 10px;
-    font-family: sans-serif;
+    font-family: arial, "sans-serif";
     font-style: normal;
 }
 .code {
     font-size: 14px;
-    font-family: monospace;
+    font-family: monospace, courier;
     color: navy;
     padding: 10px;
     border: 1px dotted lightblue;
