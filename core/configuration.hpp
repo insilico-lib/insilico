@@ -190,12 +190,10 @@ class configuration {
         engine::synapse_end_list_ids.push_back(ncount);
       }
       synapse_stream.close();
+      engine::populate_pre_synaptic_lists();
     }
 
     cout << "[insilico/configuration/read] SUCCESS: Input file read complete.";
-
-    engine::populate_pre_synaptic_lists();
-
   } // function read
 
   struct observer {
