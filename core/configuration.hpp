@@ -43,11 +43,25 @@ class configuration {
   static ofstream outstream;
 
   static void initialize(int argc, char** argv) {
-    if(argc != 2) {
-      cout<<"[insilico/configuration/initialize] USAGE: "<<argv[0]<<" <outputfile>.dat"<<endl;
+    if(argc < 3 && argc > 4) {
+      cout<<"[insilico/configuration/initialize] USAGE: "<<argv[0]
+          <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl
+          <<"Suggestion: Check file count."
+          <<endl;
       exit(0);
     }
+    cout<<endl<<"[insilico/configuration/initialize] SUCCESS: Initializing with following parameters:"<<endl
+        <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
     outstream.open(argv[1], ios::out);
+    string neuron_file(argv[2]);
+    if(argc == 4) {
+      cout<<"Synapse file: "<<argv[3];
+      string synapse_file(argv[3]);
+      read(neuron_file, synapse_file);
+    }
+    else {
+      read(neuron_file);
+    }
   } // function initialize
 
   static void finalize() {
