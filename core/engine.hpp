@@ -157,8 +157,10 @@ class engine {
 
   static vector<int> get_pre_neuron_indices(int neuron_id, string variable) {
     vector<int> indices;
-    for(vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
-      indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], variable));
+    if(!pre_synaptic_lists.empty()) {
+      for(vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
+        indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], variable));
+      }
     }
     return indices;
   }
