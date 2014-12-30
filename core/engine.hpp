@@ -176,9 +176,11 @@ class engine {
   }
 
   static void populate_pre_synaptic_lists() {
-    pre_synaptic_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
-    for(vector<int>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
-      pre_synaptic_lists[ post_neuron[iterator] ].push_back( iterator );
+    if(!post_neuron.empty()) {
+      pre_synaptic_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
+      for(vector<int>::size_type iterator = 0; iterator < post_neuron.size(); ++iterator) {
+        pre_synaptic_lists[ post_neuron[iterator] ].push_back( iterator );
+      }
     }
   }
   
