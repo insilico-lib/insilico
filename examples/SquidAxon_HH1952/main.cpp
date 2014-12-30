@@ -55,8 +55,8 @@ void configuration::observer::operator()(const state_type &variables, const doub
   vector<int> indices = engine::get_indices("v");
   assert(stream.is_open());
   stream<<t;
-  for(vector<int>::size_type iter = 0; iter < indices.size(); ++iter) {
-    stream << ',' << setprecision(3) << fixed << variables[indices[iter]];
+  for(int index : indices) {
+    stream << ',' << setprecision(3) << fixed << variables[index];
   }
   stream<<endl;
 };
