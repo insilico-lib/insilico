@@ -76,8 +76,10 @@ class configuration {
 
     ifstream neuron_stream(neuron_file);
     if(neuron_stream.is_open() == false) {
-      cout<<"Runtime Failure"<<endl
-          <<"Simulation Exception: nnet::read supplied with file ("<< neuron_file <<") that does not exists."
+      cout<<"[insilico/configuration/read] Runtime Failure"<<endl
+          <<"Simulation Exception: insilico::configuration::initialize"
+          <<" supplied with file ("<< neuron_file <<") that does not exist."<<endl
+          <<"Suggestion: Check file name."
           <<endl;
       exit(0);
     }
