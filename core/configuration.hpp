@@ -129,7 +129,9 @@ class configuration {
       bool pre=false, post=false;
       if(synapse_stream.is_open() == false) {
         cout<<"Runtime Failure"<<endl
-            <<"Simulation Exception: nnet::read supplied with file ("<< synapse_file <<") that does not exists."
+            <<"Simulation Exception: insilico::configuration::initialize"
+            <<" supplied with file ("<< synapse_file <<") that does not exist."<<endl
+            <<"Suggestion: Check file name."
             <<endl;
         exit(0);
       }
