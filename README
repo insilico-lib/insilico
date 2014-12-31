@@ -40,12 +40,12 @@ Makefile generates the executable for the program which can accept three paramet
 
   Both the above parameter files has their specification as comma separated key:value pair(s) in the following format on each line.
 
-  -------------------------------------------------------------------------------------------------------------
-  | dxdt:<no-of-ODE-vars> , <variable-1>:<init-val> , <variable-2>:<init-val> , ... , <variable-n>:<init-val> |
-  -------------------------------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------
+  | dxdt:<ODE-vars> , <var1>:<init> , <var2>:<init> , ... , <varN>:<init> |
+  -------------------------------------------------------------------------
 
-  dxdt:<no-of-ODE-vars> - denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <no-of-ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <no-of-ODE-vars> should be replaced by positive integer)
-  <variable-1>:<init-val> to <variable-n>:<init-val> - variables to be used in simulation with initial values (<variable-1> to <varaible-n> should be replaced by desired variable name and <init-val> should be replaced by initial values of the respective variables), in the case of Synapse file variabled 'pre' and 'post' are mandatory with pre-synaptic and post-synaptic neuron indices as their values respectively
+  dxdt:<ODE-vars> - denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <ODE-vars> should be replaced by positive integer)
+  <var1>:<init> to <varN>:<init> - variables to be used in simulation with initial values (<var1> to <varN> should be replaced by desired variable name and <init> should be replaced by initial values of the respective variables), in the case of Synapse file variabled 'pre' and 'post' are mandatory with pre-synaptic and post-synaptic neuron indices as their values respectively
 
 Execute
 =======
