@@ -31,8 +31,11 @@ Makefile generates the executable for the program which can accept three paramet
   | time-step , variable-1 , variable-2 , variable-3 , ... , variable-n |
   -----------------------------------------------------------------------
 
-  time-step - current time-step
-  variable-1 to variable-n - all the varible values that are provided to insilico::configuration::observer
+  time-step -
+    current time-step
+  
+  variable-1 to variable-n -
+    all the varible values that are provided to insilico::configuration::observer
 
 * 2nd Parameter - Neuron file: Neurons taking part in simulation. Every line represents a Neuron.
 
@@ -44,8 +47,11 @@ Makefile generates the executable for the program which can accept three paramet
   | dxdt:<ODE-vars> , <var1>:<init> , <var2>:<init> , ... , <varN>:<init> |
   -------------------------------------------------------------------------
 
-  dxdt:<ODE-vars> - denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <ODE-vars> should be replaced by positive integer)
-  <var1>:<init> to <varN>:<init> - variables to be used in simulation with initial values (<var1> to <varN> should be replaced by desired variable name and <init> should be replaced by initial values of the respective variables), in the case of Synapse file variabled 'pre' and 'post' are mandatory with pre-synaptic and post-synaptic neuron indices as their values respectively
+  dxdt:<ODE-vars> -
+    denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <ODE-vars> should be replaced by positive integer)
+  
+  <var1>:<init> to <varN>:<init> -
+    variables to be used in simulation with initial values (<var1> to <varN> should be replaced by desired variable name and <init> should be replaced by initial values of the respective variables), in the case of Synapse file variabled 'pre' and 'post' are mandatory with pre-synaptic and post-synaptic neuron indices as their values respectively
 
 Execute
 =======
