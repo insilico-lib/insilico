@@ -25,8 +25,8 @@ Input and Output files in detail
 
 Makefile generates the executable for the program which can accept three parameters as given below.
 
- * 1st Parameter is Output file
- ------------------------------
+  * 1st Parameter is Output file
+  ------------------------------
 
   Simulation results will be written to this file as comma separated values in following format for each line of output.
 
