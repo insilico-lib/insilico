@@ -1,0 +1,11 @@
+
+Release Notes
+=============
+
+Version 0.02
+------------
+
+- Makefile improvements
+- Minor performance improvements
+- Few minor bug fixes
+- Example in main.cpp is now improved 
