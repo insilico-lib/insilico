@@ -20,6 +20,33 @@ Please make sure the Boost library location mentioned in Makefile matches with y
 
    make SOURCE="path/to/source/file.cpp"
 
+Input and Output files in detail
+================================
+
+Makefile generates the executable for the program which can accept three parameters as given below.
+
+* 1st Parameter is Output file: Simulation results will be written to this file as comma separated values in following format for each line of output.
+
+  -----------------------------------------------------------------------
+  | time-step , variable-1 , variable-2 , variable-3 , ... , variable-n |
+  -----------------------------------------------------------------------
+
+  time-step - current time-step
+  variable-1 to variable-n - all the varible values that are provided to insilico::configuration::observer
+
+* 2nd Parameter - Neuron file: Neurons taking part in simulation. Every line represents a Neuron.
+
+* 3rd Parameter - Synapse file: Synapse taking part in simulation. This input file is optional argument if there is no synapse in the simulation. Every line represents a synapse.
+
+  Both the above parameter files has their specification as comma separated key:value pair(s) in the following format on each line.
+
+  -------------------------------------------------------------------------------------------------------------
+  | dxdt:<no-of-ODE-vars> , <variable-1>:<init-val> , <variable-2>:<init-val> , ... , <variable-n>:<init-val> |
+  -------------------------------------------------------------------------------------------------------------
+
+  dxdt:<no-of-ODE-vars> - denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <no-of-ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <no-of-ODE-vars> should be replaced by positive integer)
+  <variable-1>:<init-val> to <variable-n>:<init-val> - variables to be used in simulation with initial values (<variable-1> to <varaible-n> should be replaced by desired variable name and <init-val> should be replaced by initial values of the respective variables), in the case of Synapse file variabled 'pre' and 'post' are mandatory with pre-synaptic and post-synaptic neuron indices as their values respectively
+
 Execute
 =======
 
