@@ -1,163 +1,105 @@
-. {
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-}
 body {
+    background: #fafafa;
+    display: table;
+    font-family: "sans-serif";
+    font-size: 14px;
     margin: 0px;
-    background: #fcfcfc;
-    font-family: arial, "sans-serif";
-    font-weight: 500;
-    align: center;
+    word-wrap: break-word;
+}
+.appname {
+    text-align: center;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.appname a {
+    color: #1263ac;
+    display: block;
+    font-family: monospace, courier;
+    font-size: 22px;
+    padding: 10px;
+}
+.appsubname {
+    color: #1263ac;
+    font-family: monospace, courier;
+}
+.leftsidebar {
+    display: table-cell;
+    font-size: 12px;
+    min-width: 140px;
+    padding: 10px;
+    width: 10%;
 }
 .header {
-    width: 50%;
-    margin: 10px auto;
+    border-left: 1px solid lightblue;
+    display: table-cell;
+    padding: 10px;
+    position: relative;
+}
+.conttable {
+    text-align: left;
+}
+.conttable a {
+    color: #1263ac;
+    text-decoration: none;
+}
+.conttable tr {
+    color: #02a9c0;
 }
 a {
     color: #1263ac;
     text-decoration: none;
 }
-h2, h3 {
-    font-weight: normal;
-}
-.appnamehead {
-    background: -webkit-linear-gradient(left, white , #cedff2);
-    background: -o-linear-gradient(right, white , #cedff2);
-    background: -moz-linear-gradient(right, white , #cedff2);
-    background: linear-gradient(to bottom, white , #cedff2);
-    box-shadow: 0px 10px 10px #888888;
-}
-.appname {
-    position:relative;
-    width: 50%;
-    margin: 0px auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 18px;
-    overflow:hidden;
-} 
-.appname a {
-    color: #1263ac;
-    font-family: monospace, courier;
-    font-size: 220%;
-    padding: 10px;
-    text-shadow: 5px 5px 5px lightgray;
-}
-.appname span {
-    color: black;
-    padding: 10px;
-    font-size: 18px;
-    float: right;
-}
-.appname img {
-    padding-left: 10px;
-    float: right;
-}
-.appsubname {
-    color: #1263ac;
-    font-family: monospace, courier;
-    font-size: 130%;
+a:hover {
+    text-decoration: underline;
 }
 .contents {
     margin: 10px;
-    float: left;
-    width: 72%;
-    top: 7%;
 }
-.paratitle {
-    padding: 5px;
-    font-size: 150%;
-    font-family: arial, "sans-serif";
-    border-bottom: 0.5px dotted lightblue;
+section {
+    font-size: 16px;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
-.sidebar {
-    border-left: 1px dotted;
-    padding-left: 10px; 
-    width: 20%;
-    margin: 10px;
-    float: right;
-}
-.dottedline {
-    margin: 10px;
-    float: right;
-    border-bottom: 1px solid blue;
-}
-.conttable {
-    border: 2px solid lightgray;
-    margin: 10px;
-    padding: 20px;
-    font-size: 15px;
-    text-align: left;
-    tr {
-	color: #02a9c0;
-    }
-    a {
-	color: #1263ac;
-	text-decoration: none;	
-    }
-}
-.level1 { 
-    padding-left: 20px;
-}
-.level2 { 
-    padding-left: 30px;
-}
-.lastrevised {
-    border: 0.5px dotted lightgray;
-    padding: 10px;
-    font-size: 12px;
-    float: right;
-}
-.release {
-    padding: 5px;
-}
-.releasefiles {
-    align: center;
-    width: 100%;
-    padding: 5px;
-}
-.releasenotes {
-    padding: 10px;
-}
-.files {
-    display: block;
-    background: lightgreen;
-    padding: 10px;
-    width: 50%;
-    border: 1px solid lightgray;
-    text-align: center;
-    margin: 10px;
-}
-.footer {
-    font-size: 12px;
-    padding: 10px;
-    border-top: solid 1px; 
-    width: 100%;
-    float: left;
-}
-section h2 {
+section span {
+    border-bottom: 1px dotted blue;
     color: #1263ac;
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+    padding-top: 10px;
 }
 section p {
     padding-left: 10px;
-    font-family: arial, "sans-serif";
-    font-style: normal;
+}
+.level2 {
+    padding-left: 10px;
 }
 .code {
-    font-size: 14px;
-    font-family: monospace, courier;
-    color: navy;
-    padding: 10px;
     border: 1px dotted lightblue;
+    color: navy;
+    font-family: monospace, courier;
+    font-size: 14px;
+    padding: 10px;
 }
 .comment {
+    border: none;
     color: green;
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
 }
 .alert {
-    margin: 0px auto;
-    text-align: center;
     border: 1px dotted red;
-    padding: 5px;
     color: red;    
+    padding: 5px;
+}
+.footer {
+    border-top: 1px solid lightblue;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 100%;
+}
+.lastrevised {
+    float: right;
 }

@@ -5,168 +5,135 @@
     <link rel="stylesheet" href="style.css"> 
     <title>insilico: Neuronal Network Library | Prof. Collins Assisi Lab, IISER, Pune</title>
   </head>
-  
   <body>
-    <div class="appnamehead">
-    <div class="appname">
-      <a>insilico</a>Neuronal Network Simulation Library
-      <span>Collins Assisi Lab
-	  <img width=45px height=45px  src="http://www.iiserpune.ac.in/images/logo.jpg">
-	  <br/>IISER Pune
-      </span>
-    </div>
-    </div>
-    <div class="header">
-      <div class="alert">Thanks for visiting!<br/>Disclaimer: But, unfortunately, this page is currently under construction. Prof. Collins Assisi, Collins Assisi Lab or IISER, Pune is not liable and does not take any responsibility for the information furnished here. Please use this web page and contents within on your own discretion. This webpage will be publicly available after official declaration by concerned authorities.</div>
-      <div class="contents">
-	<h2 class="paratitle">Welcome to <a href="#" class="appsubname">insilico</a> Library!</h2>
-	<p>
-	  <a href="#" class="appsubname">insilico</a> 
-	  is a C++ library for building simulations in Computational Neuroscience.
-	</p>
-	<div>
-	  <table class="conttable">
-	    <tr><td><a href="#getting_started">1. Getting Started</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#overview">1.1. Overview</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#usage">1.2. Usage</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#shortexample">1.3. Short Example</a> (TBA)</td></tr>
-	    <tr><td><a href="#tutorial">2. Tutorial</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#pointbased">2.1. Point Based Models</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#hhneuron">2.2. Hodgkin-Huxley Neuron Model</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#ifneuron">2.3. Integrate and Fire Neuron Model</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#compartment">2.4. Compartmental Model</a> (TBA)</td></tr>
-	    <tr><td class="level2"><a href="#neuronnet">2.5. Network of Neurons</a> (TBA)</td></tr>
-	    <tr><td><a href="#indetail">3. insilico in Detail</a> (TBA)</td></tr>
-	    <tr><td><a href="#contributing">4. Contributing</a></td></tr>
-	    <tr><td class="level2"><a href="#wayscontribute">
-		4.1. Different ways to contribute to this library?</a></td></tr>
-	    <tr><td class="level2"><a href="#thingsneeded">
-		4.2. What things are needed to start contributing?</a></td></tr>
-	    <tr><td class="level2"><a href="#howto">
-		4.3. How to?</a></td></tr>
-	    <tr><td><a href="#ack">5. Acknowledgements</a> (TBA)</td></tr>
-	    <tr><td><a href="#reference">6. insilico Complete Code Reference</a> (TBA)</td></tr>
-	    <tr><td><a href="#index">7. Index</a> (TBA)</td></tr>
-	  </table>
+    <div class="row">
+      <div class="leftsidebar">
+	<div class="appname">
+	  <a>insilico</a>
+	  Neuronal Simulation Library
 	</div>
-	<section id="getting_started">
-	  <h2 class="paratitle">1. Getting Started</h2>
-	  <section id="overview">
-	    <h3>1.1. Overview</h3>
+	<table class="conttable">
+	  <tr><td><a href="#intro">Introduction</a></td></tr>
+	  <tr><td><a href="#getting_started">Getting Started</a></td></tr>
+	  <tr><td class="level2"><a href="#overview">Overview</a></td></tr>
+	  <tr><td class="level2"><a href="#usage">Usage</a></td></tr>
+	  <tr><td class="level2"><a href="#shortexample">Short Example</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#tutorial">Tutorial</a></td></tr>
+	  <tr><td class="level2"><a href="#pointbased">Point Based Models</a></td></tr>
+	  <tr><td class="level2"><a href="#hhneuron">Hodgkin-Huxley Neuron Model</a></td></tr>
+	  <tr><td class="level2"><a href="#ifneuron">Integrate and Fire Neuron Model</a></td></tr>
+	  <tr><td class="level2"><a href="#compartment">Compartmental Model</a></td></tr>
+	  <tr><td class="level2"><a href="#neuronnet">Network of Neurons</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#indetail"><a href="#" class="appsubname">insilico<a> in Detail</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#contributing">Contributing</a></td></tr>
+	  <tr><td class="level2"><a href="#wayscontribute">
+		Different ways</a></td></tr>
+	  <tr><td class="level2"><a href="#thingsneeded">
+		Things needed?</a></td></tr>
+	  <tr><td class="level2"><a href="#howto">
+		How to?</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#ack">Acknowledgements</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#reference">insilico Complete Code Reference</a></td></tr>
+	  <tr><td><td></tr>
+	  <tr><td><a href="#index">Index</a></td></tr>
+	</table>
+      </div>
+      <div class="header">
+	<div class="alert">Thanks for visiting! But, unfortunately, this page is currently under construction. Prof. Collins Assisi, Collins Assisi Lab or IISER, Pune is not liable and does not take any responsibility for the information furnished here. Please use this web page and contents within on your own discretion. This webpage will be publicly available after official declaration.</div>
+	<div class="contents">
+	  <section id="intro">
+	    <span>Introduction</span>
+	    <a href="#" class="appsubname">insilico</a>
+	    is a C++ library for building simulations in Computational Neuroscience.
 	  </section>
-	  <section id="usage">
-	    <h3>1.2. Usage</h3>
+	  <section id="getting_started">
+	    <span>Getting Started</span>
+	    <section id="overview">&bull; Overview</section>
+	    <section id="usage">&bull; Usage</section>
+	    <section id="shortexample">&bull; Short Example
+	      <p class="code">
+		<span class="comment">/* Example "Hello, World!" code */</span><br/>
+		#include &lt;iostream&gt;<br/>
+		#include &lt;cstdlib&gt;<br/>
+		<br/>
+		using namespace std;<br/><br/>
+		int main ( int argc, char** argv) {<br/>
+		&nbsp;&nbsp;std::cout << "Hello, World!";<br/>
+					 &nbsp;&nbsp;return EXIT_SUCCESS;<br/>
+					 }
+					 </p>
+	    </section>
 	  </section>
-	  <section id="shortexample">
-	    <h3>1.3. Short Example</h3>
+	  <section id="tutorial">
+	    <span>Tutorial</span>
+	    <section id="pointbased">&bull; Point Based Models</section>
+	    <section id="hhneuron">&bull; Hodgkin-Huxley Neuron Model</section>
+	    <section id="ifneuron">&bull; Integrate and Fire Neuron Model</section>
+	    <section id="compartment">&bull; Compartmental Model</section>
+	    <section id="neuronnet">&bull; Network of Neurons</section>
 	  </section>
-	</section>
-	<section id="tutorial">
-	  <h2 class="paratitle">2. Tutorial</h2>
-	  <section id="pointbased">
-	    <h3>2.1. Point Based Models</h3>
-	    <p class="code">
-	      <span class="comment">/* Example "Hello, World!" code */</span><br/>
-	      #include &lt;iostream&gt;<br/>
-	      #include &lt;cstdlib&gt;<br/>
-	      <br/>
-	      using namespace std;<br/><br/>
-	      int main ( int argc, char** argv) {<br/>
-	      &nbsp;&nbsp;std::cout << "Hello, World!";<br/>
-              &nbsp;&nbsp;return EXIT_SUCCESS;<br/>
- 	    }
-	    </p>
+	  <section id="indetail">
+	    <span><a href="#" class="appsubname">insilico</a> in Detail</span>
 	  </section>
-	  <section id="hhneuron">
-	    <h3>2.2. Hodgkin-Huxley Neuron Model</h3>
-	  </section>
-	  <section id="ifneuron">
-	    <h3>2.3, Integrate and Fire Neuron Model</h3>
-	  </section>
-	  <section id="compartment">
-	    <h3>2.4. Compartmental Model</h3>
-	  </section>
-	  <section id="neuronnet">
-	    <h3>2.5. Network of Neurons</h3>
-	  </section>
-	</section>
-	<section id="indetail">
-	  <h2 class="paratitle">3. <a href="#" class="appsubname">insilico</a> in Detail</h2>
-	</section>
-	<section id="contributing">
-	  <h2 class="paratitle">4. Contribution</h2>
-	  <p>
-	    Continuous improvement is one of the reasons this project is open sourced. And without contributions by researchers/developers improvement won't be possible.
-	  </p>
-	  <section id="wayscontribute"><h3>4.1. Different ways to contribute to this library?</h3>
+	  <section id="contributing">
+	    <span>Contribution</span>
 	    <p>
-	      You can contribute by:<br/>
-	      <br/>
-	      1. <u>Improving or adding documentation</u><br/><br/>Documentation is the heart of any public library. It helps people understand the library and makes it easy to use. Our goal is to make library easily consumable. If you find something missing, incorrect or inappropriate in the documentation in any part of library and you know the better way to do the same, feel free to contribute your code or even thoughts.<br/>
-	      <br/>
-	      2. <u>Adding/improving example codes</u><br/><br/> If you have a working example code and proper description supporting it which you have created using the library, please contribute it so that other researchers/developers can use it.<br/>
-	      <br/>
-	      3. <u>Improving the core library</u><br/><br/>You have a better algorithm, architecture or even simple quick working code that can enhance the existing core library, please contrbute. Only thing that matters is the contribution and not the lines of code.<br/>
-	      <br/>
-	      4. <u>Raising issues and bugs</u><br/><br/>If you have found an edge case for certain input or execution environment configuration and you have done several tests for the same. Please report this on Github as an issue and it will be immediately taken care by the development team.
+	      Continuous improvement is one of the reasons this project is open sourced. And without contributions by researchers/developers improvement won't be possible.
 	    </p>
-	  </section>
-	  <section id="thingsneeded"><h3>4.2. What things are needed to start contributing?</h3>
-	    <p>
-	      <u>Three things really</u><br/><br/> Source code of library, your changes and git.
+	    <section id="wayscontribute">&bull; Different ways to contribute to this library?
+	      <p>
+		You can contribute by:<br/>
+		<br/>
+		<i>Improving or adding documentation</i>: Documentation is the heart of any public library. It helps people understand the library and makes it easy to use. Our goal is to make library easily consumable. If you find something missing, incorrect or inappropriate in the documentation in any part of library and you know the better way to do the same, feel free to contribute your code or even thoughts.
+		<br/><br/>
+		<i>Adding/improving example codes</i>: If you have a working example code and proper description supporting it which you have created using the library, please contribute it so that other researchers/developers can use it.
+		<br/><br/>
+		<i>Improving the core library</i>: You have a better algorithm, architecture or even simple quick working code that can enhance the existing core library, please contrbute. Only thing that matters is the contribution and not the lines of code.
+		<br/><br/>
+		<i>Raising issues and bugs</i>: If you have found an edge case for certain input or execution environment configuration and you have done several tests for the same. Please report this on Github as an issue and it will be immediately taken care by the development team.
+	      </p>
+	    </section>
+	    <section id="thingsneeded">&bull; What things are needed to start contributing?
+	      <p>
+		<i>Three things really</i>: Source code of library, your changes and git.
+	      </p>
+	    </section>
+	    <section id="howto">&bull; How to?
+	    <p>Make your changes.</p>
+	      <p>
+	      Changes to existing file or new source / header should reflect the copyright notice with your individual / laboratory / company name and email at start of the file. Add and commit them to your local repository (using 'git add' and 'git commit') with proper description in commit message. Create a patch (using 'git diff').
 	    </p>
+	      <p>
+	      Email it to one of the maintainers from the MAINTAINERS file with proper subject and body with detailed description supporting the patch.
+	      </p>
+	      <p>
+	      By contributing you accept and your code is licensed under GNU GPLv3.
+	      </p>
+	    </section>
 	  </section>
-	  <section id="howto"><h3>4.3. How to?</h3></section>
-	  <p>
-	    Make your changes.
-	  </p>
-	  <p>
-	    Changes to existing file or new source / header should reflect the copyright notice with your individual / laboratory / company name and email at start of the file. Add and commit them to your local repository (using 'git add' and 'git commit') with proper description in commit message. Create a patch (using 'git diff').
-	  </p>
-	  <p>
-	    Email it to one of the maintainers from the MAINTAINERS file with proper subject and body with detailed description supporting the patch.
-	  </p>
-	  <p>
-	    By contributing you accept and your code is licensed under GNU GPLv3.
-	  </p>
-	</section>
-	<section id="ack">
-	  <h2 class="paratitle">5. Acknowledgement</h2>
-	</section>
-	<section id="reference">
-	  <h2 class="paratitle">6. <a href="#" class="appsubname">insilico</a> Complete Code Reference</section></h2>
-	<section id="index">
-	  <h2 class="paratitle">7. Index</h2>
-	</section>
+	  <section id="ack">
+	    <span>Acknowledgement</span>
+	  </section>
+	  <section id="reference">
+	    <span><a href="#" class="appsubname">insilico</a> Complete Code Reference</section></span>
+	  <section id="index">
+	    <span>Index</span>
+	  </section>
+	</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="footer">
+	&nbsp;Copyright (c) 2014 Collins Assisi Lab, IISER Pune
 	<div class="lastrevised">
-	  This page was last updated: December 22nd, 2014
+	  This page was last updated: December 22nd, 2014&nbsp;
 	</div>
       </div>
-      <div class="sidebar">
-	<h2 class="paratitle">Download</h2>
-	<div class="release">Latest Version: <b>0.02</b>
-	</div>
-	<div class="releasefiles">
-	  <a href="insilico_v0.02.zip"><span class="files">.ZIP</span></a>
-	  <a href="insilico_v0.02.tar.gz"><span class="files">.TAR.GZ</span></a>
-	</div>
-	<div class="releasenotes">  
-	  <small><b>What's New in Version 0.02</b>:<br/>
-	    - Makefile improvements <br/>
-	    - Minor performance improvements <br/>
-	    - Few minor bug fixes <br/>
-	    - Example in main.cpp is now improved <br/>
-	  </small>
-	</div>	
-	<div class="releasenotes">
-	  <small>Older releases can be download from 
-	    <a href="https://github.com/pranavcode/insilico/releases">Github</a>.
-	  </small>
-	</div>
-      </div>
-    </div>
-    <div class="footer">
-      Copyright (c) 2014 Collins Assisi Lab, IISER Pune
     </div>
   </body>
 </html> 
