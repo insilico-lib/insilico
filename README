@@ -10,7 +10,7 @@ Software Pre-requisites:
 * g++ 4.8.1+
 * make 3.8+
 
-The installation should be in standard directories. 
+The installation of above softwares for all platforms is expected to be in standard directories.
 
 Build
 =====
