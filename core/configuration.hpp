@@ -55,7 +55,7 @@ class configuration {
     outstream.open(argv[1], ios::out);
     string neuron_file(argv[2]);
     if(argc == 4) {
-      cout<<"Synapse file: "<<argv[3];
+      cout<<"Synapse file: "<<argv[3]<<endl;
       string synapse_file(argv[3]);
       read(neuron_file, synapse_file);
     }
