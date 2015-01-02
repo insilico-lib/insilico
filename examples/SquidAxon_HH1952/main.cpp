@@ -23,7 +23,7 @@
 #include "core/configuration.hpp"
 #include "core/engine.hpp"
 
-#include "neuron/N_StellateCell_HH1952.hpp"
+#include "neuron/N_SquidAxon_HH1952.hpp"
 #include "synapse/S_DefaultSynapse.hpp"
 
 #include <boost/numeric/odeint.hpp>
@@ -44,7 +44,7 @@ void engine::operator()(const state_type &variables, state_type &dxdt,
   int synapse_count = engine::synapse_count();
 
   for(int neuron_index = 0; neuron_index < network_size; ++neuron_index) {
-    N_StellateCell_HH1952::ode_set(variables, dxdt, time, neuron_index);
+    N_SquidAxon_HH1952::ode_set(variables, dxdt, time, neuron_index);
   }
   for(int synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
     S_DefaultSynapse::ode_set(variables, dxdt, time, synapse_index);
