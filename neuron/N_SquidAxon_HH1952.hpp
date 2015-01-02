@@ -1,5 +1,5 @@
 /*
- neuron/N_StellateCell_HH1952.hpp - Hodgkin-Huxley Stellate cell (Hodgkin-Huxley, 1952)
+ neuron/N_SquidAxon_HH1952.hpp - Hodgkin-Huxley Squid Axon experiment (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -17,8 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INCLUDED_N_STELLATECELL_HH9152_HPP
-#define INCLUDED_N_STELLATECELL_HH9152_HPP
+#ifndef INCLUDED_N_SQUIDAXON_HH1952_HPP
+#define INCLUDED_N_SQUIDAXON_HH1952_HPP
 
 #include "core/engine.hpp"
 
