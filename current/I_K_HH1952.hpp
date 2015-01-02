@@ -1,5 +1,5 @@
 /*
- current/I_K_HH1952.hpp - Current flow across neuronal membrane due to
+ current/I_K_HH1952.hpp - Current flowing across neuronal membrane due to
                           Potassium (K) conductance. (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
@@ -25,8 +25,8 @@
  caused by Potassium (K) conductance across neuronal membrane. (Hodgkin-Huxley, 1952)
 */
 
-#ifndef INCLUDED_I_K_HH9152_HPP
-#define INCLUDED_I_K_HH9152_HPP
+#ifndef INCLUDED_I_K_HH1952_HPP
+#define INCLUDED_I_K_HH1952_HPP
 
 #include "core/engine.hpp"
 

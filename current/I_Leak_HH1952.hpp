@@ -1,5 +1,5 @@
 /*
- current/I_Leak_HH1952.hpp - Leak current flow across neuronal membrane.
+ current/I_Leak_HH1952.hpp - Leak current flowing across neuronal membrane.
                              (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
@@ -24,8 +24,8 @@
  Leak current flow across neuronal membrane. (Hodgkin-Huxley, 1952)
 */
 
-#ifndef INCLUDED_I_LEAK_HH9152_HPP
-#define INCLUDED_I_LEAK_HH9152_HPP
+#ifndef INCLUDED_I_LEAK_HH1952_HPP
+#define INCLUDED_I_LEAK_HH1952_HPP
 
 #include "core/engine.hpp"
 
