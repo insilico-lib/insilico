@@ -43,7 +43,7 @@ class configuration {
   static ofstream outstream;
 
   static void initialize(int argc, char** argv) {
-    if(argc < 3 && argc > 4) {
+    if(argc < 3 || argc > 4) {
       cout<<"[insilico/configuration/initialize] USAGE: "<<argv[0]
           <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl
           <<"Suggestion: Check file count."
