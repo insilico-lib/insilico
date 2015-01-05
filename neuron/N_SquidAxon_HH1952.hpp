@@ -2,6 +2,7 @@
  neuron/N_SquidAxon_HH1952.hpp - Hodgkin-Huxley Squid Axon experiment (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014 Nishant Singh, Suhita Nadkarni Lab, IISER, Pune <nishant.singh@students.iiserpune.ac.in>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -28,7 +29,7 @@
 
 namespace insilico {
 
-class N_StellateCell_HH1952 {
+class N_SquidAxon_HH1952 {
  public:
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                int index) {
@@ -52,7 +53,7 @@ class N_StellateCell_HH1952 {
     // ODE set
     dxdt[v_index] = I_Na + I_K + I_Leak + I_Ext + I_Syn;
   } // function ode_set
-}; // class N_StellateCell_HH1952
+}; // class N_SquidAxon_HH1952
 
 } // insilico
 
