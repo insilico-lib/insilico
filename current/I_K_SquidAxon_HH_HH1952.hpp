@@ -1,6 +1,6 @@
 /*
- current/I_K_HH1952.hpp - Current flowing across neuronal membrane due to
-                          Potassium (K) conductance. (Hodgkin-Huxley, 1952)
+ current/I_K_SquidAxon_HH_HH1952.hpp - Current flowing across neuronal membrane due to
+                                       Potassium (K) conductance. (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -25,14 +25,14 @@
  caused by Potassium (K) conductance across neuronal membrane. (Hodgkin-Huxley, 1952)
 */
 
-#ifndef INCLUDED_I_K_HH1952_HPP
-#define INCLUDED_I_K_HH1952_HPP
+#ifndef INCLUDED_I_K_SQUIDAXON_HH_HH1952_HPP
+#define INCLUDED_I_K_SQUIDAXON_HH_HH1952_HPP
 
 #include "core/engine.hpp"
 
 namespace insilico {
 
-class I_K_HH1952 {
+class I_K_SquidAxon_HH_HH1952 {
  public:
   static float current(const state_type &variables, state_type &dxdt, const double t, int index) {
     float gk = 36, ek = -12;
@@ -53,7 +53,7 @@ class I_K_HH1952 {
     return -gk * pow(n,4) * (v - ek);
 
   } // function current
-}; // class I_K_HH1952
+}; // class I_K_SQUIDAXON_HH_HH1952_HPP
 
 } // insilico
 

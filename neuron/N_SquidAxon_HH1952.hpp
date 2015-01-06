@@ -23,9 +23,9 @@
 
 #include "core/engine.hpp"
 
-#include "current/I_Na_HH1952.hpp"
-#include "current/I_K_HH1952.hpp"
+#include "current/I_K_SquidAxon_HH_HH1952.hpp"
 #include "current/I_Leak_HH1952.hpp"
+#include "current/I_Na_HH1952.hpp"
 
 namespace insilico {
 
@@ -46,7 +46,7 @@ class N_SquidAxon_HH1952 {
     }
 
     float I_Na = I_Na_HH1952::current(variables, dxdt, t, index);
-    float I_K = I_K_HH1952::current(variables, dxdt, t, index);
+    float I_K = I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
     float I_Leak = I_Leak_HH1952::current(variables, dxdt, t, index);
     float I_Ext = engine::neuron_value(index, "iext");
     
