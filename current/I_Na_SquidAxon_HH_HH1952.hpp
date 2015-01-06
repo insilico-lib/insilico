@@ -1,6 +1,6 @@
 /*
- current/I_Na_HH1952.hpp - Current flowing across neuronal membrane due to
-                           Sodium (Na) conductance. (Hodgkin-Huxley, 1952)
+ current/I_Na_SquidAxon_HH_HH1952.hpp - Current flowing across neuronal membrane due to
+                                        Sodium (Na) conductance. (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -25,14 +25,14 @@
  caused by Sodium (Na) conductance across neuronal membrane. (Hodgkin-Huxley, 1952)
 */
 
-#ifndef INCLUDED_I_NA_HH1952_HPP
-#define INCLUDED_I_NA_HH1952_HPP
+#ifndef INCLUDED_I_NA_SQUIDAXON_HH_HH1952_HPP
+#define INCLUDED_I_NA_SQUIDAXON_HH_HH1952_HPP
 
 #include "core/engine.hpp"
 
 namespace insilico {
 
-class I_Na_HH1952 {
+class I_Na_SquidAxon_HH_HH1952 {
  public:
   static float current(const state_type &variables, state_type &dxdt, const double t, int index) {    
     float gna = 120, ena = 115;
@@ -58,7 +58,7 @@ class I_Na_HH1952 {
     return -gna * pow(m, 3) * h * (v - ena);
 
   } // function current
-}; // class I_Na_HH1952
+}; // class I_Na_SquidAxon_HH_HH1952
 
 } // insilico
 
