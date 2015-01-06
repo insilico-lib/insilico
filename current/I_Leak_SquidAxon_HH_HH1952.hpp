@@ -1,6 +1,6 @@
 /*
- current/I_Leak_HH1952.hpp - Leak current flowing across neuronal membrane.
-                             (Hodgkin-Huxley, 1952)
+ current/I_Leak_SquidAxon_HH_HH1952.hpp - Leak current flowing across neuronal membrane.
+                                          (Hodgkin-Huxley, 1952)
 
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -24,14 +24,14 @@
  Leak current flow across neuronal membrane. (Hodgkin-Huxley, 1952)
 */
 
-#ifndef INCLUDED_I_LEAK_HH1952_HPP
-#define INCLUDED_I_LEAK_HH1952_HPP
+#ifndef INCLUDED_I_LEAK_SQUIDAXON_HH_HH1952_HPP
+#define INCLUDED_I_LEAK_SQUIDAXON_HH_HH1952_HPP
 
 #include "core/engine.hpp"
 
 namespace insilico {
 
-class I_Leak_HH1952 {
+class I_Leak_SquidAxon_HH_HH1952 {
  public:
   static float current(const state_type &variables, state_type &dxdt, const double t, int index) {
     float gl = 0.3, el = 10.6;
@@ -44,7 +44,7 @@ class I_Leak_HH1952 {
     return -gl * (v - el);
 
   } // function current
-}; // class I_Leak_HH1952
+}; // class I_Leak_SquidAxon_HH_HH1952
 
 } // insilico
 
