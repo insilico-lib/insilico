@@ -10,8 +10,8 @@
     <a href="introduction.php">&rArr;</a>
 </p>
 <p>
-    <table style="text-align: legt; margin: 20px; padding: 10px; border: 0.5px dotted #3388ac;">
-	<tr><td><u>Contents</u></td></tr>
+    <table style="text-align: legt; margin: 20px; padding: 10px; border: 1px dotted #3388ac;">
+	<tr><td><b><u>Contents</u></b></td></tr>
 	<?php
 	$contentlist = array("Introduction", 
 			     "Getting Started",

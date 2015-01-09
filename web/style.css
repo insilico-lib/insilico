@@ -3,7 +3,7 @@ body {
     text-decoration: none;
     width: 50%;
     min-width: 500px;
-    max-width: 700px;
+    max-width: 900px;
     margin: 0px auto;
     padding: 0px;
 }
@@ -15,7 +15,7 @@ a:hover {
     text-decoration: underline; 
 }
 .wrapper {
-    width: 700px;
+    width: 900px;
     border-radius: 10px; 
     background: #f0f5ff; 
     margin: 5px;
