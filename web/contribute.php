@@ -17,11 +17,11 @@
     <br/><br/>
     You can contribute by:
     <br/><br/>
-    <i>Improving or adding documentation</i>: Documentation is the heart of any public library. It helps people understand the library and makes it easy to use. Our goal is to make library easily consumable. If you find something missing, incorrect or inappropriate in the documentation in any part of library and you know the better way to do the same, feel free to contribute your code or even thoughts.
+    <i>Improving or adding documentation</i>: Documentation is the heart of any publicly available code library. It helps people understand the library and makes it easy to use. Our goal is to make library easily consumable. If you find something missing, incorrect or inappropriate in the documentation in any part of library and you know the better way to do the same, feel free to contribute your code or even thoughts.
     <br/><br/>
     <i>Adding/improving example codes</i>: If you have a working example code and proper description supporting it which you have created using the library, please contribute it so that other researchers/developers can use it.
     <br/><br/>
-    <i>Improving the core library</i>: You have a better algorithm, architecture or even simple quick working code that can enhance the existing core library, please contrbute. Only thing that matters is the contribution and not the lines of code.
+    <i>Improving the core library</i>: You have a better algorithm, architecture or even simple quick working code that can enhance the existing core library, please contrbute.
     <br/><br/>
     <i>Raising issues and bugs</i>: If you have found an edge case for certain input or execution environment configuration and you have done several tests for the same. Please report this on Github as an issue and it will be immediately taken care by the development team.
     <br/><br/>
