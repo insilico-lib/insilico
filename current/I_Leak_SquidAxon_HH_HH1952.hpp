@@ -33,12 +33,12 @@ namespace insilico {
 
 class I_Leak_SquidAxon_HH_HH1952 {
  public:
-  static float current(const state_type &variables, state_type &dxdt, const double t, int index) {
-    float gl = 0.3, el = 10.6;
+  static double current(const state_type &variables, state_type &dxdt, const double t, int index) {
+    double gl = 0.3, el = 10.6;
 
     int v_index = engine::neuron_index(index, "v");
 
-    float v = variables[v_index];
+    double v = variables[v_index];
 
     // Current
     return -gl * (v - el);
