@@ -33,7 +33,7 @@ using namespace insilico;
 using namespace std;
 
 // Mandate: Use of state_type should include this file
-typedef vector<float> state_type;
+typedef vector<double> state_type;
 
 //
 // Map based search logic can be activated by defining MAP as given below
@@ -49,7 +49,7 @@ class engine {
  public:
   
   static unordered_map<string, int> index_map;
-  static unordered_map<string, float> value_map;
+  static unordered_map<string, double> value_map;
   static vector<int> neuron_start_list_ids;
   static vector<int> neuron_end_list_ids;
   static vector<int> synapse_start_list_ids;
@@ -58,9 +58,9 @@ class engine {
   static vector<int> pre_neuron;
   static vector<int> post_neuron;
   static vector<string> var_list_ids;
-  static vector<float> var_vals;
+  static vector<double> var_vals;
 
-  static vector<float> get_variables() {
+  static vector<double> get_variables() {
     return var_vals;
   }
 
@@ -90,7 +90,7 @@ class engine {
 #endif
   }
 
-  static float neuron_value(int id, string variable) {
+  static double neuron_value(int id, string variable) {
     try {
       sprintf(key, "n%d%s", id, variable.c_str());
       return value_map[key];
@@ -128,7 +128,7 @@ class engine {
 #endif
   }
 
-  static float synapse_value(int id, string variable) {
+  static double synapse_value(int id, string variable) {
     try {
       sprintf(key, "s%d%s", id, variable.c_str());
       return value_map[key];
@@ -192,13 +192,13 @@ class engine {
     return synapse_start_list_ids.size();
   }
 
-  void operator()(const vector<float> &variables, vector<float> &dxdt, const double time);
+  void operator()(const vector<double> &variables, vector<double> &dxdt, const double time);
 
 }; // class engine
 
 // static member definitions
 unordered_map<string, int> engine::index_map;
-unordered_map<string, float> engine::value_map;
+unordered_map<string, double> engine::value_map;
 vector<int> engine::neuron_start_list_ids;
 vector<int> engine::neuron_end_list_ids;
 vector<int> engine::synapse_start_list_ids;
@@ -207,7 +207,7 @@ vector<vector<int>> engine::pre_synaptic_lists;
 vector<int> engine::pre_neuron;
 vector<int> engine::post_neuron;
 vector<string> engine::var_list_ids;
-vector<float> engine::var_vals;
+vector<double> engine::var_vals;
 
 } // insilico
 
