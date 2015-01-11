@@ -34,21 +34,21 @@ namespace insilico {
 
 class I_Na_SquidAxon_HH_HH1952 {
  public:
-  static float current(const state_type &variables, state_type &dxdt, const double t, int index) {    
-    float gna = 120, ena = 115;
+  static double current(const state_type &variables, state_type &dxdt, const double t, int index) {
+    double gna = 120, ena = 115;
 
     int v_index = engine::neuron_index(index, "v");
     int m_index = engine::neuron_index(index, "m");
     int h_index = engine::neuron_index(index, "h");
     
-    float v = variables[v_index];
-    float m = variables[m_index];
-    float h = variables[h_index];
+    double v = variables[v_index];
+    double m = variables[m_index];
+    double h = variables[h_index];
     
-    float alpha_m = (2.5-0.1 * v)/(exp(2.5-0.1 * v)-1.0);
-    float beta_m  = 4.0*exp(-v /18.0);
-    float alpha_h = 0.07*exp(-v / 20.0);
-    float beta_h  = 1.0/(exp(3-0.1 * v)+1);
+    double alpha_m = (2.5-0.1 * v)/(exp(2.5-0.1 * v)-1.0);
+    double beta_m  = 4.0*exp(-v /18.0);
+    double alpha_h = 0.07*exp(-v / 20.0);
+    double beta_h  = 1.0/(exp(3-0.1 * v)+1);
 
     // ODE set
     dxdt[m_index]=(alpha_m*(1-m)-beta_m*m);
