@@ -35,20 +35,20 @@ class N_SquidAxon_HH1952 {
                int index) {
     int v_index = engine::neuron_index(index, "v");
 
-    float v = variables[v_index];
+    double v = variables[v_index];
       
     vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
     vector<int> esyn_values = engine::get_pre_neuron_values(index, "esyn");
 
-    float I_Syn = 0;
+    double I_Syn = 0;
     for(vector<int>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
       I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
 
-    float I_Na = I_Na_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
-    float I_K = I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
-    float I_Leak = I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
-    float I_Ext = engine::neuron_value(index, "iext");
+    double I_Na = I_Na_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+    double I_K = I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+    double I_Leak = I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+    double I_Ext = engine::neuron_value(index, "iext");
     
     // ODE set
     dxdt[v_index] = I_Na + I_K + I_Leak + I_Ext + I_Syn;
