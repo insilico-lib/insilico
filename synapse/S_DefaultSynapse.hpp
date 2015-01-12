@@ -31,13 +31,11 @@ class S_DefaultSynapse {
     int g1_index = engine::synapse_index(index, "g1");
     int g2_index = engine::synapse_index(index, "g2");
     int neuron_index = engine::synapse_value(index, "pre");
-
-    int last_spiked_index = engine::synapse_index(index, "last_spike");
     int v_index = engine::neuron_index(neuron_index, "v");
 
     double g1 = variables[g1_index];
     double g2 = variables[g2_index];
-    double last_spiked = variables[last_spiked_index];
+    double last_spiked = engine::synapse_value(index, "last_spike");
     double V = variables[v_index];
 
     double def_delay = 0.3, thresh = 20.0, xt = 0.0; // constants to function
@@ -45,7 +43,7 @@ class S_DefaultSynapse {
     // synapse logic for decay
     if((V > thresh) && (t-last_spiked)>def_delay){
       xt = 1.0;
-      dxdt[last_spiked_index] = t*(1.0/0.05);
+      engine::synapse_value(index, "last_spike", t);
     }
 
     // constants from file
