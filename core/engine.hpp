@@ -102,6 +102,11 @@ class engine {
     exit(0);
   }
 
+  static void neuron_value(int id, string variable, double value) {
+    sprintf(key, "n%d%s", id, variable.c_str());
+    value_map[key] = value;
+  }
+
   static int synapse_index(int id, string variable) {
 #ifdef MAP
     try {
@@ -139,6 +144,11 @@ class engine {
       cout<<"C++ Exception: "<<msg;
     }
     exit(0);
+  }
+
+  static void synapse_value(int id, string variable, double value) {
+    sprintf(key, "s%d%s", id, variable.c_str());
+    value_map[key] = value;
   }
 
   static vector<int> get_indices(string variable) {
