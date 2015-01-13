@@ -45,6 +45,46 @@ class configuration {
 
   static ofstream outstream;
 
+  // trim from start
+  static inline std::string &ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+    return s;
+  } // function ltrim
+
+  // trim from end
+  static inline std::string &rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+    return s;
+  } // function rtrim
+
+  // trim from both ends
+  static inline std::string &trim(std::string &s) {
+    return ltrim(rtrim(s));
+  } // function trim
+
+  // convert string literal to double precision floating point number
+  static inline double string_to_double(string strnum) {
+    size_t sz;
+    double value;
+    try {
+      value = stod(strnum, &sz);
+    }
+    catch(const std::exception& e) {
+      cout<<"[insilico::configuration] Simulation Exception: "
+          <<"supplied with file that contains improper value: "<< strnum <<endl;
+      exit(0);
+    }
+    return value;
+  } // function string_to_double
+
+  static void file_check(ifstream& stream, string& filename) {
+    if(stream.is_open() == false) {
+      cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
+          <<" supplied with file ("<< filename <<") that does not exist."<<endl;
+      exit(0);
+    }
+  }
+
   static void initialize(int argc, char** argv) {
     if(argc < 3 || argc > 4) {
       cout<<"[insilico/configuration/initialize] USAGE: "<<argv[0]
