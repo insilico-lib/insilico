@@ -55,8 +55,10 @@ class configuration {
     }
     cout<<endl<<"[insilico/configuration/initialize] SUCCESS: Initializing with following parameters:"<<endl
         <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
+
     outstream.open(argv[1], ios::out);
     string neuron_file(argv[2]);
+
     if(argc == 4) {
       cout<<"Synapse file: "<<argv[3]<<endl;
       string synapse_file(argv[3]);
