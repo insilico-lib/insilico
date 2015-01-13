@@ -68,7 +68,7 @@ class configuration {
   } // function initialize
 
   static void finalize() {
-    cout<<endl<<"[insilico/configuration/finalize] SUCCESS: Simulation complete."<<endl;
+    cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
     outstream.close();
   } // function finalize
 
