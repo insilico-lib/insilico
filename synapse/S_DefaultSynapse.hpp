@@ -36,10 +36,10 @@ class S_DefaultSynapse {
 
     // synapse logic for delay for recently spiked neuron
     double xt = 0.0;
-    int neuron_index = engine::synapse_value(index, "pre");
+    double delay = engine::synapse_value(index, "delay");
 
+    int neuron_index = engine::synapse_value(index, "pre");
     double last_spiked = engine::neuron_value(neuron_index, "last_spike");
-    double delay = engine::neuron_value(neuron_index, "delay");
 
     if((t - last_spiked) > delay){
       xt = 1.0;
