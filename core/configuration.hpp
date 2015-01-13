@@ -116,169 +116,86 @@ class configuration {
 
   // read the input files - neuron_file and synapse_file
   static void read(string neuron_file, string synapse_file="") {
-    string str="", c_var="", key="";
     int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
-    bool dxdt_read = false;
+    char linedelim = ';', worddelim = ',', pairdelim = ':';
+    string part, first_item, key;
+    double second_item;
 
     ifstream neuron_stream(neuron_file);
-    if(neuron_stream.is_open() == false) {
-      cout<<"[insilico/configuration/read] Runtime Failure"<<endl
-          <<"Simulation Exception: insilico::configuration::initialize"
-          <<" supplied with file ("<< neuron_file <<") that does not exist."<<endl
-          <<"Suggestion: Check file name."
-          <<endl;
-      exit(0);
-    }
+    file_check(neuron_stream, neuron_file);
 
-    while(getline(neuron_stream,str) > 0) {
-      if(str.length()==0) continue;
-      engine::neuron_start_list_ids.push_back(ncount);
-      for (size_t str_index=0; str_index<str.length();++str_index) {
-        c_var = "";
-        while(str_index<str.length() && str.at(str_index)!=':') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        if(c_var.compare("dxdt")==0) {
-          dxdt_read = true;
-        }
-        else if(dxdt_count > 0) {
-          engine::var_list_ids.push_back(c_var);
-        }
-        key = "n" + to_string(ntrack) + c_var;
-        c_var = "";
-        ++str_index;
-        while(str_index<str.length() && str.at(str_index)!=',') {
-          c_var+=str.at(str_index);
-          ++str_index;
-        }
-        size_t sz;
-        try {
-          engine::value_map[key] = stod(c_var,&sz);
-        }
-        catch(const std::exception& e) {
-          cout<<"[insilico/configuration/read] Runtime Failure"<<endl
-              <<"Simulation Exception: insilico::configuration::initialize"
-              <<" supplied with file ("<< neuron_file <<") that does not contain proper neuron data."<<endl
-              <<"Suggestion: Check file contents."
-              <<endl;
-          exit(0);
-        }
-        if(dxdt_read == true) {
-          try {
-            dxdt_count = stoi(c_var,&sz);
-            dxdt_read = false;
-          }
-          catch(const std::exception& e) {
-            cout<<"[insilico/configuration/read] Runtime Failure"<<endl
-                <<"Simulation Exception: insilico::configuration::initialize"
-                <<" supplied with file ("<< neuron_file <<") that does not contain proper neuron data."<<endl
-                <<"Suggestion: Check file contents."
-                <<endl;
-            exit(0);
+    while(getline(neuron_stream, part, linedelim)) {
+      stringstream l(part);
+      if((trim(part)).length() > 0) {
+        engine::neuron_start_list_ids.push_back(ncount);
+        while(getline(l, part, worddelim)) {
+          if((trim(part)).length() > 0) {
+            stringstream k(part);
+            getline(k, part, pairdelim); first_item = trim(part);
+            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+
+            key = "n" + to_string(ntrack) + first_item;
+            if(first_item.compare("dxdt") == 0) {
+              dxdt_count = (int)second_item;
+            }
+            else if(dxdt_count > 0) {
+              engine::var_list_ids.push_back(first_item);
+              engine::var_vals.push_back(second_item);
+              engine::index_map[key] = ncount;
+              ++ncount;
+              --dxdt_count;
+            }
+            // universal value map
+            engine::value_map[key] = second_item;
           }
         }
-        else if(dxdt_count > 0){
-          engine::index_map[key] = ncount;
-          engine::var_vals.push_back(stod(c_var,&sz));
-          ++ncount;
-          --dxdt_count;
-        }
+        ntrack+=1;
+        engine::neuron_end_list_ids.push_back(ncount);
       }
-      ntrack+=1;
-      engine::neuron_end_list_ids.push_back(ncount);
     }
     neuron_stream.close();
 
-    if(synapse_file.length()!=0) {
-      ifstream synapse_stream(synapse_file);
-      bool pre=false, post=false;
-      if(synapse_stream.is_open() == false) {
-        cout<<"Runtime Failure"<<endl
-            <<"Simulation Exception: insilico::configuration::initialize"
-            <<" supplied with file ("<< synapse_file <<") that does not exist."<<endl
-            <<"Suggestion: Check file name."
-            <<endl;
-        exit(0);
-      }
+    ifstream synapse_stream(synapse_file);
+    file_check(synapse_stream, synapse_file);
 
-      while(getline(synapse_stream,str) > 0){
-        if(str.length()==0) continue;
+    while(getline(synapse_stream, part, linedelim)) {
+      stringstream l(part);
+      if((trim(part)).length() > 0) {
         engine::synapse_start_list_ids.push_back(ncount);
-        for (size_t str_index=0; str_index<str.length(); ++str_index) {
-          c_var = "";
-          while(str_index<str.length() && str.at(str_index)!=':') {
-            c_var+=str.at(str_index);
-            ++str_index;
-          }
-          if(c_var.compare("dxdt") == 0) {
-            dxdt_read = true;
-          }
-          else if(dxdt_count > 0) {
-            engine::var_list_ids.push_back(c_var);
-          }
-          key = "s" + to_string(strack) + c_var;
-          if(c_var.compare("pre")==0){
-            pre=true; post=false;
-          }
-          else if(c_var.compare("post")==0){
-            pre=false; post=true;
-          }
-          else {
-            pre=false; post=false;
-          }
-          c_var = "";
-          ++str_index;
-          while(str_index<str.length() && str.at(str_index)!=',') {
-            c_var+=str.at(str_index);
-            ++str_index;
-          }
-          size_t sz;
-          if(pre==true) {
-            engine::pre_neuron.push_back(stoi(c_var,&sz));
-          }
-          else if(post==true) {
-            engine::post_neuron.push_back(stoi(c_var,&sz));
-          }
-          try {
-            engine::value_map[key] = stod(c_var,&sz);
-          }
-          catch(const std::exception& e) {
-            cout<<"[insilico/configuration/read] Runtime Failure"<<endl
-                <<"Simulation Exception: insilico::configuration::initialize"
-                <<" supplied with file ("<< synapse_file <<") that does not contain proper neuron data."<<endl
-                <<"Suggestion: Check file contents."
-                <<endl;
-            exit(0);
-          }
-          if(dxdt_read == true) {
-            try {
-              dxdt_count = stoi(c_var,&sz);
-              dxdt_read = false;
+        while(getline(l, part, worddelim)) {
+          if((trim(part)).length() > 0) {
+            stringstream k(part);
+            getline(k, part, pairdelim); first_item = trim(part);
+            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+
+            key = "s" + to_string(strack) + first_item;
+            if(first_item.compare("dxdt") == 0) {
+              dxdt_count = (int)second_item;
             }
-            catch(const std::exception& e) {
-              cout<<"[insilico/configuration/read] Runtime Failure"<<endl
-                  <<"Simulation Exception: insilico::configuration::initialize"
-                  <<" supplied with file ("<< synapse_file <<") that does not contain proper neuron data."<<endl
-                  <<"Suggestion: Check file contents."
-                  <<endl;
-              exit(0);
+            else if(first_item.compare("pre") == 0) {
+              engine::pre_neuron.push_back((int)second_item);
             }
-          }
-          else if(dxdt_count > 0) {
-            engine::index_map[key] = ncount;
-            engine::var_vals.push_back(stod(c_var,&sz));
-            ++ncount;
-            --dxdt_count;
+            else if(first_item.compare("post") == 0) {
+              engine::post_neuron.push_back((int)second_item);
+            }
+            else if(dxdt_count > 0) {
+              engine::var_list_ids.push_back(first_item);
+              engine::var_vals.push_back(second_item);
+              engine::index_map[key] = ncount;
+              ++ncount;
+              --dxdt_count;
+            }
+            // universal value map
+            engine::value_map[key] = second_item;
           }
         }
         strack+=1;
         engine::synapse_end_list_ids.push_back(ncount);
       }
-      synapse_stream.close();
-      engine::populate_pre_synaptic_lists();
     }
-    cout << "[insilico/configuration/read] SUCCESS: Input file read complete.";
+    synapse_stream.close();
+    engine::populate_pre_synaptic_lists();
+    cout << "[insilico/configuration/read] SUCCESS: Input file read complete."<<endl;
   } // function read
 
   struct observer {
