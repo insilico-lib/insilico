@@ -109,12 +109,12 @@ class configuration {
     }
   } // function initialize
 
-
   static void finalize() {
     cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
     outstream.close();
   } // function finalize
 
+  // read the input files - neuron_file and synapse_file
   static void read(string neuron_file, string synapse_file="") {
     string str="", c_var="", key="";
     int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
@@ -282,10 +282,8 @@ class configuration {
   } // function read
 
   struct observer {
-    ofstream &stream;
-
-    observer(ofstream &stream_): stream(stream_) {}
-
+    ofstream &outfile;
+    observer(ofstream &stream_): outfile(stream_) {}
     void operator()(const state_type &variables, const double t);
   }; // struct observer
 
