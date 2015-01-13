@@ -34,12 +34,22 @@ class N_SquidAxon_HH1952 {
   static void ode_set(const state_type &variables, state_type &dxdt, const double t,
                int index) {
     int v_index = engine::neuron_index(index, "v");
-
     double v = variables[v_index];
-      
+
     vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
     vector<int> esyn_values = engine::get_pre_neuron_values(index, "esyn");
 
+    // note the spike
+    double last_spiked = engine::neuron_value(index, "last_spike");
+    double delay = engine::neuron_value(index, "delay");
+    double thresh = engine::neuron_value(index, "thresh");;
+
+    // associated delay for next spikes
+    if((v > thresh) && (t - last_spiked) > delay){
+      engine::neuron_value(index, "last_spike", t);
+    }
+
+    // incoming synaptic currents
     double I_Syn = 0;
     for(vector<int>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
       I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
@@ -49,7 +59,7 @@ class N_SquidAxon_HH1952 {
     double I_K = I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
     double I_Leak = I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
     double I_Ext = engine::neuron_value(index, "iext");
-    
+
     // ODE set
     dxdt[v_index] = I_Na + I_K + I_Leak + I_Ext + I_Syn;
   } // function ode_set
