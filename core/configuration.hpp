@@ -107,10 +107,30 @@ class configuration {
           ++str_index;
         }
         size_t sz;
-        engine::value_map[key] = stod(c_var,&sz);
+        try {
+          engine::value_map[key] = stod(c_var,&sz);
+        }
+        catch(const std::exception& e) {
+          cout<<"[insilico/configuration/read] Runtime Failure"<<endl
+              <<"Simulation Exception: insilico::configuration::initialize"
+              <<" supplied with file ("<< neuron_file <<") that does not contain proper neuron data."<<endl
+              <<"Suggestion: Check file contents."
+              <<endl;
+          exit(0);
+        }
         if(dxdt_read == true) {
-          dxdt_count = stod(c_var,&sz);
-          dxdt_read = false;
+          try {
+            dxdt_count = stoi(c_var,&sz);
+            dxdt_read = false;
+          }
+          catch(const std::exception& e) {
+            cout<<"[insilico/configuration/read] Runtime Failure"<<endl
+                <<"Simulation Exception: insilico::configuration::initialize"
+                <<" supplied with file ("<< neuron_file <<") that does not contain proper neuron data."<<endl
+                <<"Suggestion: Check file contents."
+                <<endl;
+            exit(0);
+          }
         }
         else if(dxdt_count > 0){
           engine::index_map[key] = ncount;
@@ -174,10 +194,30 @@ class configuration {
           else if(post==true) {
             engine::post_neuron.push_back(stoi(c_var,&sz));
           }
-          engine::value_map[key] = stod(c_var,&sz);
+          try {
+            engine::value_map[key] = stod(c_var,&sz);
+          }
+          catch(const std::exception& e) {
+            cout<<"[insilico/configuration/read] Runtime Failure"<<endl
+                <<"Simulation Exception: insilico::configuration::initialize"
+                <<" supplied with file ("<< synapse_file <<") that does not contain proper neuron data."<<endl
+                <<"Suggestion: Check file contents."
+                <<endl;
+            exit(0);
+          }
           if(dxdt_read == true) {
-            dxdt_count = stod(c_var,&sz);
-            dxdt_read = false;
+            try {
+              dxdt_count = stoi(c_var,&sz);
+              dxdt_read = false;
+            }
+            catch(const std::exception& e) {
+              cout<<"[insilico/configuration/read] Runtime Failure"<<endl
+                  <<"Simulation Exception: insilico::configuration::initialize"
+                  <<" supplied with file ("<< synapse_file <<") that does not contain proper neuron data."<<endl
+                  <<"Suggestion: Check file contents."
+                  <<endl;
+              exit(0);
+            }
           }
           else if(dxdt_count > 0) {
             engine::index_map[key] = ncount;
@@ -192,7 +232,6 @@ class configuration {
       synapse_stream.close();
       engine::populate_pre_synaptic_lists();
     }
-
     cout << "[insilico/configuration/read] SUCCESS: Input file read complete.";
   } // function read
 
