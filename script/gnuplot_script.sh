@@ -13,7 +13,7 @@ then
 exit 1
 fi
 
-gnuplot -e "set datafile separator \",\";
+gnuplot -persist -e "set datafile separator \",\";
      plot \""$1"\" using 1:2 with lines,
           \""$1"\" using 1:3 with lines;
      pause 2;
