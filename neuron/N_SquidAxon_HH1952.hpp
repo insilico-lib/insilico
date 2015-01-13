@@ -41,11 +41,11 @@ class N_SquidAxon_HH1952 {
 
     // note the spike
     double last_spiked = engine::neuron_value(index, "last_spike");
-    double delay = engine::neuron_value(index, "delay");
-    double thresh = engine::neuron_value(index, "thresh");;
+    double spike_duration = engine::neuron_value(index, "spike_duration");
+    double thresh = engine::neuron_value(index, "thresh");
 
     // associated delay for next spikes
-    if((v > thresh) && (t - last_spiked) > delay){
+    if((v > thresh) && (t - last_spiked) > spike_duration){
       engine::neuron_value(index, "last_spike", t);
     }
 
