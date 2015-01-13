@@ -24,10 +24,13 @@
 #include "core/engine.hpp"
 
 #include <algorithm>
+#include <functional>
 #include <cassert>
+#include <cctype>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
