@@ -53,12 +53,12 @@ void engine::operator()(const state_type &variables, state_type &dxdt,
 
 void configuration::observer::operator()(const state_type &variables, const double t) {
   vector<int> indices = engine::get_indices("v");
-  assert(stream.is_open());
-  stream << setprecision(2) << fixed << t;
+  assert(observer::outfile.is_open());
+  observer::outfile << setprecision(2) << fixed << t;
   for(int index : indices) {
-    stream << ',' << setprecision(6) << fixed << variables[index];
+    observer::outfile << ',' << setprecision(6) << fixed << variables[index];
   }
-  stream<<endl;
+  observer::outfile<<endl;
 };
 
 int main(int argc, char** argv) {
