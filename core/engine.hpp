@@ -152,8 +152,8 @@ class engine {
 
   static vector<int> get_indices(string variable) {
     vector<int> indices;
-    int total_size = neuron_count();
-    for(int index = 0; index < total_size; ++index) {
+    int neuron_size = neuron_count();
+    for(int index = 0; index < neuron_size; ++index) {
       indices.push_back(neuron_index(index,variable));
     }
     if(indices.empty()) {
