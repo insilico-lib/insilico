@@ -157,8 +157,9 @@ class engine {
       indices.push_back(neuron_index(index,variable));
     }
     if(indices.empty()) {
-      cout<<"FATAL ERROR: nnet::get methods supplied with malformed / incorrect arguments."
-          <<"Searching for all indices of variable = "<<variable<<endl<<"Exiting."<<endl;
+      cout<<"[insilico::engine::get_indices] Runtime Failure"<<endl
+          <<"Simulation Exception: Supplied with incorrect arguments."<<endl
+          <<"Searching for all indices of variable = "<<variable<<endl;
       exit(0);
     }
     return indices;
