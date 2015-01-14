@@ -70,10 +70,9 @@ class engine {
       sprintf(key, "n%d%s", id, variable.c_str());
       return index_map[key];
     }
-    catch(const char* msg) {
+    catch(const std::exception& e) {
       cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
           <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-      cout<<"C++ Exception"<<msg;
     }
     exit(0);
 #else
