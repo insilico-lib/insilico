@@ -91,7 +91,7 @@ class configuration {
           <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl;
       exit(0);
     }
-    cout<<endl<<"[insilico/configuration/initialize] SUCCESS: Initializing with following parameters:"<<endl
+    cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<endl
         <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
     outstream.open(argv[1], ios::out);
     string neuron_file(argv[2]);
@@ -191,7 +191,7 @@ class configuration {
     }
     synapse_stream.close();
     engine::populate_pre_synaptic_lists();
-    cout << "[insilico/configuration/read] SUCCESS: Input file read complete."<<endl;
+    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
   } // function read
 
   struct observer {
