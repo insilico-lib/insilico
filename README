@@ -4,13 +4,16 @@ insilico - Neuronal Simulation Library
 
 Official homepage: http://www.iiserpune.ac.in/~collins/insilico/
 
-Software Pre-requisites:
+Software Pre-requisites
+-----------------------
+
+insilico is written in C++ and uses C++11 standard of the langauge. Also, integration part of the library is handled using Boost.
 
 * Boost 1.56.0+
 * g++ 4.8.1+
 * make 3.8+
 
-The installation of above softwares for all platforms is expected to be in standard directories.
+The installation of above softwares for all platforms is expected to be in standard directories. Please do any essential manual changes are required to the environment for using this library.
 
 Build
 =====
