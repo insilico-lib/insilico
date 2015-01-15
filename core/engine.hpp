@@ -202,7 +202,7 @@ class engine {
     return neuron_start_list_ids.size();
   }
 
-  static int synapse_count() {
+  static inline int synapse_count() {
     return synapse_start_list_ids.size();
   }
 
