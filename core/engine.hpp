@@ -115,7 +115,7 @@ class engine {
       sprintf(key, "s%d%s", id, variable.c_str());
       return index_map[key];
     }
-    catch(const char* msg) {
+    catch(const std::exception& e) {
       cout<<"[insilico::engine] Simulator Exception:"
           <<" synapse_index method supplied with incorrect arguments."<<endl
           <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
