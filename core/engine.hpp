@@ -70,7 +70,7 @@ class engine {
       sprintf(key, "n%d%s", id, variable.c_str());
       return index_map[key];
     }
-    catch(const std::exception& e) {
+    catch(...) {
       cout<<"[insilico::engine] Simulator Exception:"
           <<" neuron_index method supplied with incorrect arguments."<<endl
           <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
