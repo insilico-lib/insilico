@@ -71,7 +71,8 @@ class engine {
       return index_map[key];
     }
     catch(const std::exception& e) {
-      cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" neuron_index method supplied with incorrect arguments."<<endl
           <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     }
     exit(0);
@@ -83,7 +84,8 @@ class engine {
         return iter;
       }
     }
-    cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_index method supplied with incorrect arguments."
+    cout<<"[insilico::engine] Simulator Exception:"
+        <<" neuron_index method supplied with incorrect arguments."<<endl
         <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     exit(0);
 #endif
@@ -95,7 +97,8 @@ class engine {
       return value_map[key];
     }
     catch(const char* msg) {
-      cout<<"Runtime Failure\nSimulator Exception: nnet::neuron_value method supplied with incorrect arguments."
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" neuron_value method supplied with incorrect arguments."<<endl
           <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     }
     exit(0);
@@ -113,9 +116,9 @@ class engine {
       return index_map[key];
     }
     catch(const char* msg) {
-      cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" synapse_index method supplied with incorrect arguments."<<endl
           <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-      cout<<"C++ Exception: "<<msg;
     }
     exit(0);
 #else
@@ -126,7 +129,8 @@ class engine {
         return iter;
       }
     }
-    cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_index method supplied with incorrect arguments."
+    cout<<"[insilico::engine] Simulator Exception:"
+        <<" synapse_index method supplied with incorrect arguments."<<endl
         <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     exit(0);
 #endif
@@ -138,9 +142,9 @@ class engine {
       return value_map[key];
     }
     catch(const char* msg) {
-      cout<<"Runtime Failure\nSimulator Exception: nnet::synapse_value method supplied with incorrect arguments."
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" synapse_value method supplied with incorrect arguments."<<endl
           <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-      cout<<"C++ Exception: "<<msg;
     }
     exit(0);
   }
