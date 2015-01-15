@@ -198,7 +198,7 @@ class engine {
     }
   }
   
-  static int neuron_count() {
+  static inline int neuron_count() {
     return neuron_start_list_ids.size();
   }
 
