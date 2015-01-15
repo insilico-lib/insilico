@@ -77,6 +77,17 @@ Run the following command on terminal to execute the code.
 
   .\insilico.out <outputfile>.dat <neuron_file>.conf [<synapse_file>.conf]
 
+Platforms
+=========
+
+We wish to make this library platform independent. The known minimum versions for a given platforms or compatible platforms:
+
+Linux:   Ubuntu 11.04 +
+Mac:     OS X +
+Windows: XP +
+
+Library is developed with majorly on Linux platform.
+
 Contributing
 ============
 
