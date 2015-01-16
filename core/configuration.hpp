@@ -85,6 +85,7 @@ class configuration {
     }
   }
 
+  // initialization, check and handle commandline arguments
   static void initialize(int argc, char** argv) {
     if(argc < 3 || argc > 4) {
       cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
