@@ -144,10 +144,9 @@ class configuration {
         engine::neuron_start_list_ids.push_back(ncount);
         while(getline(l, part, worddelim)) {
           if((trim(part)).length() > 0) {
-            stringstream k(part);
+            stringstream k(remove_comments(part));
             getline(k, part, pairdelim); first_item = trim(part);
             getline(k, part, pairdelim); second_item = string_to_double(trim(part));
-
             key = "n" + to_string(ntrack) + first_item;
             if(first_item.compare("dxdt") == 0) {
               dxdt_count = (int)second_item;
