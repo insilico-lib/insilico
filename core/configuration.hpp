@@ -106,6 +106,7 @@ class configuration {
     }
   } // function initialize
 
+  // close all output streams
   static void finalize() {
     cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
     outstream.close();
