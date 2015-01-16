@@ -7,7 +7,7 @@ Official homepage: http://www.iiserpune.ac.in/~collins/insilico/
 Software Pre-requisites
 -----------------------
 
-insilico is written in C++ and uses C++11 standard of the langauge. Also, integration part of the library is handled using Boost.
+insilico is written in C++ and uses C++11 standard of the langauge. Also, integration-of-ODE part of the library is handled using Boost.
 
 * Boost 1.56.0+
 * g++ 4.8.1+
