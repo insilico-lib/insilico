@@ -29,7 +29,6 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace insilico;
 using namespace std;
 
 // Mandate: Use of state_type should include this file
