@@ -208,13 +208,13 @@ class configuration {
     synapse_stream.close();
     engine::populate_pre_synaptic_lists();
     cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
-  } // function read
+  }
 
   struct observer {
     ofstream &outfile;
     observer(ofstream &stream_): outfile(stream_) {}
     void operator()(const state_type &variables, const double t);
-  }; // struct observer
+  };
 
 }; // class configuration
 
