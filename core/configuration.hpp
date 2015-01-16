@@ -110,7 +110,7 @@ class configuration {
   static void finalize() {
     cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
     outstream.close();
-  } // function finalize
+  }
 
   // clean input file inputs
   static string remove_comments(string& with_comments) {
@@ -126,7 +126,7 @@ class configuration {
       with_comments += full[it];
     }
     return with_comments;
-  } // function remove comments
+  }
 
   // read the input files - neuron_file and synapse_file
   static void read(string neuron_file, string synapse_file="") {
