@@ -28,7 +28,16 @@ using namespace std;
 namespace insilico {
 
 class random {
- public:  
+ public:
+
+  template<class T>
+  static T rand(T max) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<> dist(0, max+1);
+    return dist(gen);
+  }
+
   template<class T>
   static T rand(T min, T max) {
     random_device rd;
