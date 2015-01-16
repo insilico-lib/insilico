@@ -32,7 +32,7 @@ class random {
   template<class T>
   static T rand(T min, T max) {
     random_device rd;
-    mt19937 gen(rd());
+    mt19937_64 gen(rd());
     uniform_real_distribution<> dist(min, max+1);
     return dist(gen);
   }
