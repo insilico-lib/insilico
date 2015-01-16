@@ -75,7 +75,7 @@ class configuration {
       exit(0);
     }
     return value;
-  } // function string_to_double
+  }
 
   static void file_check(ifstream& stream, string& filename) {
     if(stream.is_open() == false) {
@@ -104,7 +104,7 @@ class configuration {
     else {
       read(neuron_file);
     }
-  } // function initialize
+  }
 
   // close all output streams
   static void finalize() {
