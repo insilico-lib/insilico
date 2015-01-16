@@ -35,14 +35,14 @@ class random {
     mt19937_64 gen(rd());
     uniform_real_distribution<> dist(min, max+1);
     return dist(gen);
-  }
+  } // function rand
 
   template<class T>
   static T rand(T max) {
     return rand(0, max);
-  }
-};
+  } // function rand
+}; // class random
 
-}
+} // namespace insilico
 
 #endif
