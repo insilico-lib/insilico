@@ -19,7 +19,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "network/neuronal_network.hpp"
 #include "core/configuration.hpp"
 #include "core/engine.hpp"
 
