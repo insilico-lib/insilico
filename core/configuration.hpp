@@ -112,6 +112,22 @@ class configuration {
     outstream.close();
   } // function finalize
 
+  // clean input file inputs
+  static string remove_comments(string& with_comments) {
+    stringstream s(with_comments);
+    char delim = '\"';
+    vector<string> full;
+    string part;
+    while(getline(s, part, delim)) {
+      full.push_back(part);
+    }
+    with_comments = "";
+    for(vector<string>::size_type it=0; it < full.size(); it+=2) {
+      with_comments += full[it];
+    }
+    return with_comments;
+  } // function remove comments
+
   // read the input files - neuron_file and synapse_file
   static void read(string neuron_file, string synapse_file="") {
     int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
