@@ -55,12 +55,12 @@ class configuration {
   static inline std::string &rtrim(std::string &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
     return s;
-  } // function rtrim
+  }
 
   // trim from both ends
   static inline std::string &trim(std::string &s) {
     return ltrim(rtrim(s));
-  } // function trim
+  }
 
   // convert string literal to double precision floating point number
   static inline double string_to_double(string strnum) {
