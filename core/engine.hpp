@@ -153,6 +153,11 @@ class engine {
     value_map[key] = value;
   }
 
+  static double current_value(int id, string variable) {
+    sprintf(key, "s%d%s", id, variable.c_str());
+    return value_map[key];
+  }
+
   static vector<int> get_indices(string variable) {
     vector<int> indices;
     int neuron_size = neuron_count();
