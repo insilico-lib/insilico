@@ -55,17 +55,17 @@ class N_SquidAxon_HH1952 {
       I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
 
+    // ODE set
+    I_Na_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+    I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+    I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
+
     double I_Na = engine::current_value(index, "I_Na_SquidAxon_HH_HH1952");
     double I_K = engine::current_value(index, "I_K_SquidAxon_HH_HH1952");
     double I_Leak = engine::current_value(index, "I_Leak_SquidAxon_HH_HH1952");
     double I_Ext = engine::neuron_value(index, "iext");
 
-    // ODE set
     dxdt[v_index] = I_Na + I_K + I_Leak + I_Ext + I_Syn;
-
-    I_Na_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
-    I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
-    I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
   } // function ode_set
 }; // class N_SquidAxon_HH1952
 
