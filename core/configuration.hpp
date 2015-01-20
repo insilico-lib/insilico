@@ -214,7 +214,7 @@ class configuration {
   struct observer {
     ofstream &outfile;
     observer(ofstream &stream_): outfile(stream_) {}
-    void operator()(const state_type &variables, const double t);
+    void operator()(state_type &variables, const double t);
   };
 
 }; // class configuration
