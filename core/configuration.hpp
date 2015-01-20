@@ -170,40 +170,40 @@ class configuration {
     neuron_stream.close();
 
     ifstream synapse_stream(synapse_file);
-    file_check(synapse_stream, synapse_file);
-
-    while(getline(synapse_stream, part, linedelim)) {
-      stringstream l(part);
-      if((trim(part)).length() > 0) {
-        engine::synapse_start_list_ids.push_back(ncount);
-        while(getline(l, part, worddelim)) {
-          if((trim(part)).length() > 0) {
-            stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); first_item = trim(part);
-            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
-            key = "s" + to_string(strack) + first_item;
-            if(first_item.compare("dxdt") == 0) {
-              dxdt_count = (int)second_item;
+    if(file_check(synapse_stream, synapse_file)) {
+      while(getline(synapse_stream, part, linedelim)) {
+        stringstream l(part);
+        if((trim(part)).length() > 0) {
+          engine::synapse_start_list_ids.push_back(ncount);
+          while(getline(l, part, worddelim)) {
+            if((trim(part)).length() > 0) {
+              stringstream k(remove_comments(part));
+              getline(k, part, pairdelim); first_item = trim(part);
+              getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+              key = "s" + to_string(strack) + first_item;
+              if(first_item.compare("dxdt") == 0) {
+                dxdt_count = (int)second_item;
+              }
+              else if(first_item.compare("pre") == 0) {
+                engine::pre_neuron.push_back((int)second_item);
+              }
+              else if(first_item.compare("post") == 0) {
+                engine::post_neuron.push_back((int)second_item);
+              }
+              else if(dxdt_count > 0) {
+                engine::var_list_ids.push_back(first_item);
+                engine::var_vals.push_back(second_item);
+                engine::index_map[key] = ncount;
+                ++ncount;
+                --dxdt_count;
+              }
+              // universal value map
+              engine::value_map[key] = second_item;
             }
-            else if(first_item.compare("pre") == 0) {
-              engine::pre_neuron.push_back((int)second_item);
-            }
-            else if(first_item.compare("post") == 0) {
-              engine::post_neuron.push_back((int)second_item);
-            }
-            else if(dxdt_count > 0) {
-              engine::var_list_ids.push_back(first_item);
-              engine::var_vals.push_back(second_item);
-              engine::index_map[key] = ncount;
-              ++ncount;
-              --dxdt_count;
-            }
-            // universal value map
-            engine::value_map[key] = second_item;
           }
+          strack+=1;
+          engine::synapse_end_list_ids.push_back(ncount);
         }
-        strack+=1;
-        engine::synapse_end_list_ids.push_back(ncount);
       }
     }
     synapse_stream.close();
