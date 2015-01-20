@@ -24,10 +24,9 @@
 #include "core/engine.hpp"
 
 #include <algorithm>
-#include <functional>
-#include <cassert>
 #include <cctype>
 #include <cstdio>
+#include <functional>
 #include <fstream>
 #include <iostream>
 #include <sstream>
