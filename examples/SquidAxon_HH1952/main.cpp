@@ -37,7 +37,7 @@ using namespace boost;
 using namespace insilico;
 using namespace std;
 
-void engine::operator()(const state_type &variables, state_type &dxdt,
+void engine::operator()(state_type &variables, state_type &dxdt,
                        const double time) {
   int network_size = engine::neuron_count();
   int synapse_count = engine::synapse_count();
