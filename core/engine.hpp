@@ -215,7 +215,7 @@ class engine {
     return synapse_start_list_ids.size();
   }
 
-  void operator()(vector<double> &variables, vector<double> &dxdt, const double time);
+  void operator()(vector<double>& variables, vector<double>& dxdt, const double time);
 
 }; // class engine
 
