@@ -1,6 +1,31 @@
 
-Release Notes
-=============
+Release Notes for Stable releases
+=================================
+
+Version 0.15
+------------
+
+New Feature: Supporting comments ("") in input files
+New Feature: Current values can be stored and retrieved using independent function
+New Feature: Multi-line inputs for single neuron/synapse are supported
+New Feature: Update to constant values in file is now permittable
+New Feature: Double precision floating points for better precision in computations
+New Feature: insilico has its own RNG - Random Number Generator
+New: NAMING_CONVENTION document added
+Improvement: Improved documentation - Contribution and README
+Improvement: Web portal improved and part of library source
+Improvement: Input file parsing is faster and cleaner
+Improvement: Logic for delay in synapse and spike duration in neuron improved
+Improvement: Example code
+
+Version 0.10
+------------
+
+- Generalized code compilation strategy
+- Enhancement to code execution strategy
+- Improved and concise sample example
+- Simulation specific concepts - Configuration and Engine
+- Community support improvement
 
 Version 0.02
 ------------
