@@ -1,4 +1,5 @@
 <?php include_once("pre_wrapper.php"); ?>
+<?php include_once("googleanalytics.php"); ?>
 
 <p class="page-content-header">Welcome to <span class="lib-name-font">insilico</span>!</p>
 
