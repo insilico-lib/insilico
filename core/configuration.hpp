@@ -57,7 +57,7 @@ class configuration {
   }
 
   // trim from both ends
-  static inline std::string &trim(std::string &s) {
+  static inline std::string& trim(std::string& s) {
     return ltrim(rtrim(s));
   }
 
