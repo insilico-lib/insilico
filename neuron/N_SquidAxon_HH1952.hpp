@@ -31,7 +31,7 @@ namespace insilico {
 
 class N_SquidAxon_HH1952 {
  public:
-  static void ode_set(const state_type &variables, state_type &dxdt, const double t,
+  static void ode_set(state_type& variables, state_type& dxdt, const double t,
                int index) {
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
