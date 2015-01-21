@@ -50,7 +50,7 @@ void engine::operator()(state_type &variables, state_type &dxdt,
   }
 }
 
-void configuration::observer::operator()(const state_type &variables, const double t) {
+void configuration::observer::operator()(state_type &variables, const double t) {
   vector<int> indices = engine::get_indices("v");
   assert(observer::outfile.is_open());
   observer::outfile << setprecision(2) << fixed << t;
