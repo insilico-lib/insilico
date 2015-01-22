@@ -34,7 +34,7 @@ namespace insilico {
 
 class I_K_SquidAxon_HH_HH1952 {
  public:
-  static void current(state_type& variables, state_type& dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
     double gk = 36, ek = -12;
 
     int v_index = engine::neuron_index(index, "v");
