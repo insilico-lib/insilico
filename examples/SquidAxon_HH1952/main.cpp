@@ -37,8 +37,7 @@ using namespace boost;
 using namespace insilico;
 using namespace std;
 
-void engine::operator()(state_type &variables, state_type &dxdt,
-                       const double time) {
+void engine::operator()(state_type &variables, state_type &dxdt, const double time) {
   int network_size = engine::neuron_count();
   int synapse_count = engine::synapse_count();
 
@@ -60,7 +59,7 @@ void configuration::observer::operator()(state_type &variables, const double t) 
   observer::outfile<<endl;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
 
   state_type variables = engine::get_variables();

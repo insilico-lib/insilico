@@ -34,8 +34,7 @@ using namespace boost;
 using namespace insilico;
 using namespace std;
 
-void engine::operator()(state_type &variables, state_type &dxdt,
-                       const double time) {
+void engine::operator()(state_type &variables, state_type &dxdt, const double time) {
   N_LIF_S1967::ode_set(variables, dxdt, time, 0);
 }
 
@@ -49,7 +48,7 @@ void configuration::observer::operator()(state_type &variables, const double t) 
   observer::outfile<<endl;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
 
   state_type variables = engine::get_variables();
