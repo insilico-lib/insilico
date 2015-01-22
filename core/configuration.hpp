@@ -24,10 +24,9 @@
 #include "core/engine.hpp"
 
 #include <algorithm>
-#include <functional>
-#include <cassert>
 #include <cctype>
 #include <cstdio>
+#include <functional>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -46,19 +45,19 @@ class configuration {
   static ofstream outstream;
 
   // trim from start
-  static inline std::string &ltrim(std::string &s) {
+  static inline std::string& ltrim(std::string& s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
     return s;
   }
 
   // trim from end
-  static inline std::string &rtrim(std::string &s) {
+  static inline std::string& rtrim(std::string& s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
     return s;
   }
 
   // trim from both ends
-  static inline std::string &trim(std::string &s) {
+  static inline std::string& trim(std::string& s) {
     return ltrim(rtrim(s));
   }
 
@@ -77,12 +76,14 @@ class configuration {
     return value;
   }
 
-  static void file_check(ifstream& stream, string& filename) {
+  // check if the file is present
+  static bool file_check(ifstream& stream, string& filename) {
     if(stream.is_open() == false) {
       cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
           <<" supplied with file ("<< filename <<") that does not exist."<<endl;
-      exit(0);
+      return false;
     }
+    return true;
   }
 
   // initialization, check and handle commandline arguments
@@ -136,73 +137,73 @@ class configuration {
     double second_item;
 
     ifstream neuron_stream(neuron_file);
-    file_check(neuron_stream, neuron_file);
-
-    while(getline(neuron_stream, part, linedelim)) {
-      stringstream l(part);
-      if((trim(part)).length() > 0) {
-        engine::neuron_start_list_ids.push_back(ncount);
-        while(getline(l, part, worddelim)) {
-          if((trim(part)).length() > 0) {
-            stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); first_item = trim(part);
-            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
-            key = "n" + to_string(ntrack) + first_item;
-            if(first_item.compare("dxdt") == 0) {
-              dxdt_count = (int)second_item;
+    if(file_check(neuron_stream, neuron_file)) {
+      while(getline(neuron_stream, part, linedelim)) {
+        stringstream l(part);
+        if((trim(part)).length() > 0) {
+          engine::neuron_start_list_ids.push_back(ncount);
+          while(getline(l, part, worddelim)) {
+            if((trim(part)).length() > 0) {
+              stringstream k(remove_comments(part));
+              getline(k, part, pairdelim); first_item = trim(part);
+              getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+              key = "n" + to_string(ntrack) + first_item;
+              if(first_item.compare("dxdt") == 0) {
+                dxdt_count = (int)second_item;
+              }
+              else if(dxdt_count > 0) {
+                engine::var_list_ids.push_back(first_item);
+                engine::var_vals.push_back(second_item);
+                engine::index_map[key] = ncount;
+                ++ncount;
+                --dxdt_count;
+              }
+              // universal value map
+              engine::value_map[key] = second_item;
             }
-            else if(dxdt_count > 0) {
-              engine::var_list_ids.push_back(first_item);
-              engine::var_vals.push_back(second_item);
-              engine::index_map[key] = ncount;
-              ++ncount;
-              --dxdt_count;
-            }
-            // universal value map
-            engine::value_map[key] = second_item;
           }
+          ntrack+=1;
+          engine::neuron_end_list_ids.push_back(ncount);
         }
-        ntrack+=1;
-        engine::neuron_end_list_ids.push_back(ncount);
       }
     }
     neuron_stream.close();
 
     ifstream synapse_stream(synapse_file);
-    file_check(synapse_stream, synapse_file);
-
-    while(getline(synapse_stream, part, linedelim)) {
-      stringstream l(part);
-      if((trim(part)).length() > 0) {
-        engine::synapse_start_list_ids.push_back(ncount);
-        while(getline(l, part, worddelim)) {
-          if((trim(part)).length() > 0) {
-            stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); first_item = trim(part);
-            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
-            key = "s" + to_string(strack) + first_item;
-            if(first_item.compare("dxdt") == 0) {
-              dxdt_count = (int)second_item;
+    if(file_check(synapse_stream, synapse_file)) {
+      while(getline(synapse_stream, part, linedelim)) {
+        stringstream l(part);
+        if((trim(part)).length() > 0) {
+          engine::synapse_start_list_ids.push_back(ncount);
+          while(getline(l, part, worddelim)) {
+            if((trim(part)).length() > 0) {
+              stringstream k(remove_comments(part));
+              getline(k, part, pairdelim); first_item = trim(part);
+              getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+              key = "s" + to_string(strack) + first_item;
+              if(first_item.compare("dxdt") == 0) {
+                dxdt_count = (int)second_item;
+              }
+              else if(first_item.compare("pre") == 0) {
+                engine::pre_neuron.push_back((int)second_item);
+              }
+              else if(first_item.compare("post") == 0) {
+                engine::post_neuron.push_back((int)second_item);
+              }
+              else if(dxdt_count > 0) {
+                engine::var_list_ids.push_back(first_item);
+                engine::var_vals.push_back(second_item);
+                engine::index_map[key] = ncount;
+                ++ncount;
+                --dxdt_count;
+              }
+              // universal value map
+              engine::value_map[key] = second_item;
             }
-            else if(first_item.compare("pre") == 0) {
-              engine::pre_neuron.push_back((int)second_item);
-            }
-            else if(first_item.compare("post") == 0) {
-              engine::post_neuron.push_back((int)second_item);
-            }
-            else if(dxdt_count > 0) {
-              engine::var_list_ids.push_back(first_item);
-              engine::var_vals.push_back(second_item);
-              engine::index_map[key] = ncount;
-              ++ncount;
-              --dxdt_count;
-            }
-            // universal value map
-            engine::value_map[key] = second_item;
           }
+          strack+=1;
+          engine::synapse_end_list_ids.push_back(ncount);
         }
-        strack+=1;
-        engine::synapse_end_list_ids.push_back(ncount);
       }
     }
     synapse_stream.close();
@@ -211,9 +212,9 @@ class configuration {
   }
 
   struct observer {
-    ofstream &outfile;
-    observer(ofstream &stream_): outfile(stream_) {}
-    void operator()(const state_type &variables, const double t);
+    ofstream& outfile;
+    observer(ofstream& stream_): outfile(stream_) {}
+    void operator()(state_type& variables, const double t);
   };
 
 }; // class configuration

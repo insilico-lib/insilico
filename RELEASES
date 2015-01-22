@@ -2,6 +2,14 @@
 Release Notes for Stable releases
 =================================
 
+Version 0.16
+------------
+
+New Feature: 'variables' vector is writable
+New: Added Integrate and Fire neuron
+New: Added Integrate and Fire neuron example
+Improvement: Parser for input files
+
 Version 0.15
 ------------
 

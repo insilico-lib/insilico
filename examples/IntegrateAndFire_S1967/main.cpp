@@ -1,9 +1,8 @@
 /*
- main.cpp - nsim source supporting models and main()
+ main.cpp - Integrate and Fire neuron example's main()
 
- Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
- Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
- Copyright (C) 2014 Arun Neru, Collins Assisi Lab, IISER, Pune <areinsdel@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Himanshu Rajmane, Suhita Nadkarni Lab, IISER, Pune <himanshu14121992@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -22,11 +21,9 @@
 #include "core/configuration.hpp"
 #include "core/engine.hpp"
 
-#include "neuron/N_SquidAxon_HH1952.hpp"
-#include "synapse/S_DefaultSynapse.hpp"
+#include "neuron/N_LIF_S1967.hpp"
 
 #include <boost/numeric/odeint.hpp>
-#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -39,21 +36,13 @@ using namespace std;
 
 void engine::operator()(state_type &variables, state_type &dxdt,
                        const double time) {
-  int network_size = engine::neuron_count();
-  int synapse_count = engine::synapse_count();
-
-  for(int neuron_index = 0; neuron_index < network_size; ++neuron_index) {
-    N_SquidAxon_HH1952::ode_set(variables, dxdt, time, neuron_index);
-  }
-  for(int synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
-    S_DefaultSynapse::ode_set(variables, dxdt, time, synapse_index);
-  }
+  N_LIF_S1967::ode_set(variables, dxdt, time, 0);
 }
 
 void configuration::observer::operator()(state_type &variables, const double t) {
   vector<int> indices = engine::get_indices("v");
   assert(observer::outfile.is_open());
-  observer::outfile << setprecision(2) << fixed << t;
+  observer::outfile << setprecision(4) << fixed << t;
   for(int index : indices) {
     observer::outfile << ',' << setprecision(6) << fixed << variables[index];
   }
@@ -67,7 +56,7 @@ int main(int argc, char** argv) {
   
   using namespace boost::numeric::odeint;
   integrate_const(runge_kutta4<state_type>(), engine(), variables,
-                  0.0, 100.0, 0.05, configuration::observer(configuration::outstream));
+                  0.0, 50.0, 0.01, configuration::observer(configuration::outstream));
 
   configuration::finalize();
   return 0;

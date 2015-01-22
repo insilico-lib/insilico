@@ -1,7 +1,7 @@
 /*
  core/engine.hpp - insilico's Simulation Engine API header and source
 
- Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014,2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -215,7 +215,7 @@ class engine {
     return synapse_start_list_ids.size();
   }
 
-  void operator()(const vector<double> &variables, vector<double> &dxdt, const double time);
+  void operator()(vector<double>& variables, vector<double>& dxdt, const double time);
 
 }; // class engine
 
