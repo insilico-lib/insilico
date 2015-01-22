@@ -26,7 +26,7 @@ namespace insilico {
 
 class S_DefaultSynapse {
  public:
-  static void ode_set(const state_type& variables, state_type& dxdt, const double t, int index) {
+  static void ode_set(const state_type &variables, state_type &dxdt, const double t, int index) {
     int g1_index = engine::synapse_index(index, "g1");
     int g2_index = engine::synapse_index(index, "g2");
 
@@ -51,7 +51,7 @@ class S_DefaultSynapse {
 
     // ODE set
     dxdt[g1_index] = g2;
-    dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2))*g2-g1+gsyn*xt;
+    dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2)) * g2 - g1 + gsyn * xt;
 
   } // function ode_set
 }; // class S_DefaultSynapse

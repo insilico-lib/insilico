@@ -47,6 +47,9 @@ class N_SquidAxon_HH1952 {
 
     // incoming synaptic currents
     double I_Syn = 0;
+    vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
+    vector<int> esyn_values = engine::get_pre_neuron_values(index, "esyn");
+
     for(vector<int>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
       I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
