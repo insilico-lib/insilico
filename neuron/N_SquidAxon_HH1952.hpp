@@ -31,13 +31,9 @@ namespace insilico {
 
 class N_SquidAxon_HH1952 {
  public:
-  static void ode_set(state_type& variables, state_type& dxdt, const double t,
-               int index) {
+  static void ode_set(state_type &variables, state_type &dxdt, const double t, int index) {
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
-
-    vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
-    vector<int> esyn_values = engine::get_pre_neuron_values(index, "esyn");
 
     // note the spike
     double last_spiked = engine::neuron_value(index, "last_spike");
