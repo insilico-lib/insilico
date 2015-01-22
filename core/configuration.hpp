@@ -45,19 +45,19 @@ class configuration {
   static ofstream outstream;
 
   // trim from start
-  static inline std::string& ltrim(std::string& s) {
+  static inline std::string& ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
     return s;
   }
 
   // trim from end
-  static inline std::string& rtrim(std::string& s) {
+  static inline std::string& rtrim(std::string &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
     return s;
   }
 
   // trim from both ends
-  static inline std::string& trim(std::string& s) {
+  static inline std::string& trim(std::string &s) {
     return ltrim(rtrim(s));
   }
 
@@ -77,7 +77,7 @@ class configuration {
   }
 
   // check if the file is present
-  static bool file_check(ifstream& stream, string& filename) {
+  static bool file_check(ifstream &stream, string &filename) {
     if(stream.is_open() == false) {
       cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
           <<" supplied with file ("<< filename <<") that does not exist."<<endl;
@@ -87,7 +87,7 @@ class configuration {
   }
 
   // initialization, check and handle commandline arguments
-  static void initialize(int argc, char** argv) {
+  static void initialize(int argc, char **argv) {
     if(argc < 3 || argc > 4) {
       cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
           <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl;
@@ -114,7 +114,7 @@ class configuration {
   }
 
   // clean input file inputs
-  static string remove_comments(string& with_comments) {
+  static string remove_comments(string &with_comments) {
     stringstream s(with_comments);
     char delim = '\"';
     vector<string> full;
@@ -212,9 +212,9 @@ class configuration {
   }
 
   struct observer {
-    ofstream& outfile;
-    observer(ofstream& stream_): outfile(stream_) {}
-    void operator()(state_type& variables, const double t);
+    ofstream &outfile;
+    observer(ofstream &stream_): outfile(stream_) {}
+    void operator()(state_type &variables, const double t);
   };
 
 }; // class configuration
