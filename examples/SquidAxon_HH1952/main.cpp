@@ -51,7 +51,6 @@ void engine::operator()(state_type &variables, state_type &dxdt, const double ti
 
 void configuration::observer::operator()(state_type &variables, const double t) {
   vector<int> indices = engine::get_indices("v");
-  assert(observer::outfile.is_open());
   observer::outfile << setprecision(2) << fixed << t;
   for(int index : indices) {
     observer::outfile << ',' << setprecision(6) << fixed << variables[index];
