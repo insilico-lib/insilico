@@ -64,7 +64,7 @@ class N_SquidAxon_HH1952 {
     double I_Leak = engine::current_value(index, "I_Leak_SquidAxon_HH_HH1952");
     double I_Ext = engine::neuron_value(index, "iext");
 
-    dxdt[v_index] = I_Na + I_K + I_Leak + I_Ext + I_Syn;
+    dxdt[v_index] = I_Ext - I_Na - I_K - I_Leak - I_Syn;
   } // function ode_set
 }; // class N_SquidAxon_HH1952
 
