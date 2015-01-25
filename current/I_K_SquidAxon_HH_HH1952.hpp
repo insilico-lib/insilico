@@ -50,7 +50,7 @@ class I_K_SquidAxon_HH_HH1952 {
     dxdt[n_index]=(alpha_n*(1 - n)-beta_n * n);
 
     // Current
-    engine::current_value(index, "I_K_SquidAxon_HH_HH1952", (-gk * pow(n,4) * (v - ek)));
+    engine::current_value(index, "I_K_SquidAxon_HH_HH1952", (gk * pow(n,4) * (v - ek)));
 
   } // function current
 }; // class I_K_SquidAxon_HH_HH1952
