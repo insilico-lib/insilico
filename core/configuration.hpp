@@ -78,7 +78,7 @@ class configuration {
 
   // check if the file is present
   static bool file_check(ifstream &stream, string &filename) {
-    if(stream.is_open() == false) {
+    if((!filename.empty()) && stream.is_open() == false) {
       cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
           <<" supplied with file ("<< filename <<") that does not exist."<<endl;
       return false;
