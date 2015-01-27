@@ -141,8 +141,7 @@ class engine {
       return value_map[key];
     }
     catch(...) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" synapse_value method supplied with incorrect arguments."<<endl
+      cout<<"[insilico::engine] Simulator Exception: synapse_value method supplied with incorrect arguments."<<endl
           <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
     }
     exit(0);
