@@ -163,15 +163,9 @@ class engine {
   }
 
   static vector<int> get_indices(string variable) {
-    vector<int> indices;
-    int neuron_size = neuron_count();
-    for(int index = 0; index < neuron_size; ++index) {
-      indices.push_back(neuron_index(index,variable));
-    }
-    if(indices.empty()) {
-      cout<<"[insilico::engine] Simulation Exception: get_indices supplied with incorrect arguments."<<endl
-          <<"Searching for indices of variable = "<<variable<<" failed."<<endl;
-      exit(0);
+    vector<int> indices(neuron_count());
+    for(vector<int>::size_type index = 0; index < indices.size(); ++index) {
+      indices[index] = neuron_index(index, variable);
     }
     return indices;
   }
