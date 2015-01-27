@@ -183,8 +183,7 @@ class engine {
       values.push_back(neuron_value(index,variable));
     }
     if(indices.empty()) {
-      cout<<"[insilico::engine] Simulation Exception:"
-          <<" get_values supplied with incorrect arguments."<<endl
+      cout<<"[insilico::engine] Simulation Exception: get_values supplied with incorrect arguments."<<endl
           <<"Searching for indices of variable = "<<variable<<" failed."<<endl;
       exit(0);
     }
