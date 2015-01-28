@@ -40,9 +40,9 @@ Makefile generates the executable for the program which can accept three paramet
 *1st Parameter is Output file*
 
   Simulation results will be written to this file as comma separated values in following format for each line of output.
-
-  | time-step | variable-1 | variable-2 | variable-3 | ... | variable-n |
-
+```
+  time-step , variable-1 , variable-2 , variable-3 , ... , variable-n
+```
   - time-step:
     current time-step
   
@@ -58,9 +58,9 @@ Makefile generates the executable for the program which can accept three paramet
   Synapse taking part in simulation. This input file is optional argument if there is no synapse in the simulation. Every line represents a synapse.
 
   Both the above parameter files has their specification as comma separated key:value pair(s) in the following format on each line.
-
-  | dxdt:<ODE-vars> | <var1>:<init> | <var2>:<init> | ... | <varN>:<init> |
-
+```
+  dxdt:<ODE-vars> , <var1>:<init> , <var2>:<init> , ... , <varN>:<init> ;
+```
   - dxdt:<ODE-vars>:
     denotes the count of ODE variables, all the variables for ODEs in the simulation code should satisfy their count and the value replacing <ODE-vars> and those many variables should follow immediately after ('dxdt' is a library keyword, <ODE-vars> should be replaced by positive integer)
   
