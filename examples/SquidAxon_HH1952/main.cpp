@@ -59,9 +59,8 @@ void configuration::observer::operator()(state_type &variables, const double t) 
 
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
-
   state_type variables = engine::get_variables();
-  
+
   using namespace boost::numeric::odeint;
   integrate_const(runge_kutta4<state_type>(), engine(), variables,
                   0.0, 100.0, 0.05, configuration::observer(configuration::outstream));
