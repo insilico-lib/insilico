@@ -112,15 +112,8 @@ class engine {
   }
 
   static double synapse_value(int id, string variable) {
-    try {
-      sprintf(key, "s%d%s", id, variable.c_str());
-      return value_map[key];
-    }
-    catch(...) {
-      cout<<"[insilico::engine] Simulator Exception: synapse_value method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    }
-    exit(0);
+    sprintf(key, "s%d%s", id, variable.c_str());
+    return value_map[key];
   }
 
   static void synapse_value(int id, string variable, double value) {
