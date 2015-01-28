@@ -26,14 +26,13 @@
 #include "synapse/S_DefaultSynapse.hpp"
 
 #include <boost/numeric/odeint.hpp>
-#include <cassert>
+
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <vector>
 
-using namespace boost;
 using namespace insilico;
 using namespace std;
 
