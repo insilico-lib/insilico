@@ -73,13 +73,13 @@ Execute
 Run the following command on terminal to execute the code.
 
 * Linux / Mac OS
-
-  ./insilico.out <outputfile>.dat <neuron_file>.conf [<synapse_file>.conf]
-
+```
+  $ ./insilico.out <outputfile>.dat <neuron_file>.conf [<synapse_file>.conf]
+```
 * Windows
-
-  .\insilico.out <outputfile>.dat <neuron_file>.conf [<synapse_file>.conf]
-
+```
+  $ .\insilico.out <outputfile>.dat <neuron_file>.conf [<synapse_file>.conf]
+```
 Platforms
 =========
 
