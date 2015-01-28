@@ -205,9 +205,9 @@ class configuration {
           engine::synapse_end_list_ids.push_back(ncount);
         }
       }
+      engine::populate_pre_synaptic_lists();
     }
     synapse_stream.close();
-    engine::populate_pre_synaptic_lists();
     cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
   }
 
