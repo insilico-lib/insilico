@@ -37,8 +37,7 @@ Input and Output files in detail
 
 Makefile generates the executable for the program which can accept three parameters as given below.
 
-* 1st Parameter is Output file
-------------------------------
+*1st Parameter is Output file*
 
   Simulation results will be written to this file as comma separated values in following format for each line of output.
 
@@ -52,13 +51,11 @@ Makefile generates the executable for the program which can accept three paramet
   - variable-1 to variable-n:
     all the varible values that are provided to insilico::configuration::observer
 
-* 2nd Parameter is Neuron file
-------------------------------
+* 2nd Parameter is Neuron file *
 
   Neurons taking part in simulation. Every line represents a Neuron.
 
-* 3rd Parameter is Synapse file
--------------------------------
+* 3rd Parameter is Synapse file *
 
   Synapse taking part in simulation. This input file is optional argument if there is no synapse in the simulation. Every line represents a synapse.
 
