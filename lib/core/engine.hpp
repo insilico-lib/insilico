@@ -17,8 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INCLUDED_ENGINE_HPP
-#define INCLUDED_ENGINE_HPP
+#ifndef INCLUDED_INSILICO_ENGINE_HPP
+#define INCLUDED_INSILICO_ENGINE_HPP
 
 #include <algorithm>
 #include <cassert>
