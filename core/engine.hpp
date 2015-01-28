@@ -170,8 +170,8 @@ class engine {
     return indices;
   }
 
-  static vector<int> get_values(string variable) {
-    vector<int> values(neuron_count());
+  static vector<double> get_values(string variable) {
+    vector<double> values(neuron_count());
     for(vector<int>::size_type index = 0; index < values.size(); ++index) {
       values[index] = neuron_value(index, variable);
     }
