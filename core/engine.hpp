@@ -65,16 +65,8 @@ class engine {
 
   static int neuron_index(int id, string variable) {
 #ifdef MAP
-    try {
-      sprintf(key, "n%d%s", id, variable.c_str());
-      return index_map[key];
-    }
-    catch(...) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" neuron_index method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    }
-    exit(0);
+    sprintf(key, "n%d%s", id, variable.c_str());
+    return index_map[key];
 #else
     int startindex = neuron_start_list_ids.at(id);
     int endindex = neuron_end_list_ids.at(id);
