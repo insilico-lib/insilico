@@ -89,7 +89,7 @@ Linux:   Ubuntu 11.04 +
 Mac:     OS X +
 Windows: XP +
 
-Library is developed with majorly on Linux platform.
+Library is developed majorly on Linux platform.
 
 Contributing
 ============
