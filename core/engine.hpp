@@ -83,16 +83,8 @@ class engine {
   }
 
   static double neuron_value(int id, string variable) {
-    try {
-      sprintf(key, "n%d%s", id, variable.c_str());
-      return value_map[key];
-    }
-    catch(...) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" neuron_value method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    }
-    exit(0);
+    sprintf(key, "n%d%s", id, variable.c_str());
+    return value_map[key];
   }
 
   static void neuron_value(int id, string variable, double value) {
