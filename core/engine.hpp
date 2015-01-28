@@ -94,16 +94,8 @@ class engine {
 
   static int synapse_index(int id, string variable) {
 #ifdef MAP
-    try {
-      sprintf(key, "s%d%s", id, variable.c_str());
-      return index_map[key];
-    }
-    catch(...) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" synapse_index method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    }
-    exit(0);
+    sprintf(key, "s%d%s", id, variable.c_str());
+    return index_map[key];
 #else
     int startindex = synapse_start_list_ids.at(id);
     int endindex = synapse_end_list_ids.at(id);
