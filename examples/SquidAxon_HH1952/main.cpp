@@ -1,5 +1,5 @@
 /*
- main.cpp - nsim source supporting models and main()
+ main.cpp - insilico's example using neuron and synapse for illustrations
 
  Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
