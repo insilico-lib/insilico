@@ -84,7 +84,7 @@ Platforms
 We wish to make this library platform independent. The known minimum versions for a given platforms or compatible platforms:
 
 |OS     | Version        |
---------------------------
+|-------|----------------|
 |Linux  | Ubuntu 11.04 + |
 |Mac    | OS X +         |
 |Windows| XP +           |
