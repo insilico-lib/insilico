@@ -37,10 +37,10 @@ using namespace insilico;
 using namespace std;
 
 void engine::operator()(state_type &variables, state_type &dxdt, const double time) {
-  int network_size = engine::neuron_count();
+  int neuron_count = engine::neuron_count();
   int synapse_count = engine::synapse_count();
 
-  for(int neuron_index = 0; neuron_index < network_size; ++neuron_index) {
+  for(int neuron_index = 0; neuron_index < neuron_count; ++neuron_index) {
     N_SquidAxon_HH1952::ode_set(variables, dxdt, time, neuron_index);
   }
   for(int synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
