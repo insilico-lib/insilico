@@ -44,9 +44,7 @@ char key[128];
 namespace insilico {
 
 class engine {
-
  public:
-  
   static unordered_map<string, int> index_map;
   static unordered_map<string, double> value_map;
   static vector<int> neuron_start_list_ids;
