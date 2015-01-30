@@ -28,7 +28,7 @@ TARGET = insilico.out
 CC = g++
 
 # Flags to specify the compilation startegy
-CFLAGS = -O3 -std=c++11 -Wall -Ilib -o
+CFLAGS = -O3 -std=c++11 -Wall -Iinclude -o
 
 all: $(TARGET)
 
