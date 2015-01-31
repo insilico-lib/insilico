@@ -23,6 +23,10 @@
 
 #include "core/engine.hpp"
 
+#ifdef INSILICO_MPI_ENABLE
+#include "parallel/mpi.hpp"
+#endif
+
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -41,8 +45,73 @@ namespace insilico {
 
 class configuration {
  public:
-
   static ofstream outstream;
+
+  // initialization, check and handle commandline arguments
+  static void initialize(int argc, char **argv) {
+#ifdef INSILICO_MPI_ENABLE
+    mpi::configuration::initialize(argc, argv);
+#endif
+    if(argc < 3 || argc > 4) {
+#ifdef INSILICO_MPI_ENABLE
+      if(mpi::rank == MASTER) {
+#endif
+        cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
+            <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl;
+#ifdef INSILICO_MPI_ENABLE
+      }
+      mpi::abort();
+#else
+      exit(1);
+#endif
+    }
+#ifdef INSILICO_MPI_ENABLE
+      if(insilico::mpi::rank == MASTER) {
+#endif
+        cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<endl
+            <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
+#ifdef INSILICO_MPI_ENABLE
+      }
+#endif
+    outstream.open(argv[1], ios::out);
+    string neuron_file(argv[2]);
+    if(argc == 4) {
+#ifdef INSILICO_MPI_ENABLE
+      if(insilico::mpi::rank == MASTER) {
+#endif
+      cout<<"Synapse file: "<<argv[3]<<endl;
+#ifdef INSILICO_MPI_ENABLE
+      }
+#endif
+      string synapse_file(argv[3]);
+      read(neuron_file, synapse_file);
+    }
+    else {
+      read(neuron_file);
+    }
+#ifdef INSILICO_MPI_ENABLE
+      if(insilico::mpi::rank == MASTER) {
+#endif
+    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
+#ifdef INSILICO_MPI_ENABLE
+      }
+#endif
+  }
+
+  // close all output streams
+  static void finalize() {
+#ifdef INSILICO_MPI_ENABLE
+      if(insilico::mpi::rank == MASTER) {
+#endif
+        cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
+#ifdef INSILICO_MPI_ENABLE
+      }
+#endif
+    outstream.close();
+#ifdef INSILICO_MPI_ENABLE
+    mpi::configuration::finalize();
+#endif
+  }
 
   // trim from start
   static inline std::string& ltrim(std::string &s) {
@@ -84,33 +153,6 @@ class configuration {
       return false;
     }
     return true;
-  }
-
-  // initialization, check and handle commandline arguments
-  static void initialize(int argc, char **argv) {
-    if(argc < 3 || argc > 4) {
-      cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
-          <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl;
-      exit(0);
-    }
-    cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<endl
-        <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
-    outstream.open(argv[1], ios::out);
-    string neuron_file(argv[2]);
-    if(argc == 4) {
-      cout<<"Synapse file: "<<argv[3]<<endl;
-      string synapse_file(argv[3]);
-      read(neuron_file, synapse_file);
-    }
-    else {
-      read(neuron_file);
-    }
-  }
-
-  // close all output streams
-  static void finalize() {
-    cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
-    outstream.close();
   }
 
   // clean input file inputs
@@ -208,7 +250,6 @@ class configuration {
       engine::populate_pre_synaptic_lists();
     }
     synapse_stream.close();
-    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
   }
 
   struct observer {
