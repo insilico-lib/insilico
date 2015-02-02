@@ -17,8 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INCLUDED_INSILICO_ENGINE_HPP
-#define INCLUDED_INSILICO_ENGINE_HPP
+#ifndef INCLUDED_INSILICO_CORE_ENGINE_HPP
+#define INCLUDED_INSILICO_CORE_ENGINE_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -28,6 +28,10 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#ifdef INSILICO_MPI_ENABLE
+#include "parallel/synchronization.hpp"
+#endif
 
 using namespace std;
 
@@ -66,6 +70,7 @@ class engine {
     sprintf(key, "n%d%s", id, variable.c_str());
     return index_map[key];
 #else
+    int index = -1;
     int startindex = neuron_start_list_ids.at(id);
     int endindex = neuron_end_list_ids.at(id);
     for(int iter=startindex;iter<endindex;++iter) {
@@ -73,10 +78,13 @@ class engine {
         return iter;
       }
     }
-    cout<<"[insilico::engine] Simulator Exception:"
-        <<" neuron_index method supplied with incorrect arguments."<<endl
-        <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    exit(0);
+    if(index == -1) {
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" neuron_index method supplied with incorrect arguments."<<endl
+          <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+      exit(0);
+    }
+    return index;
 #endif
   }
 
@@ -95,17 +103,21 @@ class engine {
     sprintf(key, "s%d%s", id, variable.c_str());
     return index_map[key];
 #else
+    int index = -1;
     int startindex = synapse_start_list_ids.at(id);
     int endindex = synapse_end_list_ids.at(id);
     for(int iter=startindex;iter<endindex;++iter) {
       if(variable.compare(var_list_ids[iter]) == 0) {
-        return iter;
+        index = iter; break;
       }
     }
-    cout<<"[insilico::engine] Simulator Exception:"
-        <<" synapse_index method supplied with incorrect arguments."<<endl
-        <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
-    exit(0);
+    if(index == -1) {
+      cout<<"[insilico::engine] Simulator Exception:"
+          <<" synapse_index method supplied with incorrect arguments."<<endl
+          <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+      exit(0);
+    }
+    return index;
 #endif
   }
 
@@ -183,7 +195,6 @@ class engine {
   }
 
   void operator()(vector<double> &variables, vector<double> &dxdt, const double time);
-
 }; // class engine
 
 // static member definitions
