@@ -37,7 +37,7 @@ class S_DefaultSynapse {
     double xt = 0.0;
     double delay = engine::synapse_value(index, "delay");
 
-    int neuron_index = engine::synapse_value(index, "pre");
+    int neuron_index = engine::synapse_value(index, "post");
     double last_spiked = engine::neuron_value(neuron_index, "last_spike");
 
     if((t - last_spiked) > delay){
@@ -59,5 +59,3 @@ class S_DefaultSynapse {
 } // insilico
 
 #endif
-
-
