@@ -47,19 +47,19 @@ namespace insilico {
 
 class engine {
  public:
-  static unordered_map<string, int> index_map;
-  static unordered_map<string, double> value_map;
-  static vector<int> neuron_start_list_ids;
-  static vector<int> neuron_end_list_ids;
-  static vector<int> synapse_start_list_ids;
-  static vector<int> synapse_end_list_ids;
-  static vector< vector<int> > pre_synaptic_lists;
-  static vector<int> pre_neuron;
-  static vector<int> post_neuron;
-  static vector<string> var_list_ids;
-  static vector<double> var_vals;
+  static std::unordered_map<std::string, int> index_map;
+  static std::unordered_map<std::string, double> value_map;
+  static std::vector<int> neuron_start_list_ids;
+  static std::vector<int> neuron_end_list_ids;
+  static std::vector<int> synapse_start_list_ids;
+  static std::vector<int> synapse_end_list_ids;
+  static std::vector< std::vector<int> > pre_synaptic_lists;
+  static std::vector<int> pre_neuron;
+  static std::vector<int> post_neuron;
+  static std::vector<std::string> var_list_ids;
+  static std::vector<double> var_vals;
 
-  static vector<double> get_variables() {
+  static std::vector<double> get_variables() {
     return var_vals;
   }
 
