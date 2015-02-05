@@ -77,9 +77,9 @@ class engine {
       }
     }
     if(index == -1) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" neuron_index method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+      std::cout<<"[insilico::engine] Simulator Exception:"
+               <<" neuron_index method supplied with incorrect arguments. "
+               <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<std::endl;
       exit(0);
     }
     return index;
@@ -110,9 +110,9 @@ class engine {
       }
     }
     if(index == -1) {
-      cout<<"[insilico::engine] Simulator Exception:"
-          <<" synapse_index method supplied with incorrect arguments."<<endl
-          <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<endl;
+      std::cout<<"[insilico::engine] Simulator Exception:"
+               <<" synapse_index method supplied with incorrect arguments. "
+               <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<std::endl;
       exit(0);
     }
     return index;
