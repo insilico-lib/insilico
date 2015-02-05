@@ -73,7 +73,7 @@ class engine {
     int endindex = neuron_end_list_ids.at(id);
     for(int iter=startindex;iter<endindex;++iter) {
       if(variable.compare(var_list_ids[iter]) == 0) {
-        intex = iter; break;
+        index = iter; break;
       }
     }
     if(index == -1) {
