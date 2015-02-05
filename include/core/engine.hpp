@@ -192,21 +192,21 @@ class engine {
     return synapse_start_list_ids.size();
   }
 
-  void operator()(vector<double> &variables, vector<double> &dxdt, const double time);
+  void operator()(std::vector<double> &variables, std::vector<double> &dxdt, const double time);
 }; // class engine
 
 // static member definitions
-unordered_map<string, int> engine::index_map;
-unordered_map<string, double> engine::value_map;
-vector<int> engine::neuron_start_list_ids;
-vector<int> engine::neuron_end_list_ids;
-vector<int> engine::synapse_start_list_ids;
-vector<int> engine::synapse_end_list_ids;
-vector<vector<int>> engine::pre_synaptic_lists;
-vector<int> engine::pre_neuron;
-vector<int> engine::post_neuron;
-vector<string> engine::var_list_ids;
-vector<double> engine::var_vals;
+std::unordered_map<std::string, int> engine::index_map;
+std::unordered_map<std::string, double> engine::value_map;
+std::vector<int> engine::neuron_start_list_ids;
+std::vector<int> engine::neuron_end_list_ids;
+std::vector<int> engine::synapse_start_list_ids;
+std::vector<int> engine::synapse_end_list_ids;
+std::vector<std::vector<int>> engine::pre_synaptic_lists;
+std::vector<int> engine::pre_neuron;
+std::vector<int> engine::post_neuron;
+std::vector<std::string> engine::var_list_ids;
+std::vector<double> engine::var_vals;
 
 } // insilico
 
