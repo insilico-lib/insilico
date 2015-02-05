@@ -86,17 +86,17 @@ class engine {
 #endif
   }
 
-  static double neuron_value(int id, string variable) {
+  static double neuron_value(int id, std::string variable) {
     sprintf(key, "n%d%s", id, variable.c_str());
     return value_map[key];
   }
 
-  static void neuron_value(int id, string variable, double value) {
+  static void neuron_value(int id, std::string variable, double value) {
     sprintf(key, "n%d%s", id, variable.c_str());
     value_map[key] = value;
   }
 
-  static int synapse_index(int id, string variable) {
+  static int synapse_index(int id, std::string variable) {
 #ifdef MAP
     sprintf(key, "s%d%s", id, variable.c_str());
     return index_map[key];
