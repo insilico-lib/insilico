@@ -63,7 +63,7 @@ class engine {
     return var_vals;
   }
 
-  static int neuron_index(int id, string variable) {
+  static int neuron_index(int id, std::string variable) {
 #ifdef MAP
     sprintf(key, "n%d%s", id, variable.c_str());
     return index_map[key];
