@@ -2,6 +2,17 @@
 Release Notes for Stable releases
 =================================
 
+(Please refer IDC (insilico Developer Channel, https://groups.google.com/forum/#!forum/insilico) mail for detailed description)
+
+Version 0.17
+------------
+
+New Feature: Observation of constants from Neurons
+New: Improved compilation time
+New: Explicit include directory
+Bug Fix: Values transferred from connections (synapses) to nodes (neurons) are double precision floating points
+Bug Fix: connectivity file (a.k.a. synapse file) is optional
+
 Version 0.16
 ------------
 
