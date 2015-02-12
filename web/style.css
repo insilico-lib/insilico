@@ -33,7 +33,8 @@ a:hover {
     font-family: Monospace, Courier;
 }
 .page-contents-value {
-    padding: 10px; 
+    padding: 10px;
+    min-height: 300px;
 }
 .code {
     border: 1px dotted lightblue;
