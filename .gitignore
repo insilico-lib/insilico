@@ -32,3 +32,6 @@ output/*
 *.exe
 *.out
 *.app
+
+# Mac specific
+.DS_store
