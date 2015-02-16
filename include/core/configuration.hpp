@@ -132,10 +132,9 @@ class configuration {
 
   // convert string literal to double precision floating point number
   static inline double string_to_double(string strnum) {
-    size_t sz;
     double value;
     try {
-      value = stod(strnum, &sz);
+      value = ::atof(strnum.c_str());
     }
     catch(const std::exception& e) {
       cout<<"[insilico::configuration] Simulation Exception: "
