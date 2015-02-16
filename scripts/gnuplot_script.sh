@@ -1,3 +1,4 @@
+
 #!/bin/sh
 #
 # Script for continuous display of simulation output through Gnuplot
@@ -13,11 +14,15 @@ then
 exit 1
 fi
 
-gnuplot -persist -e "set datafile separator \",\";
-     plot \""$1"\" using 1:2 with lines,
-          \""$1"\" using 1:3 with lines;
-     pause 2;
-     replot;
-     reread;"
+gnuplot -persist -e "set term jpeg; set output \"output_file_v.jpeg\";
+     set datafile separator \",\";
+     plot \""$1"\" using 1:2 with lines;"
 
+# gnuplot -persist -e "set term jpeg; set output \"output_file_others.jpeg\";
+#      set datafile separator \",\";
+#      plot \""$1"\" using 1:3 with lines title \"m\", 
+#           \""$1"\" using 1:4 with lines title \"h\",
+#           \""$1"\" using 1:5 with lines title \"n\";"
 
+open output_file_v.jpeg
+# open output_file_others.jpeg	
