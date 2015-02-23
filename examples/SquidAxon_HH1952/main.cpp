@@ -56,10 +56,10 @@ void configuration::observer::operator()(state_type &variables, const double t) 
 
   observer::outfile << setprecision(2) << fixed << t;
   for(vector<double>::size_type index = 0; index < v_indices.size() ; ++index) {
-    observer::outfile << ',' << variables[v_indices[index]];
-    observer::outfile << ',' << variables[m_indices[index]];
-    observer::outfile << ',' << variables[h_indices[index]];
-    observer::outfile << ',' << variables[n_indices[index]];
+    observer::outfile << ',' << variables[v_indices[index]]
+                      << ',' << variables[m_indices[index]]
+                      << ',' << variables[h_indices[index]]
+                      << ',' << variables[n_indices[index]];
   }
   observer::outfile<<endl;
 };
