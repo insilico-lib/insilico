@@ -57,7 +57,7 @@ class configuration {
       if(mpi::rank == MASTER) {
 #endif
         cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
-            <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<endl;
+            <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
       mpi::abort();
@@ -68,8 +68,8 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-        cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<endl
-            <<"Output file: "<<argv[1]<<endl<<"Neuron file: "<<argv[2]<<endl;
+        cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<'\n'
+            <<"Output file: "<<argv[1]<<'\n'<<"Neuron file: "<<argv[2]<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -79,7 +79,7 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-      cout<<"Synapse file: "<<argv[3]<<endl;
+      cout<<"Synapse file: "<<argv[3]<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -92,7 +92,7 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<endl;
+    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -103,7 +103,7 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-        cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<endl;
+        cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -138,7 +138,7 @@ class configuration {
     }
     catch(const std::exception& e) {
       cout<<"[insilico::configuration] Simulation Exception: "
-          <<"supplied with file that contains improper value: "<< strnum <<endl;
+          <<"supplied with file that contains improper value: "<< strnum <<'\n';
       exit(0);
     }
     return value;
@@ -148,7 +148,7 @@ class configuration {
   static bool file_check(ifstream &stream, string &filename) {
     if((!filename.empty()) && stream.is_open() == false) {
       cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
-          <<" supplied with file ("<< filename <<") that does not exist."<<endl;
+          <<" supplied with file ("<< filename <<") that does not exist."<<'\n';
       return false;
     }
     return true;
