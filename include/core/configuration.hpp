@@ -38,14 +38,11 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace insilico;
-using namespace std;
-
 namespace insilico {
 
 class configuration {
  public:
-  static ofstream outstream;
+  static std::ofstream outstream;
 
   // initialization, check and handle commandline arguments
   static void initialize(int argc, char **argv) {
@@ -56,8 +53,8 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(mpi::rank == MASTER) {
 #endif
-        cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
-            <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<'\n';
+        std::cout<<"[insilico::configuration::initialize] USAGE: "<<argv[0]
+                 <<" <output_file>.dat <neuron_file>.conf [<synapse_file>.conf]"<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
       mpi::abort();
@@ -68,31 +65,31 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-        cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<'\n'
-            <<"Output file: "<<argv[1]<<'\n'<<"Neuron file: "<<argv[2]<<'\n';
+        std::cout<<"[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:"<<'\n'
+                 <<"Output file: "<<argv[1]<<'\n'<<"Neuron file: "<<argv[2]<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
-    outstream.open(argv[1], ios::out);
-    string neuron_file(argv[2]);
-    if(argc == 4) {
+      outstream.open(argv[1], std::ios::out);
+      std::string neuron_file(argv[2]);
+      if(argc == 4) {
 #ifdef INSILICO_MPI_ENABLE
-      if(insilico::mpi::rank == MASTER) {
+        if(insilico::mpi::rank == MASTER) {
 #endif
-      cout<<"Synapse file: "<<argv[3]<<'\n';
+          std::cout<<"Synapse file: "<<argv[3]<<'\n';
 #ifdef INSILICO_MPI_ENABLE
+        }
+#endif
+        std::string synapse_file(argv[3]);
+        read(neuron_file, synapse_file);
       }
-#endif
-      string synapse_file(argv[3]);
-      read(neuron_file, synapse_file);
-    }
-    else {
-      read(neuron_file);
-    }
+      else {
+        read(neuron_file);
+      }
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-    cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<'\n';
+    std::cout << "[insilico::configuration::read] SUCCESS: Input file read complete."<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -103,7 +100,7 @@ class configuration {
 #ifdef INSILICO_MPI_ENABLE
       if(insilico::mpi::rank == MASTER) {
 #endif
-        cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<'\n';
+        std::cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<'\n';
 #ifdef INSILICO_MPI_ENABLE
       }
 #endif
@@ -131,62 +128,63 @@ class configuration {
   }
 
   // convert string literal to double precision floating point number
-  static inline double string_to_double(string strnum) {
+  static inline double string_to_double(std::string strnum) {
     double value;
     try {
       value = ::atof(strnum.c_str());
     }
     catch(const std::exception& e) {
-      cout<<"[insilico::configuration] Simulation Exception: "
-          <<"supplied with file that contains improper value: "<< strnum <<'\n';
+      std::cout<<"[insilico::configuration] Simulation Exception: "
+               <<"supplied with file that contains improper value: "<< strnum <<'\n';
       exit(0);
     }
     return value;
   }
 
   // check if the file is present
-  static bool file_check(ifstream &stream, string &filename) {
+  static bool file_check(std::ifstream &stream, std::string &filename) {
     if((!filename.empty()) && stream.is_open() == false) {
-      cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
-          <<" supplied with file ("<< filename <<") that does not exist."<<'\n';
+      std::cout<<"[insilico::configuration] Simulation Exception: insilico::configuration::initialize"
+               <<" supplied with file ("<< filename <<") that does not exist."<<'\n';
       return false;
     }
     return true;
   }
 
   // clean input file inputs
-  static string remove_comments(string &with_comments) {
-    stringstream s(with_comments);
+  static std::string remove_comments(std::string &with_comments) {
+    std::stringstream s(with_comments);
     char delim = '\"';
-    vector<string> full;
-    string part;
+    std::vector<std::string> full;
+    std::string part;
     while(getline(s, part, delim)) {
       full.push_back(part);
     }
     with_comments = "";
-    for(vector<string>::size_type it=0; it < full.size(); it+=2) {
+    for(std::vector<std::string>::size_type it=0; it < full.size(); it+=2) {
       with_comments += full[it];
     }
     return with_comments;
   }
 
   // read the input files - neuron_file and synapse_file
-  static void read(string neuron_file, string synapse_file="") {
+  static void read(std::string neuron_file, std::string synapse_file="") {
     int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
+    double second_item = 0;
     char linedelim = ';', worddelim = ',', pairdelim = ':';
-    string part, first_item, key;
-    stringstream out;
-    double second_item;
 
-    ifstream neuron_stream(neuron_file);
+    std::string part, first_item, key;
+    std::stringstream out;
+    std::ifstream neuron_stream(neuron_file), synapse_stream(synapse_file);
+
     if(file_check(neuron_stream, neuron_file)) {
       while(getline(neuron_stream, part, linedelim)) {
-        stringstream l(part);
+        std::stringstream l(part);
         if((trim(part)).length() > 0) {
           engine::neuron_start_list_ids.push_back(ncount);
           while(getline(l, part, worddelim)) {
             if((trim(part)).length() > 0) {
-              stringstream k(remove_comments(part));
+              std::stringstream k(remove_comments(part));
               getline(k, part, pairdelim); first_item = trim(part);
               getline(k, part, pairdelim); second_item = string_to_double(trim(part));
               out.str("");
@@ -213,15 +211,14 @@ class configuration {
     }
     neuron_stream.close();
 
-    ifstream synapse_stream(synapse_file);
     if(file_check(synapse_stream, synapse_file)) {
       while(getline(synapse_stream, part, linedelim)) {
-        stringstream l(part);
+        std::stringstream l(part);
         if((trim(part)).length() > 0) {
           engine::synapse_start_list_ids.push_back(ncount);
           while(getline(l, part, worddelim)) {
             if((trim(part)).length() > 0) {
-              stringstream k(remove_comments(part));
+              std::stringstream k(remove_comments(part));
               getline(k, part, pairdelim); first_item = trim(part);
               getline(k, part, pairdelim); second_item = string_to_double(trim(part));
               out.str("");
@@ -257,15 +254,14 @@ class configuration {
   }
 
   struct observer {
-    ofstream &outfile;
-    observer(ofstream &stream_): outfile(stream_) {}
+    std::ofstream &outfile;
+    observer(std::ofstream &stream_): outfile(stream_) {}
     void operator()(state_type &variables, const double t);
   };
-
 }; // class configuration
 
 // static member definitions
-ofstream configuration::outstream;
+std::ofstream configuration::outstream;
 
 } // namespace insilico
 

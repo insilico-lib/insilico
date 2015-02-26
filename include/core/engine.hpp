@@ -33,13 +33,13 @@
 #include "parallel/synchronization.hpp"
 #endif
 
-// Mandate: Use of state_type should include this file
-typedef std::vector<double> state_type;
-
 //
 // Map based search logic can be activated by defining MAP as given below
 // #define MAP
 //
+
+// Mandate: Use of state_type should include this file
+using state_type = std::vector<double>;
 
 char key[128];
 
