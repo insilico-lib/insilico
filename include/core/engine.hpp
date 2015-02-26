@@ -140,17 +140,27 @@ class engine {
   }
 
   static std::vector<int> get_indices(std::string variable) {
-    std::vector<int> indices(neuron_count());
-    for(std::vector<int>::size_type index = 0; index < indices.size(); ++index) {
-      indices[index] = neuron_index(index, variable);
+    std::vector<int> indices;
+    int total_neurons = neuron_count();
+    int total_synapses = synapse_count();
+    for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
+      indices.push_back(neuron_index(index, variable));
+    }
+    for(std::vector<int>::size_type index = 0; index < total_synapses; ++index) {
+      indices.push_back(synapse_index(index, variable));
     }
     return indices;
   }
 
   static std::vector<double> get_values(std::string variable) {
-    std::vector<double> values(neuron_count());
-    for(std::vector<double>::size_type index = 0; index < values.size(); ++index) {
-      values[index] = neuron_value(index, variable);
+    std::vector<double> values;
+    int total_neurons = neuron_count();
+    int total_synapses = synapse_count();
+    for(std::vector<double>::size_type index = 0; index < total_neurons; ++index) {
+      values.push_back(neuron_value(index, variable));
+    }
+    for(std::vector<double>::size_type index = 0; index < total_synapses; ++index) {
+      values.push_back(synapse_value(index, variable));
     }
     return values;
   }
