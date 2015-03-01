@@ -46,7 +46,7 @@ void configuration::observer::operator()(state_type &variables, const double t) 
     observer::outfile << ',' << setprecision(6) << fixed << variables[index];
   }
   observer::outfile<<endl;
-};
+}
 
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);

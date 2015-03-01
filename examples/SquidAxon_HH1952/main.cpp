@@ -56,7 +56,7 @@ void configuration::observer::operator()(state_type &variables, const double t) 
     observer::outfile << ',' << variables[v_indices[index]];
   }
   observer::outfile<<endl;
-};
+}
 
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
