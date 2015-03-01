@@ -35,3 +35,8 @@ output/*
 
 # Mac specific
 .DS_store
+
+# Eclipse specific
+.cproject
+.project
+.settings
