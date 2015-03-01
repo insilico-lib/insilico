@@ -33,11 +33,6 @@
 #include "parallel/synchronization.hpp"
 #endif
 
-//
-// Map based search logic can be activated by defining MAP as given below
-// #define MAP
-//
-
 // Mandate: Use of state_type should include this file
 using state_type = std::vector<double>;
 
@@ -53,7 +48,7 @@ class engine {
   static std::vector<int> neuron_end_list_ids;
   static std::vector<int> synapse_start_list_ids;
   static std::vector<int> synapse_end_list_ids;
-  static std::vector< std::vector<int> > pre_synaptic_lists;
+  static std::vector<std::vector<int>> pre_synaptic_lists;
   static std::vector<int> pre_neuron;
   static std::vector<int> post_neuron;
   static std::vector<std::string> var_list_ids;
@@ -63,32 +58,38 @@ class engine {
     return var_vals;
   }
 
-  static int neuron_index(int id, std::string variable) {
-#ifdef MAP
+  static int neuron_index(int id, std::string variable, bool error=true) {
     sprintf(key, "n%d%s", id, variable.c_str());
-    return index_map[key];
-#else
-    int index = -1;
-    int startindex = neuron_start_list_ids.at(id);
-    int endindex = neuron_end_list_ids.at(id);
-    for(int iter=startindex;iter<endindex;++iter) {
-      if(variable.compare(var_list_ids[iter]) == 0) {
-        index = iter; break;
+    try {
+      return index_map.at(key);
+    }
+    catch(...) {
+      if(!error) {
+        return -1;
+      }
+      else {
+        std::cout << "[insilico::engine::neuron_value] Failed to find "<<variable
+                  <<" index for neuron "<<id<<".\n";
+        exit(0);
       }
     }
-    if(index == -1) {
-      std::cout<<"[insilico::engine] Simulator Exception:"
-               <<" neuron_index method supplied with incorrect arguments. "
-               <<"Arguments were: [neuron_index = "<<id<<"][variable = "<<variable<<"]"<<std::endl;
-      exit(0);
-    }
-    return index;
-#endif
   }
 
-  static double neuron_value(int id, std::string variable) {
+  static double neuron_value(int id, std::string variable, bool error=true) {
     sprintf(key, "n%d%s", id, variable.c_str());
-    return value_map[key];
+    try {
+      return value_map.at(key);
+    }
+    catch(...) {
+      if(!error) {
+        return -1;
+      }
+      else {
+        std::cout << "[insilico::engine::neuron_value] Failed to find "<<variable
+                  <<" value for neuron "<<id<<".\n";
+        exit(0);
+      }
+    }
   }
 
   static void neuron_value(int id, std::string variable, double value) {
@@ -96,32 +97,38 @@ class engine {
     value_map[key] = value;
   }
 
-  static int synapse_index(int id, std::string variable) {
-#ifdef MAP
+  static int synapse_index(int id, std::string variable, bool error=true) {
     sprintf(key, "s%d%s", id, variable.c_str());
-    return index_map[key];
-#else
-    int index = -1;
-    int startindex = synapse_start_list_ids.at(id);
-    int endindex = synapse_end_list_ids.at(id);
-    for(int iter=startindex;iter<endindex;++iter) {
-      if(variable.compare(var_list_ids[iter]) == 0) {
-        index = iter; break;
+    try {
+      return index_map.at(key);
+    }
+    catch(...) {
+      if(!error) {
+        return -1;
+      }
+      else {
+        std::cout << "[insilico::engine::synapse_index] Failed to find "<<variable
+                  <<" index for synapse "<<id<<".\n";
+        exit(0);
       }
     }
-    if(index == -1) {
-      std::cout<<"[insilico::engine] Simulator Exception:"
-               <<" synapse_index method supplied with incorrect arguments. "
-               <<"Arguments were: [synapse_index = "<<id<<"][variable = "<<variable<<"]"<<std::endl;
-      exit(0);
-    }
-    return index;
-#endif
   }
 
-  static double synapse_value(int id, std::string variable) {
+  static double synapse_value(int id, std::string variable, bool error=true) {
     sprintf(key, "s%d%s", id, variable.c_str());
-    return value_map[key];
+    try {
+      return value_map.at(key);
+    }
+    catch(...) {
+      if(!error) {
+        return -1;
+      }
+      else {
+        std::cout << "[insilico::engine::synapse_index] Failed to find "<<variable
+                  <<" value for synapse "<<id<<".\n";
+        exit(0);
+      }
+    }
   }
 
   static void synapse_value(int id, std::string variable, double value) {
@@ -130,37 +137,43 @@ class engine {
   }
 
   static double current_value(int id, std::string variable) {
-    sprintf(key, "s%d%s", id, variable.c_str());
-    return value_map[key];
+    sprintf(key, "c%d%s", id, variable.c_str());
+    return value_map.at(key);
   }
 
   static void current_value(int id, std::string variable, double value) {
-    sprintf(key, "s%d%s", id, variable.c_str());
+    sprintf(key, "c%d%s", id, variable.c_str());
     value_map[key] = value;
   }
 
-  static std::vector<int> get_indices(std::string variable) {
+  static auto get_indices(std::string variable) -> std::vector<int> {
     std::vector<int> indices;
+    int idx = -1;
     int total_neurons = neuron_count();
     int total_synapses = synapse_count();
     for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
-      indices.push_back(neuron_index(index, variable));
+      idx = neuron_index(index, variable, false);
+      if(idx >= 0) indices.push_back(idx);
     }
     for(std::vector<int>::size_type index = 0; index < total_synapses; ++index) {
-      indices.push_back(synapse_index(index, variable));
+      idx = synapse_index(index, variable, false);
+      if(idx >= 0) indices.push_back(idx);
     }
     return indices;
   }
 
-  static std::vector<double> get_values(std::string variable) {
+  static auto get_values(std::string variable) -> std::vector<double> {
     std::vector<double> values;
+    int idx;
     int total_neurons = neuron_count();
     int total_synapses = synapse_count();
     for(std::vector<double>::size_type index = 0; index < total_neurons; ++index) {
-      values.push_back(neuron_value(index, variable));
+      idx = neuron_value(index, variable, false);
+      if(idx >= 0) values.push_back(idx);
     }
     for(std::vector<double>::size_type index = 0; index < total_synapses; ++index) {
-      values.push_back(synapse_value(index, variable));
+      idx = synapse_value(index, variable, false);
+      if(idx >= 0) values.push_back(idx);
     }
     return values;
   }
