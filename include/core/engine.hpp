@@ -33,12 +33,11 @@
 #include "parallel/synchronization.hpp"
 #endif
 
-// Mandate: Use of state_type should include this file
+namespace insilico {
+
 using state_type = std::vector<double>;
 
 char key[128];
-
-namespace insilico {
 
 class engine {
  public:
