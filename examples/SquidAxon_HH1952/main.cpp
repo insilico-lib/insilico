@@ -50,16 +50,10 @@ void engine::operator()(state_type &variables, state_type &dxdt, const double ti
 
 void configuration::observer::operator()(state_type &variables, const double t) {
   vector<int> v_indices = engine::get_indices("v");
-  vector<int> m_indices = engine::get_indices("m");
-  vector<int> h_indices = engine::get_indices("h");
-  vector<int> n_indices = engine::get_indices("n");
-
-  observer::outfile << setprecision(2) << fixed << t;
-  for(vector<double>::size_type index = 0; index < v_indices.size() ; ++index) {
-    observer::outfile << ',' << variables[v_indices[index]]
-                      << ',' << variables[m_indices[index]]
-                      << ',' << variables[h_indices[index]]
-                      << ',' << variables[n_indices[index]];
+  std::cout << v_indices.size() << std::endl;
+  observer::outfile << t;
+  for(vector<double>::size_type index = 0; index < v_indices.size(); ++index) {
+    observer::outfile << ',' << variables[v_indices[index]];
   }
   observer::outfile<<endl;
 };
