@@ -40,3 +40,6 @@ output/*
 .cproject
 .project
 .settings
+
+# Idea specific
+.idea
