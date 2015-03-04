@@ -21,16 +21,15 @@
 #define INCLUDED_INSILICO_PARALLEL_MPI_HPP
 
 #define INSILICO_MPI_ENABLE
-#define MASTER 0
 
 #include "mpi.h"
 
 #include "core/engine.hpp"
 #include "parallel/synchronization.hpp"
 
-namespace insilico {
+namespace insilico { namespace mpi {
 
-namespace mpi {
+constexpr int master = 0;
 
 int rank, size;
 
@@ -54,37 +53,28 @@ void abort() {
 
 void synchronize(state_type &shared_state) {
   MPI_Barrier(MPI_COMM_WORLD);
-
+  /*
+  // THIS IS *WIP*
   int tag = 3;
   MPI_Request request;
-
   for(int dest = 0; dest < mpi::size; ++dest) {
     if(dest != mpi::rank) {
-      MPI_Isend(&shared_state[0], shared_state.size(), MPI_DOUBLE, dest,
-                tag, MPI_COMM_WORLD, &request);
+      MPI_Isend(&shared_state[0], shared_state.size(), MPI_DOUBLE, dest, tag, MPI_COMM_WORLD, &request);
     }
   }
-
   state_type others_shared_state(shared_state.size());
   MPI_Status status;
-
   for(int src = 0; src < mpi::size; ++src) {
     if(src != mpi::rank) {
       MPI_Recv(&others_shared_state[0], others_shared_state.size(), MPI_DOUBLE, src,
                tag, MPI_COMM_WORLD, &status);
     }
-
     for(state_type::size_type iter = 0; iter < shared_state.size(); ++iter) {
-      if(shared_state[iter] != others_shared_state[iter]) {
-        
-      }
+      if(shared_state[iter] != others_shared_state[iter]) {}
     }
-  }
-
+  } */
 }
 
-} // namespace mpi
-
-} // namespace insilico
+} } // namespace insilico::mpi
 
 #endif
