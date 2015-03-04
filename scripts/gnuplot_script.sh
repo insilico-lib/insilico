@@ -16,8 +16,7 @@ fi
 
 gnuplot -persist -e "set term jpeg; set output \"output_file_v.jpeg\";
      set datafile separator \",\";
-     plot \""$1"\" using 1:2 with lines,
-          \""$1"\" using 1:3 with lines;"
+     plot \""$1"\" using 1:2 with lines;"
 
 #gnuplot -persist -e "set term jpeg; set output \"output_file_others.jpeg\";
 #       set datafile separator \",\";
