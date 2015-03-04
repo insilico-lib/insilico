@@ -21,6 +21,7 @@
 
 #include "core/configuration.hpp"
 #include "core/engine.hpp"
+#include "core/injector.hpp"
 
 #include "neuron/N_SquidAxon_HH1952.hpp"
 #include "synapse/S_DefaultSynapse.hpp"
@@ -50,12 +51,11 @@ void engine::operator()(state_type &variables, state_type &dxdt, const double ti
 
 void configuration::observer::operator()(state_type &variables, const double t) {
   vector<int> v_indices = engine::get_indices("v");
-  std::cout << v_indices.size() << std::endl;
   observer::outfile << t;
   for(vector<double>::size_type index = 0; index < v_indices.size(); ++index) {
-    observer::outfile << ',' << variables[v_indices[index]];
+    observer::outfile << ',' << (variables[v_indices[index]]);
   }
-  observer::outfile<<endl;
+  observer::outfile << '\n';
 }
 
 int main(int argc, char **argv) {
