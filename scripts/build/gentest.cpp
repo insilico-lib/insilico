@@ -4,10 +4,10 @@
 
 using namespace std;
 
-vector<int> neurons    = {0,1,1,1,2,3,3,4,5,5,6};
+vector<int> neurons    = { 0 };
 const double STARTTIME = 0.0;
 const double ENDTIME   = 100.0;
-const double STEPSIZE  = 0.01;
+const double STEPSIZE  = 0.05;
 
 double rand(double min, double max) {
   random_device rd;
@@ -30,12 +30,11 @@ int main(int argc, char *argv[])
   f << '\n';
   for(double t = STARTTIME; t <= ENDTIME; t+=STEPSIZE) {
     f << t;
-    for(vector<int>::size_type iter = 1; iter < neurons.size(); ++iter) {
-      f << ',' << rand(10, 20);
+    for(vector<int>::size_type iter = 0; iter < neurons.size(); ++iter) {
+      f << ',' << rand(0, 30);
     }
     f << '\n';
   }
   
   f.close();
-  return 0;
 }
