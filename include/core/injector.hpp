@@ -26,7 +26,7 @@ namespace insilico { namespace injector {
 
 std::vector<double> external_current(const int neuron_id, const double time) {
   std::vector<double> current_values;
-  int index = (std::find(injector::time_seq.begin(), injector::time_seq.end(), time) - injector::time_seq.begin());
+  unsigned index = (std::find(injector::time_seq.begin(), injector::time_seq.end(), time) - injector::time_seq.begin());
   if(index > injector::time_seq.size()) {
     std::cerr << "[insilico::injector] External current for neuron " << neuron_id
               << " at time "<< time << " does not exist.\n";

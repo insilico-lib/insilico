@@ -148,8 +148,8 @@ class engine {
   static auto get_indices(std::string variable) -> std::vector<int> {
     std::vector<int> indices;
     int idx = -1;
-    int total_neurons = neuron_count();
-    int total_synapses = synapse_count();
+    unsigned total_neurons = neuron_count();
+    unsigned total_synapses = synapse_count();
     for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
       idx = neuron_index(index, variable, false);
       if(idx >= 0) indices.push_back(idx);
@@ -163,9 +163,9 @@ class engine {
 
   static auto get_values(std::string variable) -> std::vector<double> {
     std::vector<double> values;
-    int idx;
-    int total_neurons = neuron_count();
-    int total_synapses = synapse_count();
+    int idx = -1;
+    unsigned total_neurons = neuron_count();
+    unsigned total_synapses = synapse_count();
     for(std::vector<double>::size_type index = 0; index < total_neurons; ++index) {
       idx = neuron_value(index, variable, false);
       if(idx >= 0) values.push_back(idx);
