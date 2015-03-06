@@ -51,7 +51,7 @@ class S_DefaultSynapse {
 
     // ODE set
     dxdt[g1_index] = g2;
-    dxdt[g2_index] = -((tau1+tau2)/(tau1*tau2)) * g2 - g1 + gsyn * xt;
+    dxdt[g2_index] = (gsyn * xt - g1 - (tau1+tau2) * g2) / (tau1*tau2);
 
   } // function ode_set
 }; // class S_DefaultSynapse
