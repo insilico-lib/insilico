@@ -44,7 +44,7 @@ void initialize(int argc, char **argv) {
   std::string error_msg = "[insilico::configuration::initialize] Supply of file more than once not allowed.\n"; 
   std::string usage_error_msg = "[insilico::configuration::initialize] USAGE: ";
   usage_error_msg += argv[0];
-  usage_error_msg += " -o<output_file>.dat -n<neuron_file>.conf -s<synapse_file>.conf -e<external_file>.conf\n\n \
+  usage_error_msg += " -o<output_file.csv> -n<neuron_file.isf> -s<synapse_file.isf> -e<external_file.isfc>\n\n \
     Options:\n\t-o   Output file\n\t-n   Neuron configuration file\n\t-s   Synapse configuration file (optional)\n \
     \t-e   External current configuration file (optional)\n             \
     \nNo space allowed between option and its value.\n";
