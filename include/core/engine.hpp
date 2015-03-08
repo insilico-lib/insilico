@@ -20,6 +20,8 @@
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_HPP
 
+#include "core/global_type.hpp"
+
 #include <algorithm>
 #include <cassert>
 #include <cstdio>
@@ -29,13 +31,7 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef INSILICO_MPI_ENABLE
-#include "parallel/synchronization.hpp"
-#endif
-
-namespace insilico {
-
-using state_type = std::vector<double>;
+namespace insilico { namespace engine {
 
 char key[128];
 
