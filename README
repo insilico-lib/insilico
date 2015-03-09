@@ -8,7 +8,7 @@ Official homepage: http://www.iiserpune.ac.in/~collins/insilico/
 Install
 =======
 
-Please refer to INSTALL file.
+Please refer to doc/INSTALL file.
 
 Build
 =====
@@ -40,9 +40,9 @@ Run the following command on terminal to execute the code.
 
   .\insilico.out -o<outputfile.csv> -n<neuron_file.isf> [-s<synapse_file.isf>] [-e<external_current.isfc>]
 
-Please read FILES file for details about the input and output files and their formats.
+Please read doc/FILES file for details about the input and output files and their formats.
 
 License
 =======
 
-This simulator library is licensed under GNU GPLv3 which is described in file LICENSE found in home directory of this project.
+This simulator library is licensed under GNU GPLv3 which is described in LICENSE file found in home directory of this project.
