@@ -1,0 +1,42 @@
+insilico - Neuronal Simulation Library
+======================================
+
+Installation
+============
+
+insilico's install guide. Please read through to get started with insilico.
+
+Pre-requisites
+--------------
+
+insilico is written in C++ and uses C++11 standard of the langauge. Also, integration-of-ODE part of the library is handled using Boost.
+
+* Boost 1.56.0+ - for ODE integrator Boost.odeint
+* g++ 4.7.2+ - for compilation with C++11 support
+* make 3.8+ - building
+
+(Optionally)
+* Python 2.7+ - if you want to use scripts for generating input files
+* Gnuplot - if you want to use scripts for plotting simulation results
+
+The installation of above softwares for all platforms is expected to be in standard directories. Please do any essential manual changes are required to the environment for using this library.
+
+Addition to these, programmers who wish to contribute may need following packages as well.
+
+* PHP 5+ - web documentation and site
+* Python 2.7+ - automated scripts
+* Gnuplot 4.5+ - plotting
+
+Platforms
+---------
+
+We wish to make this library portable across platform. The known minimum versions for a given platforms or compatible platforms:
+
+Linux:   Ubuntu 11.04 +
+Mac:     OS X 10.0.0 +
+Windows: XP +
+
+Source Inclusion
+----------------
+
+insilico is a C++ headers with source library. Include the respective files from the library to get the API for your simulation.
