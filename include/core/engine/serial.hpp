@@ -21,6 +21,7 @@
 #define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_HPP
 
 #include "core/global_type.hpp"
+#include "core/engine/data.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -32,18 +33,6 @@
 #include <vector>
 
 namespace insilico { namespace engine {
-
-std::unordered_map< std::string, int > index_map;
-std::unordered_map< std::string, double > value_map;
-std::vector< int > neuron_start_list_ids;
-std::vector< int > neuron_end_list_ids;
-std::vector< int > synapse_start_list_ids;
-std::vector< int > synapse_end_list_ids;
-std::vector< std::vector<int> > pre_synaptic_lists;
-std::vector< int > pre_neuron;
-std::vector< int > post_neuron;
-std::vector< std::string > var_list_ids;
-std::vector< double > var_vals;
 
 std::vector<double> get_variables() {
   return var_vals;
