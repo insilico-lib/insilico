@@ -27,6 +27,11 @@ TARGET = insilico.out
 # Compiler to use
 CC = g++
 
+# Windows specific compiler flags
+ifdef SystemRoot
+   CC += -IC:\MinGW\libexec\gcc -D__NO_INLINE__
+endif
+
 # Flags to specify the compilation startegy
 CFLAGS = -O3 -std=c++11 -Wall -Iinclude -o
 
