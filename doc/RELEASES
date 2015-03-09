@@ -1,11 +1,23 @@
-
 Release Notes for Stable releases
 =================================
 
 (Please refer IDC (insilico Developer Channel, https://groups.google.com/forum/#!forum/insilico) mail for detailed description)
 
+Version 0.20
+------------
+Released: Mar. 9, 2015
+
+New Feature: Extrenal Current input file
+New: User interface improved
+New: Cross platform support
+New: Updated local doc
+New: Web moved to new website project - insilico-web
+New: Examples Updated
+Several bug fixes and minor improvements
+
 Version 0.17
 ------------
+Released: Feb. 11, 2015
 
 New Feature: Observation of constants from Neurons
 New: Improved compilation time
@@ -15,6 +27,7 @@ Bug Fix: connectivity file (a.k.a. synapse file) is optional
 
 Version 0.16
 ------------
+Rel. Date: Jan. 21, 2015
 
 New Feature: 'variables' vector is writable
 New: Added Integrate and Fire neuron
@@ -23,6 +36,7 @@ Improvement: Parser for input files
 
 Version 0.15
 ------------
+Rel. Date: Jan. 19, 2015
 
 New Feature: Supporting comments ("") in input files
 New Feature: Current values can be stored and retrieved using independent function
@@ -39,6 +53,7 @@ Improvement: Example code
 
 Version 0.10
 ------------
+Rel. Date: Jan. 3, 2015
 
 - Generalized code compilation strategy
 - Enhancement to code execution strategy
@@ -48,6 +63,7 @@ Version 0.10
 
 Version 0.02
 ------------
+Rel. Date: Dec. 2, 2014
 
 - Makefile improvements
 - Minor performance improvements
