@@ -37,25 +37,14 @@ void engine::driver::operator()(state_type &variables, state_type &dxdt, const d
   N_LIF_S1967::ode_set(variables, dxdt, time, 0);
 }
 
-void configuration::observer::operator()(state_type &variables, const double t) {
-  vector<int> indices = engine::get_indices("v");
-  assert(observer::outfile.is_open());
-  observer::outfile << setprecision(4) << fixed << t;
-  for(int index : indices) {
-    observer::outfile << ',' << setprecision(6) << fixed << variables[index];
-  }
-  observer::outfile<<endl;
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
+  configuration::observe("v");
 
   state_type variables = engine::get_variables();
-  
-  using namespace boost::numeric::odeint;
-  integrate_const(runge_kutta4<state_type>(), engine::driver(), variables,
-                  0.0, 50.0, 0.01, configuration::observer(configuration::outstream));
+  integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
+                  engine::driver(), variables,
+                  0.0, 50.0, 0.01, configuration::observer());
 
   configuration::finalize();
-  return 0;
 }

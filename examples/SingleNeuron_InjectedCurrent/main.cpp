@@ -110,26 +110,14 @@ void engine::driver::operator()(state_type &variables, state_type &dxdt, const d
   HH_Neuron::ode_set(variables, dxdt, time, 0);
 }
 
-void configuration::observer::operator()(state_type &variables, const double t) {
-  vector<int> v_indices = engine::get_indices("v");
-  observer::outfile << t;
-  for(vector<double>::size_type index = 0; index < v_indices.size() ; ++index) {
-    observer::outfile << ',' << variables[v_indices[index]];
-  }
-  observer::outfile << '\n';
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
-  state_type variables = engine::get_variables();
+  configuration::observe("v");
 
-  using namespace boost::numeric::odeint;
-  integrate_const(runge_kutta4<state_type>(),
+  state_type variables = engine::get_variables();
+  integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, 100.0, 0.05,
-                  configuration::observer(configuration::outstream));
+                  0.0, 100.0, 0.05, configuration::observer());
 
   configuration::finalize();
-  return 0;
 }
-
