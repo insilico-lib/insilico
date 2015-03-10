@@ -27,25 +27,4 @@
 #include "core/configuration/serial.hpp"
 #endif
 
-#include <algorithm>
-#include <cctype>
-#include <cstdio>
-#include <functional>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-namespace insilico { namespace configuration {
-
-struct observer {
-  std::ofstream &outfile;
-  observer(std::ofstream &stream_): outfile(stream_) {}
-  void operator()(state_type &variables, const double t);
-};
-
-}} // namespace insilico::configuration
-
 #endif
