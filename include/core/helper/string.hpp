@@ -27,24 +27,24 @@
 namespace insilico {
 
 // trim string from beginning (left)
-static inline std::string& ltrim(std::string &s) {
+inline auto ltrim(std::string &s) -> std::string& {
   s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
   return s;
 }
 
 // trim string from ending (right)
-static inline std::string& rtrim(std::string &s) {
+inline auto rtrim(std::string &s) -> std::string& {
   s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
   return s;
 }
 
 // trim string from both the ends
-static inline std::string& trim(std::string &s) {
+inline auto trim(std::string &s) -> std::string& {
   return ltrim(rtrim(s));
 }
 
 // convert string literal to double precision floating point number
-static inline double string_to_double(std::string strnum) {
+inline auto string_to_double(std::string strnum) -> double {
   double value;
   try {
     value = ::atof(strnum.c_str());
@@ -58,13 +58,13 @@ static inline double string_to_double(std::string strnum) {
 }
 
 // check if the string (subject) starts with given sub string (test)
-bool inline starts_with(const std::string &subject, const std::string &test) {
+inline auto starts_with(const std::string &subject, const std::string &test) -> bool {
   return (test.length() <= subject.length())  &&
       (equal(test.begin(), test.end(), subject.begin()));
 }
 
 // inplace string split 
-void split(const std::string &s, char delim, std::vector<std::string> &elems) {
+auto split(const std::string &s, char delim, std::vector<std::string> &elems) -> void {
   std::stringstream ss(s);
   std::string item;
   while (std::getline(ss, item, delim)) {
@@ -73,8 +73,8 @@ void split(const std::string &s, char delim, std::vector<std::string> &elems) {
 }
 
 // split string and return vector
-std::vector<std::string> split(const std::string &s, char delim) {
-  std::vector<std::string> elems;
+auto split(const std::string &s, char delim) -> std::vector< std::string > {
+  std::vector< std::string > elems;
   split(s, delim, elems);
   return elems;
 }
