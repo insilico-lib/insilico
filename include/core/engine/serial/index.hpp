@@ -85,6 +85,40 @@ auto get_indices(std::string variable) -> std::vector<int> {
   return indices;
 }
 
+auto get_neuron_indices(std::string variable) -> std::vector<int> {
+  std::vector<int> indices;
+  int idx = -1;
+  unsigned total_neurons = neuron_count();
+  for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
+    idx = neuron_index(index, variable, false);
+    if(idx >= 0) indices.push_back(idx);
+  }
+  return indices;
+}
+
+auto get_synapse_indices(std::string variable) -> std::vector<int> {
+  std::vector<int> indices;
+  int idx = -1;
+  unsigned total_synapses = synapse_count();
+  for(std::vector<int>::size_type index = 0; index < total_synapses; ++index) {
+    idx = synapse_index(index, variable, false);
+    if(idx >= 0) indices.push_back(idx);
+  }
+  return indices;
+}
+
+auto neuron_id_from_index(int _index) -> unsigned {
+  unsigned idx = 0;
+  while(_index > neuron_start_list_ids[idx] && idx < neuron_start_list_ids.size()) { ++idx; }
+  return idx;
+}
+
+auto synapse_id_from_index(int _index) -> unsigned {
+  unsigned idx = 0;
+  while(_index > synapse_start_list_ids[idx] && idx < synapse_start_list_ids.size()) { ++idx; }
+  return idx;
+}
+
 auto get_pre_neuron_indices(int neuron_id, std::string variable) -> std::vector<int> {
   std::vector<int> indices;
   if(!pre_synaptic_lists.empty()) {
