@@ -20,7 +20,7 @@
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_HPP
 
-#include "core/global_type.hpp"
+#include "core/type.hpp"
 
 #ifdef INSILICO_MPI_ENABLE
 #include "parallel/synchronization.hpp"

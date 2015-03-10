@@ -20,7 +20,7 @@
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
 
-#include "core/global_type.hpp"
+#include "core/type.hpp"
 
 #include <iostream>
 #include <string>
