@@ -82,29 +82,25 @@ void initialize(int argc, char **argv) {
         repeat[3] = true;
         break;
       default:
-        std::cout << "Default error: " << cmd.at(1) << std::endl;
+        std::cerr << "Default error: " << cmd.at(1) << std::endl;
         std::cerr << usage_error_msg; exit(1);
     }
   }
-
   if(repeat[0]) { outstream.open(output_file, std::ios::out); }
   else {
     std::cerr << "[insilico::configuration::initialize] Output file is required.\n"; 
     exit(1);
   }
-  
   if(repeat[2]) { read(neuron_file, synapse_file); }
   else if(repeat[1]) { read(neuron_file); }
   else {
     std::cerr << "[insilico::configuration::initialize] Neuron configuration file is required.\n";
     exit(1);
   }
- 
   if(repeat[3]) { injector::read(external_current_file); }
-
   std::cerr << "[insilico::configuration::read] SUCCESS: Input file read complete." << '\n';
 }
-                 
+
 // close all output streams
 void finalize() {
   outstream.close();

@@ -50,9 +50,9 @@ inline auto string_to_double(std::string strnum) -> double {
     value = ::atof(strnum.c_str());
   }
   catch(const std::exception& e) {
-    std::cout<<"[insilico::] Simulation Exception: "
-             <<"supplied with file that contains improper value: "<< strnum <<'\n';
-    exit(0);
+    std::cerr << "[insilico::] Simulation Exception: "
+              << "supplied with file that contains improper value: "<< strnum <<'\n';
+    configuration::severe_error();
   }
   return value;
 }

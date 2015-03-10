@@ -20,6 +20,7 @@
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_VALUE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_VALUE_HPP
 
+#include "core/configuration/error.hpp"
 #include "core/type.hpp"
 #include "core/engine/data.hpp"
 
@@ -44,11 +45,12 @@ auto neuron_value(int id, std::string variable, bool error=true) -> double {
       return -1;
     }
     else {
-      std::cout << "[insilico::engine::neuron_value] Failed to find "<<variable
-                <<" value for neuron "<<id<<".\n";
-      exit(0);
+      std::cerr << "[insilico::engine::neuron_value] Failed to find "<<variable
+                << " value for neuron " << id << ".\n";
+      configuration::severe_error();
     }
   }
+  return 0;
 }
 
 auto neuron_value(int id, std::string variable, double value) -> void {
@@ -68,11 +70,12 @@ auto synapse_value(int id, std::string variable, bool error=true) -> double {
       return -1;
     }
     else {
-      std::cout << "[insilico::engine::synapse_index] Failed to find "<<variable
-                <<" value for synapse "<<id<<".\n";
-      exit(0);
+      std::cerr << "[insilico::engine::synapse_index] Failed to find " << variable
+                << " value for synapse " << id << ".\n";
+      configuration::severe_error();
     }
   }
+  return 0;
 }
 
 auto synapse_value(int id, std::string variable, double value) -> void {

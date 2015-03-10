@@ -92,7 +92,7 @@ void finalize() {
 #ifdef INSILICO_MPI_ENABLE
   if(insilico::mpi::rank == MASTER) {
 #endif
-    std::cout<<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<'\n';
+    std::cerr <<"[insilico::configuration::finalize] SUCCESS: Simulation complete."<<'\n';
 #ifdef INSILICO_MPI_ENABLE
   }
 #endif

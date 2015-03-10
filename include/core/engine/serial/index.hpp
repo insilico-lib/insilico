@@ -44,11 +44,12 @@ auto neuron_index(int id, std::string variable, bool error=true) -> int {
       return -1;
     }
     else {
-      std::cout << "[insilico::engine::neuron_value] Failed to find "<<variable
+      std::cerr << "[insilico::engine::neuron_value] Failed to find "<<variable
                 <<" index for neuron "<<id<<".\n";
-      exit(0);
+      configuration::severe_error();
     }
   }
+  return 0;
 }
 
 auto synapse_index(int id, std::string variable, bool error=true) -> int {
@@ -62,11 +63,12 @@ auto synapse_index(int id, std::string variable, bool error=true) -> int {
       return -1;
     }
     else {
-      std::cout << "[insilico::engine::synapse_index] Failed to find "<<variable
+      std::cerr << "[insilico::engine::synapse_index] Failed to find "<<variable
                 <<" index for synapse "<<id<<".\n";
-      exit(0);
+      configuration::severe_error();
     }
   }
+  return 0;
 }
 
 auto get_indices(std::string variable) -> std::vector<int> {

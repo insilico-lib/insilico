@@ -63,7 +63,7 @@ void read(const std::string &external_current_file)
             else {
               if(neurons_seq.empty()) {
                 std::cerr << "[insilico::injector] External current input file is incorrect or malformed.";
-                exit(0);
+                configuration::severe_error();
               }
               seq.push_back(string_to_double(part));
             }

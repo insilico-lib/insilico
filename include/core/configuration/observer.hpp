@@ -1,8 +1,7 @@
 /*
- core/configuration/observer.hpp
+ core/configuration/observer.hpp - Simulation output observer
 
- Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
- Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -20,6 +19,8 @@
 
 #ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_OBSERVER_HPP
 #define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_OBSERVER_HPP
+
+#include "core/configuration/error.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -61,6 +62,10 @@ auto observe(std::string _variable) -> void {
   std::vector< int > neuron_indices = engine::get_neuron_indices(_variable);
   std::vector< int > synapse_indices = engine::get_synapse_indices(_variable);
   char key[128];
+  if(neuron_indices.empty() && synapse_indices.empty()) {
+    std::cerr << "[insilico::configuration] Observer failed to find " << _variable << ".\n";
+    configuration::severe_error();
+  }
   if(!neuron_indices.empty()) {
     pre_computed_indices.insert(pre_computed_indices.end(), neuron_indices.begin(), neuron_indices.end());
     for(int index : neuron_indices) {
