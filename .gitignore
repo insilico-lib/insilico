@@ -3,6 +3,7 @@
 *.tmp
 *.log
 *.dat
+*.csv
 output/*
 
 # Compiled Object files
