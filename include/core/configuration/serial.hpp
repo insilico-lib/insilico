@@ -1,5 +1,5 @@
 /*
- core/configuration.hpp - insilico Configuration header and source
+ core/configuration/serial.hpp - insilico configuration serial file handling header and source
 
  Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
@@ -25,6 +25,7 @@
 #include "core/helper/file.hpp"
 #include "core/helper/string.hpp"
 
+#include "core/configuration/observer.hpp"
 #include "core/configuration/parser.hpp"
 #include "core/injector.hpp"
 
@@ -34,8 +35,6 @@
 #include <vector>
 
 namespace insilico { namespace configuration {
-
-std::ofstream outstream;
 
 // initialization, check and handle commandline arguments
 void initialize(int argc, char **argv) {
