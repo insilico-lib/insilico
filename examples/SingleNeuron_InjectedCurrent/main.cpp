@@ -17,9 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core/configuration.hpp"
-#include "core/engine.hpp"
-#include "core/injector.hpp"
+#include "core.hpp"
 
 #include <boost/numeric/odeint.hpp>
 

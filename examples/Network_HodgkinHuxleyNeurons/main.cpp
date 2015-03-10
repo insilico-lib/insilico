@@ -19,9 +19,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core/configuration.hpp"
-#include "core/engine.hpp"
-#include "core/injector.hpp"
+#include "core.hpp"
 
 #include "neuron/N_SquidAxon_HH1952.hpp"
 #include "synapse/S_DefaultSynapse.hpp"
