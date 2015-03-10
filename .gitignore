@@ -6,6 +6,10 @@
 *.csv
 output/*
 
+# Image files
+*.jpeg
+*.jpg
+
 # Compiled Object files
 *.slo
 *.lo
@@ -37,6 +41,7 @@ output/*
 
 # Mac specific
 .DS_store
+*~
 
 # Eclipse specific
 .cproject
