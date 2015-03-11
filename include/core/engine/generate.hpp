@@ -1,5 +1,5 @@
 /*
-  core/engine/serial.hpp - insilico engine serial API header and source
+  core/engine/generate.hpp - Type generation and management
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -47,7 +47,7 @@ auto generate_synapse(unsinged count = 1) -> void {
   synapse_objects_count.push_back(count);
 }
 
-void engine::driver::operator()(state_type &_state, state_type &_dxdt, const double time) {
+auto driver::operator()(state_type &_state, state_type &_dxdt, const double time) -> void {
   for(std::vector<Neuron*>::size_type type = 0; type < neuron_objects.size(); ++type) {
     for(int iter = 0; iter < neuron_objects_count[type]; ++iter) {
       neuron_objects[type] -> ode_set(_state, _dxdt, time, iter);
