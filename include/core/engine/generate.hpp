@@ -31,31 +31,31 @@
 namespace insilico { namespace engine {
 
 std::vector< Neuron* > neuron_objects;
-std::vector< int > neuron_objects_count;
+std::vector< unsigned > neuron_objects_count;
 
 std::vector< Synapse* > synapse_objects;
-std::vector< int > synapse_objects_count;
+std::vector< unsigned > synapse_objects_count;
 
 template<class T>
-auto generate_neurons(unsinged count = 1) -> void {
+auto generate_neurons(unsigned count = 1) -> void {
   neuron_objects.push_back(new T());
   neuron_objects_count.push_back(count);
 }
 
 template<class T>
-auto generate_synapse(unsinged count = 1) -> void {
+auto generate_synapse(unsigned count = 1) -> void {
   synapse_objects.push_back(new T());
   synapse_objects_count.push_back(count);
 }
 
 auto driver::operator()(state_type &_state, state_type &_dxdt, const double time) -> void {
   for(std::vector<Neuron*>::size_type type = 0; type < neuron_objects.size(); ++type) {
-    for(int iter = 0; iter < neuron_objects_count[type]; ++iter) {
+    for(unsigned iter = 0; iter < neuron_objects_count[type]; ++iter) {
       neuron_objects[type] -> ode_set(_state, _dxdt, time, iter);
     }
   }
   for(std::vector<Synapse*>::size_type type = 0; type < synapse_objects.size(); ++type) {
-    for(int j = 0; j < synapse_objects_count[type]; ++j) {
+    for(unsigned iter = 0; iter < synapse_objects_count[type]; ++iter) {
       synapse_objects[type] -> ode_set(_state, _dxdt, time, iter);
     }
   }
