@@ -23,6 +23,7 @@
 #include "core/type.hpp"
 #include "core/engine/driver.hpp"
 #include "core/engine/data.hpp"
+#include "core/engine/generate.hpp"
 #include "core/engine/serial/common.hpp"
 #include "core/engine/serial/value.hpp"
 #include "core/engine/serial/index.hpp"

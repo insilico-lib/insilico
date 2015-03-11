@@ -2,8 +2,8 @@
   main.cpp - insilico's example using neuron and synapse for illustrations
 
   Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
-  Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
   Copyright (C) 2014 Arun Neru, Collins Assisi Lab, IISER, Pune <areinsdel@gmail.com>
+  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,21 +35,12 @@
 using namespace insilico;
 using namespace std;
 
-void engine::driver::operator()(state_type &variables, state_type &dxdt, const double time) {
-  int neuron_count = engine::neuron_count();
-  int synapse_count = engine::synapse_count();
-
-  for(int neuron_index = 0; neuron_index < neuron_count; ++neuron_index) {
-    N_SquidAxon_HH1952::ode_set(variables, dxdt, time, neuron_index);
-  }
-  for(int synapse_index = 0; synapse_index < synapse_count; ++synapse_index) {
-    S_DefaultSynapse::ode_set(variables, dxdt, time, synapse_index);
-  }
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
+
+  engine::generate_neurons<N_SquidAxon_HH1952>(2);
+  engine::generate_synapse<S_DefaultSynapse>(2);
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),

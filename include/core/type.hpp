@@ -29,14 +29,14 @@ using state_type = std::vector<double>;
 
 class Neuron {
  public:
-  virtual void ode_set() {
+  virtual void ode_set(state_type &, state_type &, const double, unsigned) {
     std::cerr << "*** THIS IS A BUG ***\n";
   }
 };
 
 class Synapse {
  public:
-  virtual void ode_set() {
+  virtual void ode_set(state_type &, state_type &, const double, unsigned) {
     std::cerr << "*** THIS IS A BUG ***\n";
   }
 };

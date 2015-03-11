@@ -24,9 +24,9 @@
 
 namespace insilico {
 
-class S_DefaultSynapse {
+class S_DefaultSynapse : public Synapse {
  public:
-  static void ode_set(const state_type &variables, state_type &dxdt, const double t, int index) {
+  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     int g1_index = engine::synapse_index(index, "g1");
     int g2_index = engine::synapse_index(index, "g2");
 
