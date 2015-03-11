@@ -33,13 +33,11 @@ using namespace boost;
 using namespace insilico;
 using namespace std;
 
-void engine::driver::operator()(state_type &variables, state_type &dxdt, const double time) {
-  N_LIF_S1967::ode_set(variables, dxdt, time, 0);
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
+
+  engine::generate_neurons<N_LIF_S1967>();
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),

@@ -32,7 +32,7 @@ using namespace std;
 
 class I_Na {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     double gna = 120, ena = 115;
 
     int v_index = engine::neuron_index(index, "v");
@@ -57,7 +57,7 @@ class I_Na {
 
 class I_K {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     double gk = 36, ek = -12;
 
     int v_index = engine::neuron_index(index, "v");
@@ -77,7 +77,7 @@ class I_K {
 
 class I_Leak {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     double gl = 0.3, el = 10.6;
 
     int v_index = engine::neuron_index(index, "v");
@@ -87,9 +87,9 @@ class I_Leak {
   }
 };
 
-class HH_Neuron {
+class HH_Neuron : public Neuron {
  public:
-  static void ode_set(state_type &variables, state_type &dxdt, const double t, int index) {
+  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     
     I_Na::current(variables, dxdt, t, index);
@@ -105,13 +105,11 @@ class HH_Neuron {
   }
 };
 
-void engine::driver::operator()(state_type &variables, state_type &dxdt, const double time) {
-  HH_Neuron::ode_set(variables, dxdt, time, 0);
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
+
+  engine::generate_neurons<HH_Neuron>();
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),

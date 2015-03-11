@@ -87,9 +87,9 @@ class I_Leak {
   }
 };
 
-class HH_Neuron {
+class HH_Neuron : public Neuron {
  public:
-  static void ode_set(state_type &variables, state_type &dxdt, const double t, int index) {
+  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
 
     I_Na::current(variables, dxdt, t, index);
@@ -106,13 +106,11 @@ class HH_Neuron {
   }
 };
 
-void engine::driver::operator()(state_type &variables, state_type &dxdt, const double time) {
-  HH_Neuron::ode_set(variables, dxdt, time, 0);
-}
-
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
+
+  engine::generate_neurons<HH_Neuron>();
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),

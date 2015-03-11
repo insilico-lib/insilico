@@ -1,5 +1,5 @@
 /*
-  core/engine.hpp - insilico's Simulation Engine API header and source
+  core/engine/driver.hpp - Solver trigger for integration and non-integration
 
   Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -17,13 +17,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_HPP
+#ifndef INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
+#define INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
 
-#ifdef INSILICO_MPI_ENABLE
-#include "parallel/synchronization.hpp"
-#else
-#include "core/engine/serial.hpp"
-#endif
+#include "core/type.hpp"
+
+#include <iostream>
+#include <vector>
+
+namespace insilico { namespace engine {
+
+class driver {
+ public:
+  void operator()(state_type &variables, state_type &dxdt, const double time);
+};
+
+} } // namespace insilico::engine
 
 #endif
