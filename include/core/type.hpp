@@ -27,6 +27,20 @@ namespace insilico {
 
 using state_type = std::vector<double>;
 
+class Neuron {
+ public:
+  virtual void ode_set() {
+    std::cerr << "*** THIS IS A BUG ***\n";
+  }
+};
+
+class Synapse {
+ public:
+  virtual void ode_set() {
+    std::cerr << "*** THIS IS A BUG ***\n";
+  }
+};
+
 } // namespace insilico
 
 #endif
