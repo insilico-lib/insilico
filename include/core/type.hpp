@@ -1,7 +1,7 @@
 /*
-  core/engine.hpp - insilico's Simulation Engine API header and source
+  core/engine/type.hpp - insilico's Simulation Engine API header and source
 
-  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef INCLUDED_INSILICO_CORE_GLOBAL_TYPE_HPP
-#define INCLUDED_INSILICO_CORE_GLOBAL_TYPE_HPP
+#ifndef INCLUDED_INSILICO_CORE_TYPE_HPP
+#define INCLUDED_INSILICO_CORE_TYPE_HPP
 
 #include <iostream>
 #include <vector>

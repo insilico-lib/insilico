@@ -21,6 +21,7 @@
 #define INCLUDED_INSILICO_CORE_ENGINE_GENERATE_HPP
 
 #include "core/type.hpp"
+#include "core/engine/driver.hpp"
 
 #include <boost/numeric/odeint.hpp>
 

@@ -21,6 +21,7 @@
 #define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_HPP
 
 #include "core/type.hpp"
+#include "core/engine/driver.hpp"
 #include "core/engine/data.hpp"
 #include "core/engine/serial/common.hpp"
 #include "core/engine/serial/value.hpp"
