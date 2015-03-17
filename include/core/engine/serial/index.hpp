@@ -112,12 +112,14 @@ auto get_synapse_indices(std::string variable) -> std::vector< unsigned > {
 auto neuron_id_from_index(int _index) -> unsigned {
   unsigned idx = 0;
   while(_index > neuron_start_list_ids[idx] && idx < neuron_start_list_ids.size()) { ++idx; }
+  if(idx >= neuron_start_list_ids.size()) --idx;
   return idx;
 }
 
 auto synapse_id_from_index(int _index) -> unsigned {
   unsigned idx = 0;
   while(_index > synapse_start_list_ids[idx] && idx < synapse_start_list_ids.size()) { ++idx; }
+  if(idx >= synapse_start_list_ids.size()) --idx;
   return idx;
 }
 
