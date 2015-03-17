@@ -59,8 +59,8 @@ struct observer {
 };
 
 auto observe(std::string _variable) -> void {
-  std::vector< int > neuron_indices = engine::get_neuron_indices(_variable);
-  std::vector< int > synapse_indices = engine::get_synapse_indices(_variable);
+  std::vector< unsigned > neuron_indices = engine::get_neuron_indices(_variable);
+  std::vector< unsigned > synapse_indices = engine::get_synapse_indices(_variable);
   char key[128];
   if(neuron_indices.empty() && synapse_indices.empty()) {
     std::cerr << "[insilico::configuration] Observer failed to find " << _variable << ".\n";
@@ -68,14 +68,14 @@ auto observe(std::string _variable) -> void {
   }
   if(!neuron_indices.empty()) {
     pre_computed_indices.insert(pre_computed_indices.end(), neuron_indices.begin(), neuron_indices.end());
-    for(int index : neuron_indices) {
+    for(unsigned index : neuron_indices) {
       sprintf(key, "n%d%s", engine::neuron_id_from_index(index), _variable.c_str());
       observation_header.push_back(key);
     }
   }
   if(!synapse_indices.empty()) {
     pre_computed_indices.insert(pre_computed_indices.end(), synapse_indices.begin(), synapse_indices.end());    
-    for(int index : synapse_indices) {
+    for(unsigned index : synapse_indices) {
       sprintf(key, "s%d%s", engine::synapse_id_from_index(index), _variable.c_str());
       observation_header.push_back(key);
     }

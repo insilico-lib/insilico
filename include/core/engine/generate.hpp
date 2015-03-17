@@ -49,14 +49,16 @@ auto generate_synapse(unsigned count = 1) -> void {
 }
 
 auto driver::operator()(state_type &_state, state_type &_dxdt, const double time) -> void {
+  unsigned ultimate_count = 0;
   for(std::vector<Neuron*>::size_type type = 0; type < neuron_objects.size(); ++type) {
-    for(unsigned iter = 0; iter < neuron_objects_count[type]; ++iter) {
-      neuron_objects[type] -> ode_set(_state, _dxdt, time, iter);
+    for(unsigned iter = 0; iter < neuron_objects_count[type]; ++iter, ++ultimate_count) {
+      neuron_objects[type] -> ode_set(_state, _dxdt, time, ultimate_count);
     }
   }
+  ultimate_count = 0;
   for(std::vector<Synapse*>::size_type type = 0; type < synapse_objects.size(); ++type) {
-    for(unsigned iter = 0; iter < synapse_objects_count[type]; ++iter) {
-      synapse_objects[type] -> ode_set(_state, _dxdt, time, iter);
+    for(unsigned iter = 0; iter < synapse_objects_count[type]; ++iter, ++ultimate_count) {
+      synapse_objects[type] -> ode_set(_state, _dxdt, time, ultimate_count);
     }
   }
 }

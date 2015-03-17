@@ -29,23 +29,23 @@
 
 namespace insilico { namespace engine {
 
-std::unordered_map< std::string, int > index_map;
+std::unordered_map< std::string, unsigned > index_map;
 
 std::unordered_map< std::string, double > value_map;
 
-std::vector< int > neuron_start_list_ids;
+std::vector< unsigned > neuron_start_list_ids;
 
-std::vector< int > neuron_end_list_ids;
+std::vector< unsigned > neuron_end_list_ids;
 
-std::vector< int > synapse_start_list_ids;
+std::vector< unsigned > synapse_start_list_ids;
 
-std::vector< int > synapse_end_list_ids;
+std::vector< unsigned > synapse_end_list_ids;
 
-std::vector< std::vector<int> > pre_synaptic_lists;
+std::vector< std::vector< unsigned > > pre_synaptic_lists;
 
-std::vector< int > pre_neuron;
+std::vector< unsigned > pre_neuron;
 
-std::vector< int > post_neuron;
+std::vector< unsigned > post_neuron;
 
 std::vector< std::string > var_list_ids;
 
