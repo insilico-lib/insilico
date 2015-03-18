@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
-  engine::generate_neurons<N_SquidAxon_HH1952>(2);
+  engine::generate_neuron<N_SquidAxon_HH1952>(2);
   engine::generate_synapse<S_DefaultSynapse>(2);
 
   state_type variables = engine::get_variables();

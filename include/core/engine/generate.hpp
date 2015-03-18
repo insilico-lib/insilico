@@ -37,7 +37,7 @@ std::vector< Synapse* > synapse_objects;
 std::vector< unsigned > synapse_objects_count;
 
 template<class T>
-auto generate_neurons(unsigned count = 1) -> void {
+auto generate_neuron(unsigned count = 1) -> void {
   neuron_objects.push_back(new T());
   neuron_objects_count.push_back(count);
 }

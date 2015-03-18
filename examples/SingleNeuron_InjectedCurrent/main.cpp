@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
-  engine::generate_neurons<HH_Neuron>();
+  engine::generate_neuron<HH_Neuron>();
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),

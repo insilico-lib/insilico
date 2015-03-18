@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
-  engine::generate_neurons<N_LIF_S1967>();
+  engine::generate_neuron<N_LIF_S1967>();
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
