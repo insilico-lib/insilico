@@ -3,6 +3,16 @@ Release Notes for Stable releases
 
 (Please refer IDC (insilico Developer Channel, https://groups.google.com/forum/#!forum/insilico) mail for detailed description)
 
+Version 0.21
+------------
+Released: Mar. 18, 2015
+
+New Feature: Engine's Generate functions
+New Feature: Configuration's Observe functions
+New: core.hpp includes configurtaion, engine and injector
+New: Examples Updated
+Several bug fixes and minor improvements
+
 Version 0.20
 ------------
 Released: Mar. 9, 2015
