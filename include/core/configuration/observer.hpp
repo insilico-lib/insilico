@@ -82,7 +82,7 @@ auto observe(std::string _variable) -> void {
   }
 }
 
-auto observe_neuron(std::string _variable, int id) -> void {
+auto observe_neuron(std::string _variable, unsigned id) -> void {
   int neuron_index = engine::neuron_index(id, _variable, false);
   char key[128];
   if(neuron_index == -1) {
@@ -97,11 +97,11 @@ auto observe_neuron(std::string _variable, int id) -> void {
   }
 }
 
-auto observe_neuron(std::string _variable, std::vector< int > ids) -> void {
+auto observe_neuron(std::string _variable, std::vector< unsigned > ids) -> void {
   std::vector< int > neuron_indices;
   char key[128];
   int neuron_index;
-  for(int id : ids) {
+  for(unsigned id : ids) {
     neuron_index = engine::neuron_index(id, _variable, false);
     if(neuron_index != -1) {
       neuron_indices.push_back(neuron_index);
@@ -121,7 +121,7 @@ auto observe_neuron(std::string _variable, std::vector< int > ids) -> void {
   }
 }
 
-auto observe_synapse(std::string _variable, int id) -> void {
+auto observe_synapse(std::string _variable, unsigned id) -> void {
   int synapse_index = engine::synapse_index(id, _variable, false);
   char key[128];
   if(synapse_index == -1) {
@@ -136,11 +136,11 @@ auto observe_synapse(std::string _variable, int id) -> void {
   }
 }
 
-auto observe_synapse(std::string _variable, std::vector< int > ids) -> void {
+auto observe_synapse(std::string _variable, std::vector< unsigned > ids) -> void {
   std::vector< int > synapse_indices;
   char key[128];
   int synapse_index;
-  for(int id : ids) {
+  for(unsigned id : ids) {
     synapse_index = engine::synapse_index(id, _variable, false);
     if(synapse_index != -1) {
       synapse_indices.push_back(synapse_index);
