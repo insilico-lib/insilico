@@ -33,7 +33,7 @@
 
 namespace insilico { namespace engine {
 
-auto neuron_index(int id, std::string variable, bool error=true) -> unsigned {
+auto neuron_index(unsigned id, std::string variable, bool error=true) -> unsigned {
   char key[128];
   sprintf(key, "n%d%s", id, variable.c_str());
   try {
@@ -52,7 +52,7 @@ auto neuron_index(int id, std::string variable, bool error=true) -> unsigned {
   return 0;
 }
 
-auto synapse_index(int id, std::string variable, bool error=true) -> unsigned {
+auto synapse_index(unsigned id, std::string variable, bool error=true) -> unsigned {
   char key[128];
   sprintf(key, "s%d%s", id, variable.c_str());
   try {
@@ -71,27 +71,11 @@ auto synapse_index(int id, std::string variable, bool error=true) -> unsigned {
   return 0;
 }
 
-auto get_indices(std::string variable) -> std::vector< unsigned > {
-  std::vector< unsigned > indices;
-  int idx = -1;
-  unsigned total_neurons = neuron_count();
-  unsigned total_synapses = synapse_count();
-  for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
-    idx = neuron_index(index, variable, false);
-    if(idx >= 0) indices.push_back(idx);
-  }
-  for(std::vector<int>::size_type index = 0; index < total_synapses; ++index) {
-    idx = synapse_index(index, variable, false);
-    if(idx >= 0) indices.push_back(idx);
-  }
-  return indices;
-}
-
 auto get_neuron_indices(std::string variable) -> std::vector< unsigned > {
   std::vector< unsigned > indices;
   int idx = -1;
   unsigned total_neurons = neuron_count();
-  for(std::vector<int>::size_type index = 0; index < total_neurons; ++index) {
+  for(unsigned index = 0; index < total_neurons; ++index) {
     idx = neuron_index(index, variable, false);
     if(idx >= 0) indices.push_back(idx);
   }
@@ -102,10 +86,21 @@ auto get_synapse_indices(std::string variable) -> std::vector< unsigned > {
   std::vector< unsigned > indices;
   int idx = -1;
   unsigned total_synapses = synapse_count();
-  for(std::vector<int>::size_type index = 0; index < total_synapses; ++index) {
+  for(unsigned index = 0; index < total_synapses; ++index) {
     idx = synapse_index(index, variable, false);
     if(idx >= 0) indices.push_back(idx);
   }
+  return indices;
+}
+
+auto get_indices(std::string variable) -> std::vector< unsigned > {
+  std::vector< unsigned > indices;
+  indices.insert(indices.end(),
+                 get_neuron_indices(variable).begin(),
+                 get_neuron_indices(variable).end());
+  indices.insert(indices.end(),
+                 get_synapse_indices(variable).begin(),
+                 get_synapse_indices(variable).end());
   return indices;
 }
 
