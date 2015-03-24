@@ -33,14 +33,25 @@ namespace insilico { namespace configuration {
 std::vector< std::string > observation_header;
 std::vector< int > pre_computed_indices;
 std::ofstream outstream;
-
 bool header_observed_flag = false;
 
+// Observer defaults
+char observer_delimiter = ',';
+bool observer_header = true;
+
+auto observe_delimiter(const char _delim) -> void {
+  observer_delimiter = _delim;
+}
+
+auto observe_header(const bool _flag) -> void {
+  observer_header = _flag;
+}
+
 auto write_header_once() -> void {
-  if(!header_observed_flag && !observation_header.empty()) {
+  if(observer_header && !header_observed_flag && !observation_header.empty()) {
     outstream << "time";
     for(std::string _variable : observation_header) {
-      outstream << ',' << _variable;
+      outstream << observer_delimiter << _variable;
     }
     outstream << '\n';
     header_observed_flag = true;
@@ -52,7 +63,7 @@ struct observer {
     write_header_once();
     outstream << t;
     for(std::vector< double >::size_type index = 0; index < pre_computed_indices.size(); ++index) {
-      outstream << ',' << (variables[pre_computed_indices[index]]);
+      outstream << observer_delimiter << (variables[pre_computed_indices[index]]);
     }
     outstream << '\n';
   }
