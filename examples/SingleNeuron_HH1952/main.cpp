@@ -107,6 +107,8 @@ class HH_Neuron : public Neuron {
 
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
+  configuration::observe_header(false);
+  configuration::observe_delimiter('\t');
   configuration::observe("v");
 
   engine::generate_neuron<HH_Neuron>();
