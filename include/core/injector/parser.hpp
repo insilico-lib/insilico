@@ -71,9 +71,9 @@ void read(const std::string &external_current_file)
         }
         if(!seq.empty()) {
           time_seq.push_back(seq[0]);
-          external_current_seq.resize(neurons_seq.size());
+          external_current_seq.resize(*std::max_element(neurons_seq.begin(), neurons_seq.end()) + 1);
           for(std::vector<int>::size_type iter = 0; iter < neurons_seq.size(); ++iter) {
-            external_current_seq[iter].push_back(seq[iter+1]);
+            external_current_seq[neurons_seq[iter]].push_back(seq[iter+1]);
           }
         }
       }
