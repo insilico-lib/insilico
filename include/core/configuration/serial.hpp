@@ -51,7 +51,7 @@ void initialize(int argc, char **argv) {
   for(int i=1; i < argc; ++i) { sargv += argv[i]; sargv += ' '; }
   std::vector<std::string> cmds = split(sargv, ' ');
   if(cmds.size() < 2 || cmds.size() > 4) {
-    std::cerr << usage_error_msg; exit(1);
+    std::cerr << usage_error_msg; exit(0);
   }
 
   std::cerr << "[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:\n";
