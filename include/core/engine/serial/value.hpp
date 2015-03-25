@@ -84,19 +84,57 @@ auto synapse_value(int id, std::string variable, double value) -> void {
   value_map[key] = value;
 }
 
-auto current_value(int id, std::string variable) -> double {
+auto neuron_current_value(int id, std::string variable, bool error=true) -> double {
   char key[128];
-  sprintf(key, "c%d%s", id, variable.c_str());
-  return value_map.at(key);
+  sprintf(key, "cn%d%s", id, variable.c_str());
+  try {
+    return value_map.at(key);
+  }
+  catch(...) {
+    if(!error) {
+      return 0;
+    }
+    else {
+      std::cerr << "[insilico::engine::synapse_index] Failed to find " << variable
+                << " value for synapse " << id << ".\n";
+      configuration::severe_error();
+    }
+  }
+  return 0;
 }
 
-auto current_value(int id, std::string variable, double value) -> void {
+auto neuron_current_value(int id, std::string variable, double value) -> void {
   char key[128];
-  sprintf(key, "c%d%s", id, variable.c_str());
+  sprintf(key, "cn%d%s", id, variable.c_str());
   value_map[key] = value;
 }
 
-auto get_values(std::string variable) -> std::vector<double> {
+auto synapse_current_value(int id, std::string variable, bool error=true) -> double {
+  char key[128];
+  sprintf(key, "cs%d%s", id, variable.c_str());
+  try {
+    return value_map.at(key);
+  }
+  catch(...) {
+    if(!error) {
+      return 0;
+    }
+    else {
+      std::cerr << "[insilico::engine::synapse_index] Failed to find " << variable
+                << " value for synapse " << id << ".\n";
+      configuration::severe_error();
+    }
+  }
+  return 0;
+}
+
+auto synapse_current_value(int id, std::string variable, double value) -> void {
+  char key[128];
+  sprintf(key, "cs%d%s", id, variable.c_str());
+  value_map[key] = value;
+}
+
+auto get_neuron_values(std::string variable) -> std::vector< double > {
   std::vector<double> values;
   int idx = -1;
   unsigned total_neurons = neuron_count();
