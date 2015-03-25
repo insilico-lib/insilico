@@ -43,47 +43,47 @@ void initialize(int argc, char **argv) {
   std::string error_msg = "[insilico::configuration::initialize] Supply of file more than once not allowed.\n"; 
   std::string usage_error_msg = "[insilico::configuration::initialize] USAGE: ";
   usage_error_msg += argv[0];
-  usage_error_msg += " -o<output_file.csv> -n<neuron_file.isf> -s<synapse_file.isf> -e<external_file.isfc>\n\n \
+  usage_error_msg += " -o <output_file.csv> -n <neuron_file.isf> -s <synapse_file.isf> -e <external_file.isfc>\n\n \
     Options:\n\t-o   Output file\n\t-n   Neuron configuration file\n\t-s   Synapse configuration file (optional)\n \
-    \t-e   External current configuration file (optional)\n             \
-    \nNo space allowed between option and its value.\n";
+    \t-e   External current configuration file (optional)\n\n";
 
   for(int i=1; i < argc; ++i) { sargv += argv[i]; sargv += ' '; }
   std::vector<std::string> cmds = split(sargv, ' ');
-  if(cmds.size() < 2 || cmds.size() > 4) {
+  if(cmds.size() < 4 || cmds.size() > 8) {
     std::cerr << usage_error_msg; exit(0);
   }
 
   std::cerr << "[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:\n";
-  for(std::string cmd : cmds) {
+  for(unsigned iter = 0; iter < cmds.size(); iter+=2) {
+    std::string cmd = cmds[iter];
     switch(cmd.at(1)) {
       case 'o':
-        if(repeat[0]) { std::cerr << error_msg; exit(1); }
-        output_file.assign(cmd.begin()+2, cmd.end());
+        if(repeat[0]) { std::cerr << error_msg << std::endl << usage_error_msg; exit(1); }
+        output_file = cmds[iter+1];
         std::cerr << "Output file: " << output_file << '\n';
         repeat[0] = true;
         break;
       case 'n':
-        if(repeat[1]) { std::cerr << error_msg; exit(1); }
-        neuron_file.assign(cmd.begin()+2, cmd.end());
+        if(repeat[1]) { std::cerr << error_msg << std::endl << usage_error_msg; exit(1); }
+        neuron_file = cmds[iter+1];
         std::cerr << "Neuron file: " << neuron_file << '\n';
         repeat[1] = true;
         break;
       case 's':
-        if(repeat[2]) { std::cerr << error_msg; exit(1); }
-        synapse_file.assign(cmd.begin()+2, cmd.end());
+        if(repeat[2]) { std::cerr << error_msg << std::endl << usage_error_msg; exit(1); }
+        synapse_file = cmds[iter+1];
         std::cerr << "Synapse file: " << synapse_file << '\n';
         repeat[2] = true;
         break;
       case 'e':
-        if(repeat[3]) { std::cerr << error_msg; exit(1); }
-        external_current_file.assign(cmd.begin()+2, cmd.end());
+        if(repeat[3]) { std::cerr << error_msg << std::endl << usage_error_msg; exit(1); }
+        external_current_file = cmds[iter+1];
         std::cerr << "External current file: " << external_current_file << '\n';
         repeat[3] = true;
         break;
       default:
-        std::cerr << "Default error: " << cmd.at(1) << std::endl;
-        std::cerr << usage_error_msg; exit(1);
+        std::cerr << "Default error: Unknown argument " << cmd << std::endl;
+        std::cerr << usage_error_msg; exit(0);
     }
   }
   if(repeat[0]) { outstream.open(output_file, std::ios::out); }
