@@ -136,18 +136,103 @@ auto synapse_current_value(int id, std::string variable, double value) -> void {
 
 auto get_neuron_values(std::string variable) -> std::vector< double > {
   std::vector<double> values;
-  int idx = -1;
   unsigned total_neurons = neuron_count();
-  unsigned total_synapses = synapse_count();
-  for(std::vector<double>::size_type index = 0; index < total_neurons; ++index) {
-    idx = neuron_value(index, variable, false);
-    if(idx >= 0) values.push_back(idx);
-  }
-  for(std::vector<double>::size_type index = 0; index < total_synapses; ++index) {
-    idx = synapse_value(index, variable, false);
-    if(idx >= 0) values.push_back(idx);
+  for(unsigned index = 0; index < total_neurons; ++index) {
+    values.push_back(neuron_value(index, variable, false));
   }
   return values;
+}
+
+auto get_synapse_values(std::string _variable) -> std::vector< double > {
+  std::vector<double> values;
+  unsigned total_synapses = synapse_count();
+  for(unsigned index = 0; index < total_synapses; ++index) {
+    values.push_back(synapse_value(index, _variable, false));
+  }
+  return values;
+}
+
+auto get_current_values(std::string _variable) -> std::vector< double > {
+  std::vector< double > values;
+  unsigned total_neurons = neuron_count();
+  unsigned total_synapses = synapse_count();
+  for(unsigned index = 0; index < total_neurons; ++index) {
+    values.push_back(neuron_current_value(index, _variable, false));
+  }
+  for(unsigned index = 0; index < total_synapses; ++index) {
+    values.push_back(synapse_current_value(index, _variable, false));
+  }
+  return values;
+}
+
+auto neuron_value_key(int id, std::string variable, bool error=true) -> decltype(std::string()) {
+  char key[128];
+  sprintf(key, "n%d%s", id, variable.c_str());
+  if(value_map.find(key) != value_map.end()) {
+    return key;
+  }
+  else {
+    return "";
+  }
+}
+
+auto synapse_value_key(int id, std::string variable, bool error=true) -> decltype(std::string()) {
+  char key[128];
+  sprintf(key, "s%d%s", id, variable.c_str());
+  if(value_map.find(key) != value_map.end()) {
+    return key;
+  }
+  else {
+    return "";
+  }
+}
+
+auto current_value_key(int id, std::string variable, bool error=true) -> decltype(std::string()) {
+  char key[128];
+  sprintf(key, "c%d%s", id, variable.c_str());
+  if(value_map.find(key) != value_map.end()) {
+    return key;
+  }
+  else {
+    return "";
+  }
+}
+
+auto get_neuron_value_keys(std::string variable) -> std::vector< std::string > {
+  std::vector< std::string > value_keys;
+  return value_keys;
+}
+
+auto get_synapse_value_keys(std::string variable) -> std::vector< std::string > {
+  std::vector< std::string > value_keys;
+  return value_keys;
+}
+
+auto get_current_value_keys(std::string variable) -> std::vector< std::string > {
+  std::vector< std::string > value_keys;
+  return value_keys;
+}
+
+auto get_values(std::string _variable) -> std::vector< double > {
+  std::vector< double > values;
+  std::vector< double > neuron_values = get_neuron_values(_variable);
+  std::vector< double > synapse_values = get_synapse_values(_variable);
+  std::vector< double > current_values = get_current_values(_variable);
+  values.insert(values.end(), neuron_values.begin(), neuron_values.end());
+  values.insert(values.end(), synapse_values.begin(), synapse_values.end());
+  values.insert(values.end(), current_values.begin(), current_values.end());
+  return values;
+}
+
+auto get_value_keys(std::string _variable) -> std::vector< std::string > {
+  std::vector< std::string > value_keys;
+  std::vector< std::string > neuron_value_keys = get_neuron_value_keys(_variable);
+  std::vector< std::string > synapse_value_keys = get_synapse_value_keys(_variable);
+  std::vector< std::string > current_value_keys = get_current_value_keys(_variable);
+  value_keys.insert(value_keys.end(), neuron_value_keys.begin(), neuron_value_keys.end());
+  value_keys.insert(value_keys.end(), synapse_value_keys.begin(), synapse_value_keys.end());
+  value_keys.insert(value_keys.end(), current_value_keys.begin(), current_value_keys.end());
+  return value_keys;
 }
 
 auto get_pre_neuron_values(int neuron_id, std::string variable) -> std::vector<double> {
