@@ -42,7 +42,7 @@ auto neuron_value(int id, std::string variable, bool error=true) -> double {
   }
   catch(...) {
     if(!error) {
-      return -1;
+      return 0;
     }
     else {
       std::cerr << "[insilico::engine::neuron_value] Failed to find "<<variable
@@ -67,7 +67,7 @@ auto synapse_value(int id, std::string variable, bool error=true) -> double {
   }
   catch(...) {
     if(!error) {
-      return -1;
+      return 0;
     }
     else {
       std::cerr << "[insilico::engine::synapse_index] Failed to find " << variable
