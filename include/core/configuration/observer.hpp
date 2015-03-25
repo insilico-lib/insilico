@@ -31,6 +31,7 @@
 namespace insilico { namespace configuration {
 
 std::vector< std::string > observation_header;
+std::vector< std::string > pre_computed_value_keys;
 std::vector< int > pre_computed_indices;
 std::ofstream outstream;
 bool header_observed_flag = false;
