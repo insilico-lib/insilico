@@ -55,7 +55,7 @@ class I_Na_SquidAxon_HH_HH1952 {
     dxdt[h_index]=(alpha_h*(1-h)-beta_h*h);
 
     // Current
-    engine::current_value(index, "I_Na_SquidAxon_HH_HH1952", (gna * pow(m, 3) * h * (v - ena)));
+    engine::neuron_current_value(index, "I_Na_SquidAxon_HH_HH1952", (gna * pow(m, 3) * h * (v - ena)));
 
   } // function current
 }; // class I_Na_SquidAxon_HH_HH1952
