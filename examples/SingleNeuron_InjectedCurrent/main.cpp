@@ -51,7 +51,7 @@ class I_Na {
     dxdt[m_index] = (alpha_m * (1-m) - beta_m * m);
     dxdt[h_index] = (alpha_h * (1-h) - beta_h * h);
 
-    engine::neuron_current_value(index, "I_Na", (gna * pow(m, 3) * h * (v - ena)));
+    engine::neuron_value(index, "I_Na", (gna * pow(m, 3) * h * (v - ena)));
   }
 };
 
@@ -71,7 +71,7 @@ class I_K {
 
     dxdt[n_index]=(alpha_n*(1 - n)-beta_n * n);
 
-    engine::neuron_current_value(index, "I_K", (gk * pow(n,4) * (v - ek)));
+    engine::neuron_value(index, "I_K", (gk * pow(n,4) * (v - ek)));
   }
 };
 
@@ -83,7 +83,7 @@ class I_Leak {
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
 
-    engine::neuron_current_value(index, "I_Leak", (gl * (v - el)));
+    engine::neuron_value(index, "I_Leak", (gl * (v - el)));
   }
 };
 
@@ -96,9 +96,9 @@ class HH_Neuron : public Neuron {
     I_K::current(variables, dxdt, t, index);
     I_Leak::current(variables, dxdt, t, index);
 
-    double I_Na = engine::neuron_current_value(index, "I_Na");
-    double I_K = engine::neuron_current_value(index, "I_K");
-    double I_Leak = engine::neuron_current_value(index, "I_Leak");
+    double I_Na = engine::neuron_value(index, "I_Na");
+    double I_K = engine::neuron_value(index, "I_K");
+    double I_Leak = engine::neuron_value(index, "I_Leak");
     // Adding external current through injector
     vector<double> I_Ext = injector::external_current(index, t);
 
