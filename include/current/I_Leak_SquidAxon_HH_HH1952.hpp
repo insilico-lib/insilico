@@ -40,7 +40,7 @@ class I_Leak_SquidAxon_HH_HH1952 {
     double v = variables[v_index];
 
     // Current
-    engine::neuron_current_value(index, "I_Leak_SquidAxon_HH_HH1952", (gl * (v - el)));
+    engine::neuron_value(index, "I_Leak_SquidAxon_HH_HH1952", (gl * (v - el)));
 
   } // function current
 }; // class I_Leak_SquidAxon_HH_HH1952
