@@ -33,74 +33,92 @@
 
 namespace insilico { namespace engine {
 
-auto neuron_index(unsigned id, std::string variable, bool error=true) -> unsigned {
+auto neuron_index(unsigned _id, std::string _variable) -> unsigned {
   char key[128];
-  sprintf(key, "n%d%s", id, variable.c_str());
+  sprintf(key, "n%d%s", _id, _variable.c_str());
   try {
     return index_map.at(key);
   }
   catch(...) {
-    if(!error) {
-      return -1;
-    }
-    else {
-      std::cerr << "[insilico::engine::neuron_index] Failed to find "<<variable
-                <<" index for neuron "<<id<<".\n";
-      configuration::severe_error();
-    }
+    std::cerr << "[insilico::engine::neuron_index] Failed to find "<<_variable
+              <<" index for neuron "<<_id<<".\n";
+    configuration::severe_error();
   }
   return 0;
 }
 
-auto synapse_index(unsigned id, std::string variable, bool error=true) -> unsigned {
+auto synapse_index(unsigned _id, std::string _variable) -> unsigned {
   char key[128];
-  sprintf(key, "s%d%s", id, variable.c_str());
+  sprintf(key, "s%d%s", _id, _variable.c_str());
   try {
     return index_map.at(key);
   }
   catch(...) {
-    if(!error) {
-      return -1;
-    }
-    else {
-      std::cerr << "[insilico::engine::synapse_index] Failed to find "<<variable
-                <<" index for synapse "<<id<<".\n";
-      configuration::severe_error();
-    }
+    std::cerr << "[insilico::engine::synapse_index] Failed to find "<<_variable
+              <<" index for synapse "<<_id<<".\n";
+    configuration::severe_error();
   }
   return 0;
 }
 
-auto get_neuron_indices(std::string variable) -> std::vector< unsigned > {
+auto neuron_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
+  char key[128];
+  sprintf(key, "n%d%s", _id, _variable.c_str());
+  try {
+    return index_map.at(key);
+  }
+  catch(...) {
+    error = true;
+  }
+  return 0;
+}
+
+auto synapse_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
+  char key[128];
+  sprintf(key, "s%d%s", _id, _variable.c_str());
+  try {
+    return index_map.at(key);
+  }
+  catch(...) {
+    error = true;
+  }
+  return 0;
+}
+
+auto get_neuron_indices(std::string _variable) -> std::vector< unsigned > {
   std::vector< unsigned > indices;
-  int idx = -1;
+  bool error = false;
+  unsigned idx;
   unsigned total_neurons = neuron_count();
   for(unsigned index = 0; index < total_neurons; ++index) {
-    idx = neuron_index(index, variable, false);
-    if(idx >= 0) indices.push_back(idx);
+    idx = neuron_index(index, _variable, error);
+    if(!error) { indices.push_back(idx); }
+    error = false;
   }
   return indices;
 }
 
-auto get_synapse_indices(std::string variable) -> std::vector< unsigned > {
+auto get_synapse_indices(std::string _variable) -> std::vector< unsigned > {
   std::vector< unsigned > indices;
-  int idx = -1;
+  bool error = false;
+  unsigned idx;
   unsigned total_synapses = synapse_count();
   for(unsigned index = 0; index < total_synapses; ++index) {
-    idx = synapse_index(index, variable, false);
-    if(idx >= 0) indices.push_back(idx);
+    idx = synapse_index(index, _variable, error);
+    if(!error) { indices.push_back(idx); }
+    error = false;
   }
   return indices;
 }
 
-auto get_indices(std::string variable) -> std::vector< unsigned > {
+auto get_indices(std::string _variable) -> std::vector< unsigned > {
   std::vector< unsigned > indices;
   indices.insert(indices.end(),
-                 get_neuron_indices(variable).begin(),
-                 get_neuron_indices(variable).end());
+                 get_neuron_indices(_variable).begin(),
+                 get_neuron_indices(_variable).end());
   indices.insert(indices.end(),
-                 get_synapse_indices(variable).begin(),
-                 get_synapse_indices(variable).end());
+                 get_synapse_indices(_variable).begin(),
+                 get_synapse_indices(_variable).end());
   return indices;
 }
 
@@ -118,11 +136,11 @@ auto synapse_id_from_index(unsigned _index) -> unsigned {
   return idx;
 }
 
-auto get_pre_neuron_indices(int neuron_id, std::string variable) -> std::vector<int> {
+auto get_pre_neuron_indices(int neuron_id, std::string _variable) -> std::vector<int> {
   std::vector<int> indices;
   if(!pre_synaptic_lists.empty()) {
     for(std::vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
-      indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], variable));
+      indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], _variable));
     }
   }
   return indices;
