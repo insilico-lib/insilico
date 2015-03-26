@@ -59,9 +59,9 @@ class N_SquidAxon_HH1952 : public Neuron {
     I_K_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
     I_Leak_SquidAxon_HH_HH1952::current(variables, dxdt, t, index);
 
-    double I_Na = engine::neuron_current_value(index, "I_Na_SquidAxon_HH_HH1952");
-    double I_K = engine::neuron_current_value(index, "I_K_SquidAxon_HH_HH1952");
-    double I_Leak = engine::neuron_current_value(index, "I_Leak_SquidAxon_HH_HH1952");
+    double I_Na = engine::neuron_value(index, "I_Na_SquidAxon_HH_HH1952");
+    double I_K = engine::neuron_value(index, "I_K_SquidAxon_HH_HH1952");
+    double I_Leak = engine::neuron_value(index, "I_Leak_SquidAxon_HH_HH1952");
     double I_Ext = engine::neuron_value(index, "iext");
 
     dxdt[v_index] = I_Ext - I_Na - I_K - I_Leak - I_Syn;
