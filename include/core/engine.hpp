@@ -21,7 +21,7 @@
 #define INCLUDED_INSILICO_CORE_ENGINE_HPP
 
 #ifdef INSILICO_MPI_ENABLE
-#include "parallel/synchronization.hpp"
+#include "core/engine/mpi.hpp"
 #else
 #include "core/engine/serial.hpp"
 #endif
