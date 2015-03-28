@@ -22,7 +22,7 @@
 #define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_HPP
 
 #ifdef INSILICO_MPI_ENABLE
-#include "core/configuration/parallel.hpp"
+#include "core/configuration/mpi.hpp"
 #else
 #include "core/configuration/serial.hpp"
 #endif
