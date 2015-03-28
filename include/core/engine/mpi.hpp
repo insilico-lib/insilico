@@ -43,10 +43,12 @@ auto mpi_work_assigned() -> bool {
   return false;
 }
 
+#define INSILICO_MPI_REGISTER   if(mpi_register_update())
 auto mpi_register_update() -> bool {
   return mpi_work_assignment();
 }
 
+#define INSILICO_MPI_PROCESS(x) if(mpi_process_update(x))
 auto mpi_process_update(unsigned _index) -> bool {
   updated_value.push_back(_index);
   return mpi_work_assignment();
