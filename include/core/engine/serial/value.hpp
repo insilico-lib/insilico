@@ -161,7 +161,7 @@ auto get_neuron_value_keys(std::string _variable) -> std::vector< std::string > 
 auto get_synapse_value_keys(std::string _variable) -> std::vector< std::string > {
   std::vector< std::string > value_keys;
   std::string key;
-  unsigned total_synapses = neuron_count();
+  unsigned total_synapses = synapse_count();
   for(unsigned id = 0; id < total_synapses; ++id) {
     key = synapse_value_key(id, _variable);
     if(key.compare("") != 0) { value_keys.push_back(key); }
