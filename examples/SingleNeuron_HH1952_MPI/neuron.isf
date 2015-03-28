@@ -1,0 +1,2 @@
+"My Neuron"
+    dxdt : 4, v : -10, m : 0, n : 0, h : 0, I_Ext : 10, I_Na : 0;
