@@ -136,11 +136,11 @@ auto synapse_id_from_index(unsigned _index) -> unsigned {
   return idx;
 }
 
-auto get_pre_neuron_indices(int neuron_id, std::string _variable) -> std::vector<int> {
+auto get_pre_neuron_indices(int _id, std::string _variable) -> std::vector<int> {
   std::vector<int> indices;
   if(!pre_synaptic_lists.empty()) {
-    for(std::vector<int>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
-      indices.push_back(synapse_index(pre_synaptic_lists[neuron_id][index], _variable));
+    for(std::vector<int>::size_type index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
+      indices.push_back(synapse_index(pre_synaptic_lists[_id][index], _variable));
     }
   }
   return indices;
