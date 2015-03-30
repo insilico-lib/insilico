@@ -5,6 +5,7 @@
 *.dat
 *.csv
 output/*
+.ids
 
 # Image files
 *.jpeg
