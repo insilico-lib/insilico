@@ -43,14 +43,14 @@ auto neuron_value(unsigned _id, std::string _variable) -> double {
   sprintf(compute_key, "n%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "rb");
+  fptr = fopen(key.c_str(), "rb");
   if(fptr == NULL) {
     std::cerr << "[insilico::engine::neuron_value] Failed to find "<<_variable
               << " value for neuron " << _id << ".\n";
     configuration::mpi::severe_error();
   }
-  fread(&observed_value, 1, sizeof(double), fptr);
-  fclose();
+  fread(&observed_value, sizeof(double), 1, fptr);
+  fclose(fptr);
   return observed_value;
 }
 
@@ -62,14 +62,14 @@ auto synapse_value(unsigned _id, std::string _variable) -> double {
   sprintf(compute_key, "s%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "rb");
+  fptr = fopen(key.c_str(), "rb");
   if(fptr == NULL) {
     std::cerr << "[insilico::engine::synapse_index] Failed to find " << _variable
               << " value for synapse " << _id << ".\n";
     configuration::mpi::severe_error();
   }
-  fread(&observed_value, 1, sizeof(double), fptr);
-  fclose();
+  fread(&observed_value, sizeof(double), 1, fptr);
+  fclose(fptr);
   return observed_value;
 }
 
@@ -81,13 +81,13 @@ auto neuron_value(unsigned _id, std::string _variable, bool& error) -> double {
   sprintf(compute_key, "n%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "rb");
+  fptr = fopen(key.c_str(), "rb");
   if(fptr == NULL) {
     error = true;
     return observed_value;
   }
-  fread(&observed_value, 1, sizeof(double), fptr);
-  fclose();
+  fread(&observed_value, sizeof(double), 1, fptr);
+  fclose(fptr);
   return observed_value;
 }
 
@@ -98,9 +98,9 @@ auto neuron_value(unsigned _id, std::string _variable, double value) -> void {
   sprintf(compute_key, "n%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "wb");
-  fwrite(value, 1, sizeof(double), fptr);
-  fclose();
+  fptr = fopen(key.c_str(), "wb");
+  fwrite(&value, sizeof(double), 1, fptr);
+  fclose(fptr);
 }
 
 auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
@@ -111,13 +111,13 @@ auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
   sprintf(compute_key, "s%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "rb");
+  fptr = fopen(key.c_str(), "rb");
   if(fptr == NULL) {
     error = true;
     return observed_value;
   }
-  fread(&observed_value, 1, sizeof(double), fptr);
-  fclose();
+  fread(&observed_value, sizeof(double), 1, fptr);
+  fclose(fptr);
   return observed_value;
 }
 
@@ -128,9 +128,9 @@ auto synapse_value(unsigned _id, std::string _variable, double value) -> void {
   sprintf(compute_key, "s%d%s", _id, _variable.c_str());
   key = ".ids/.";
   key += compute_key;
-  fptr = fopen(key, "wb");
-  fwrite(value, 1, sizeof(double), fptr);
-  fclose();
+  fptr = fopen(key.c_str(), "wb");
+  fwrite(&value, sizeof(double), 1, fptr);
+  fclose(fptr);
 }
 
 auto get_neuron_values(std::string _variable) -> std::vector< double > {
