@@ -26,4 +26,17 @@
 #include "core/engine/serial.hpp"
 #endif
 
+namespace insilico { namespace engine {
+
+auto populate_pre_synaptic_lists() -> void {
+  if(!post_neuron.empty()) {
+    pre_synaptic_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
+    for(unsigned iterator = 0; iterator < post_neuron.size(); ++iterator) {
+      pre_synaptic_lists[ post_neuron[iterator] ].push_back( iterator );
+    }
+  }
+}
+
+} } // namespace insilico::engine
+
 #endif
