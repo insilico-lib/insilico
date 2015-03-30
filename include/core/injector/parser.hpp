@@ -37,8 +37,7 @@ std::vector< std::vector<double> > external_current_seq;
 std::vector<double> time_seq;
 std::vector<int> neurons_seq;
 
-void read(const std::string &external_current_file)
-{
+void read(const std::string &external_current_file) {
   bool header;
   char linedelim = '\n', worddelim = ',';
   std::string part;
@@ -48,13 +47,15 @@ void read(const std::string &external_current_file)
     while(getline(extcurrfile_stream, part, linedelim)) { // read a line
       header = false;
       std::stringstream l(part);
-      if((trim(part)).length() > 0) {
+      trim(part);
+      if(part.length() > 0) {
         if(starts_with(part,"time")) {
           header = true;
         }
         std::vector<double> seq;
         while(getline(l, part, worddelim)) { // read the current
-          if((trim(part)).length() > 0) {
+          trim(part);
+          if(part.length() > 0) {
             if(header == true) {
               if(part.compare("time") == 0) continue;
               int neuron_id = (int)(ceil(string_to_double(part)));
