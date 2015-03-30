@@ -20,9 +20,9 @@
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_MPI_VALUE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_MPI_VALUE_HPP
 
-#include "core/configuration/error.hpp"
-#include "core/type.hpp"
+#include "core/configuration/mpi/error.hpp"
 #include "core/engine/data.hpp"
+#include "core/type.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -35,7 +35,7 @@
 
 namespace insilico { namespace engine {
 
-auto neuron_value(int _id, std::string _variable) -> double {
+auto neuron_value(unsigned _id, std::string _variable) -> double {
   char compute_key[128];
   std::string key;
   double observed_value = 0;
@@ -54,7 +54,7 @@ auto neuron_value(int _id, std::string _variable) -> double {
   return observed_value;
 }
 
-auto synapse_value(int _id, std::string _variable) -> double {
+auto synapse_value(unsigned _id, std::string _variable) -> double {
   char compute_key[128];
   std::string key;
   double observed_value = 0;
@@ -73,7 +73,7 @@ auto synapse_value(int _id, std::string _variable) -> double {
   return observed_value;
 }
 
-auto neuron_value(int _id, std::string _variable, bool& error) -> double {
+auto neuron_value(unsigned _id, std::string _variable, bool& error) -> double {
   char compute_key[128];
   std::string key;
   double observed_value = 0;
@@ -91,7 +91,7 @@ auto neuron_value(int _id, std::string _variable, bool& error) -> double {
   return observed_value;
 }
 
-auto neuron_value(int _id, std::string _variable, double value) -> void {
+auto neuron_value(unsigned _id, std::string _variable, double value) -> void {
   char compute_key[128];
   std::string key;
   FILE* fptr;
@@ -103,7 +103,7 @@ auto neuron_value(int _id, std::string _variable, double value) -> void {
   fclose();
 }
 
-auto synapse_value(int _id, std::string _variable, bool& error) -> double {
+auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
   char compute_key[128];
   std::string key;
   double observed_value = 0;
@@ -121,7 +121,7 @@ auto synapse_value(int _id, std::string _variable, bool& error) -> double {
   return observed_value;
 }
 
-auto synapse_value(int _id, std::string _variable, double value) -> void {
+auto synapse_value(unsigned _id, std::string _variable, double value) -> void {
   char compute_key[128];
   std::string key;
   FILE* fptr;
@@ -166,24 +166,24 @@ auto get_values(std::string _variable) -> std::vector< double > {
   return values;
 }
 
-auto get_pre_neuron_values(int neuron_id, std::string _variable) -> std::vector<double> {
+auto get_pre_neuron_values(unsigned _id, std::string _variable) -> std::vector<double> {
   std::vector<double> values;
   if(!pre_synaptic_lists.empty()) {
-    for(std::vector<double>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
-      values.push_back(synapse_value(pre_synaptic_lists[neuron_id][index], _variable));
+    for(std::vector<double>::size_type index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
+      values.push_back(synapse_value(pre_synaptic_lists[_id][index], _variable));
     }
   }
   return values;
 }
 
-auto neuron_value_key(int _id, std::string _variable) -> decltype(std::string()) {
+auto neuron_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
   else { return ""; }
 }
 
-auto synapse_value_key(int _id, std::string _variable) -> decltype(std::string()) {
+auto synapse_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
