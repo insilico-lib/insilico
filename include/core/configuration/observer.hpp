@@ -109,10 +109,6 @@ auto observe(std::string _variable) -> void {
       observation_header.push_back(value_key);
     }
   }
-  std::cout << neuron_keys.size() << std::endl;
-  std::cout << synapse_keys.size() << std::endl;
-  std::cout << pre_computed_keys.size() << std::endl;
-  std::cout << observation_header.size() << std::endl;
 }
 
 auto observe_neuron(unsigned id, std::string _variable) -> void {
