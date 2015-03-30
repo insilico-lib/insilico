@@ -62,13 +62,15 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
   if(file_check(neuron_stream, neuron_file)) {
     while(getline(neuron_stream, part, linedelim)) {
       std::stringstream l(part);
-      if((trim(part)).length() > 0) {
+      trim(part);
+      if(part.length() > 0) {
         engine::neuron_start_list_ids.push_back(ncount);
         while(getline(l, part, worddelim)) {
-          if((trim(part)).length() > 0) {
+          trim(part);
+          if(part.length() > 0) {
             std::stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); first_item = trim(part);
-            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+            getline(k, part, pairdelim); trim(part); first_item = part;
+            getline(k, part, pairdelim); trim(part); second_item = string_to_double(part);
             out.str("");
             out << ntrack;
             key = "n" + out.str() + first_item;
@@ -96,13 +98,15 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
   if(file_check(synapse_stream, synapse_file)) {
     while(getline(synapse_stream, part, linedelim)) {
       std::stringstream l(part);
-      if((trim(part)).length() > 0) {
+      trim(part);
+      if(part.length() > 0) {
         engine::synapse_start_list_ids.push_back(ncount);
         while(getline(l, part, worddelim)) {
-          if((trim(part)).length() > 0) {
+          trim(part);
+          if(part.length() > 0) {
             std::stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); first_item = trim(part);
-            getline(k, part, pairdelim); second_item = string_to_double(trim(part));
+            getline(k, part, pairdelim); trim(part); first_item = part;
+            getline(k, part, pairdelim); trim(part); second_item = string_to_double(part);
             out.str("");
             out << strack;
             key = "s" + out.str() + first_item;
