@@ -34,7 +34,7 @@
 
 namespace insilico { namespace engine {
 
-auto neuron_value(int _id, std::string _variable) -> double {
+auto neuron_value(unsigned _id, std::string _variable) -> double {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   try {
@@ -48,7 +48,7 @@ auto neuron_value(int _id, std::string _variable) -> double {
   return 0;
 }
 
-auto synapse_value(int _id, std::string _variable) -> double {
+auto synapse_value(unsigned _id, std::string _variable) -> double {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   try {
@@ -62,7 +62,7 @@ auto synapse_value(int _id, std::string _variable) -> double {
   return 0;
 }
 
-auto neuron_value(int _id, std::string _variable, bool& error) -> double {
+auto neuron_value(unsigned _id, std::string _variable, bool& error) -> double {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   try { return value_map.at(key); }
@@ -70,13 +70,13 @@ auto neuron_value(int _id, std::string _variable, bool& error) -> double {
   return 0;
 }
 
-auto neuron_value(int _id, std::string _variable, double value) -> void {
+auto neuron_value(unsigned _id, std::string _variable, double value) -> void {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   value_map[key] = value;
 }
 
-auto synapse_value(int _id, std::string _variable, bool& error) -> double {
+auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   try { return value_map.at(key); }
@@ -84,7 +84,7 @@ auto synapse_value(int _id, std::string _variable, bool& error) -> double {
   return 0;
 }
 
-auto synapse_value(int _id, std::string _variable, double value) -> void {
+auto synapse_value(unsigned _id, std::string _variable, double value) -> void {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   value_map[key] = value;
@@ -123,24 +123,24 @@ auto get_values(std::string _variable) -> std::vector< double > {
   return values;
 }
 
-auto get_pre_neuron_values(int neuron_id, std::string _variable) -> std::vector<double> {
+auto get_pre_neuron_values(unsigned _id, std::string _variable) -> std::vector<double> {
   std::vector<double> values;
   if(!pre_synaptic_lists.empty()) {
-    for(std::vector<double>::size_type index = 0; index < pre_synaptic_lists[neuron_id].size(); ++index) {
-      values.push_back(synapse_value(pre_synaptic_lists[neuron_id][index], _variable));
+    for(std::vector<double>::size_type index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
+      values.push_back(synapse_value(pre_synaptic_lists[_id][index], _variable));
     }
   }
   return values;
 }
 
-auto neuron_value_key(int _id, std::string _variable) -> decltype(std::string()) {
+auto neuron_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
   else { return ""; }
 }
 
-auto synapse_value_key(int _id, std::string _variable) -> decltype(std::string()) {
+auto synapse_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
