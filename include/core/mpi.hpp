@@ -22,9 +22,9 @@
 
 namespace insilico { namespace mpi {
 
-unsigned master = 0;
-unsigned rank;
-unsigned size;
+int master = 0;
+int rank;
+int size;
 
 } } // namespace insilico::mpi
 
