@@ -36,53 +36,43 @@ namespace insilico { namespace engine {
 auto neuron_index(unsigned _id, std::string _variable) -> unsigned {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
-  try {
-    return index_map.at(key);
-  }
-  catch(...) {
+  if(index_map.find(key) == index_map.end()) {
     std::cerr << "[insilico::engine::neuron_index] Failed to find "<<_variable
               <<" index for neuron "<<_id<<".\n";
-    configuration::severe_error();
+    exit(1);
   }
-  return 0;
+  return index_map[key];
 }
 
 auto synapse_index(unsigned _id, std::string _variable) -> unsigned {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
-  try {
-    return index_map.at(key);
-  }
-  catch(...) {
+  if(index_map.find(key) == index_map.end()) {
     std::cerr << "[insilico::engine::synapse_index] Failed to find "<<_variable
               <<" index for synapse "<<_id<<".\n";
-    configuration::severe_error();
+    exit(1);
   }
-  return 0;
+  return index_map[key];
 }
 
 auto neuron_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
-  try {
-    return index_map.at(key);
-  }
-  catch(...) {
+  if(index_map.find(key) == index_map.end()) {
     error = true;
+    return 0;
   }
-  return 0;
+  return index_map[key];
 }
 
 auto synapse_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
-  try {
-    return index_map.at(key);
-  }
-  catch(...) {
+  if(index_map.find(key) == index_map.end()) {
     error = true;
+    return 0;
   }
-  return 0;
+  return index_map[key];
 }
 
 auto get_neuron_indices(std::string _variable) -> std::vector< unsigned > {
