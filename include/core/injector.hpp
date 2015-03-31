@@ -22,17 +22,24 @@
 
 #include "core/injector/parser.hpp"
 
+#include <cmath>
+
 namespace insilico { namespace injector {
 
-std::vector<double> external_current(const int _neuron_id, const double _time) {
-  std::vector<double> current_values;
-  unsigned index = (std::find(injector::time_seq.begin(), injector::time_seq.end(), _time) - injector::time_seq.begin());
-  if(index >= injector::time_seq.size()) {
-    return current_values;
+std::vector< double > external_current(const int _neuron_id, const double _time) {
+  std::vector< double > current_values;
+  long index = -1;
+  for(unsigned time_id = 0; time_id < injector::time_seq.size(); ++time_id) {
+    if(std::abs(injector::time_seq[time_id] - _time) < 0.001) {
+      index = time_id;
+      break;
+    }
   }
-  for(std::vector<int>::size_type id = 0; id < injector::neurons_seq.size(); ++id) {     
-    if(_neuron_id == injector::neurons_seq[id]) {
-      current_values.push_back(injector::external_current_seq[_neuron_id][index]);
+  if(index >= 0) {
+    for(unsigned current_id = 0; current_id < injector::neurons_seq.size(); ++current_id) {
+      if(_neuron_id == injector::neurons_seq[current_id]) {
+        current_values.push_back(injector::external_current_seq[_neuron_id][index]);
+      }
     }
   }
   return current_values;
