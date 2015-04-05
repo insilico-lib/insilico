@@ -42,16 +42,23 @@ class I_Na {
     double v = variables[v_index];
     double m = variables[m_index];
     double h = variables[h_index];
+
+    INSILICO_MPI_IUNIT(m_index) {
+      double alpha_m = (2.5 - 0.1 * v) / (exp(2.5-0.1 * v) - 1.0);
+      double beta_m  = 4.0 * exp(-v / 18.0);
+      dxdt[m_index] = (alpha_m * (1-m) - beta_m * m);
+    }
+
+    INSILICO_MPI_IUNIT(h_index) {
+      double alpha_h = 0.07 * exp(-v / 20.0);
+      double beta_h  = 1.0 / (exp(3 - 0.1 * v) + 1);
+      dxdt[h_index] = (alpha_h * (1-h) - beta_h * h);
+    }
     
-    double alpha_m = (2.5 - 0.1 * v) / (exp(2.5-0.1 * v) - 1.0);
-    double beta_m  = 4.0 * exp(-v / 18.0);
-    double alpha_h = 0.07 * exp(-v / 20.0);
-    double beta_h  = 1.0 / (exp(3 - 0.1 * v) + 1);
-
-    dxdt[m_index] = (alpha_m * (1-m) - beta_m * m);
-    dxdt[h_index] = (alpha_h * (1-h) - beta_h * h);
-
-    engine::neuron_value(index, "I_Na", (gna * pow(m, 3) * h * (v - ena)));
+    INSILICO_MPI_UPDATE {
+      if(insilico::engine::mpi::exec_div) cout<<"I_Na rank "<< mpi::rank << " time " << t<< " with v=" << v << endl;
+      engine::neuron_value(index, "I_Na", (gna * pow(m, 3) * h * (v - ena)));
+    }
   }
 };
 
@@ -66,24 +73,30 @@ class I_K {
     double v = variables[v_index];
     double n = variables[n_index];
 
-    double alpha_n = (0.1 - 0.01 * v) / (exp(1 - 0.1 * v) - 1.0);
-    double beta_n  = 0.125 * exp(-v / 80.0);
+    INSILICO_MPI_IUNIT(n_index) {
+      double alpha_n = (0.1 - 0.01 * v) / (exp(1 - 0.1 * v) - 1.0);
+      double beta_n  = 0.125 * exp(-v / 80.0);
+      dxdt[n_index] = (alpha_n*(1 - n)-beta_n * n);
+    }
 
-    dxdt[n_index]=(alpha_n*(1 - n)-beta_n * n);
-
-    engine::neuron_value(index, "I_K", (gk * pow(n,4) * (v - ek)));
+    INSILICO_MPI_UPDATE {
+      if(insilico::engine::mpi::exec_div) cout<<"I_K rank "<< mpi::rank << " at "<<t<< " with v=" << v<< endl;
+      engine::neuron_value(index, "I_K", (gk * pow(n,4) * (v - ek)));
+    }
   }
 };
 
 class I_Leak {
  public:
   static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
-    double gl = 0.3, el = 10.6;
+    INSILICO_MPI_UPDATE {
+      double gl = 0.3, el = 10.6;
+      int v_index = engine::neuron_index(index, "v");
+      double v = variables[v_index];
 
-    int v_index = engine::neuron_index(index, "v");
-    double v = variables[v_index];
-
-    engine::neuron_value(index, "I_Leak", (gl * (v - el)));
+      if(insilico::engine::mpi::exec_div) cout<<"I_Leak rank "<< mpi::rank << " at "<<t << " with v=" << v<< endl;
+      engine::neuron_value(index, "I_Leak", (gl * (v - el)));
+    }
   }
 };
 
@@ -91,33 +104,39 @@ class HH_Neuron : public Neuron {
  public:
   void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
-    
+
+    // INSILICO_MPI_UPDATE { if(insilico::engine::mpi::exec_div) cout<<"rank "<< mpi::rank << " at "<<t<< endl; I_Na::current(variables, dxdt, t, index); }
+    // INSILICO_MPI_UPDATE { if(insilico::engine::mpi::exec_div) cout<<"rank "<< mpi::rank << " at "<<t<< endl; I_K::current(variables, dxdt, t, index);  }
+    // INSILICO_MPI_UPDATE { if(insilico::engine::mpi::exec_div) cout<<"rank "<< mpi::rank << " at "<<t<< endl; I_Leak::current(variables, dxdt, t, index); }
     I_Na::current(variables, dxdt, t, index);
     I_K::current(variables, dxdt, t, index);
     I_Leak::current(variables, dxdt, t, index);
 
-    double I_Na = engine::neuron_value(index, "I_Na");
-    double I_K = engine::neuron_value(index, "I_K");
-    double I_Leak = engine::neuron_value(index, "I_Leak");
-    double I_Ext = engine::neuron_value(index, "I_Ext");
-    
-    dxdt[v_index] = - I_Na - I_K - I_Leak + I_Ext;
+    INSILICO_MPI_DUNIT(v_index) {
+      if(insilico::engine::mpi::exec_div) cout<<"rank "<< mpi::rank << " at "<<t<< " with v=" << variables[v_index]<< endl;
+      double I_Na = engine::neuron_value(index, "I_Na");
+      double I_K = engine::neuron_value(index, "I_K");
+      double I_Leak = engine::neuron_value(index, "I_Leak");
+      double I_Ext = engine::neuron_value(index, "I_Ext");
+      //std::cout << "I_Na: "<< I_Na << " I_K " << I_K << " I_Leak " << I_Leak << std::endl;
+      dxdt[v_index] = - I_Na - I_K - I_Leak + I_Ext;
+    }
+    // synchronize intermediates
+    INSILICO_MPI_SYNCHRONIZE(variables, t);
   }
 };
 
 int main(int argc, char **argv) {
-  configuration::initialize(argc, argv);
-  configuration::observe_header(false);   // optional
-  configuration::observe_delimiter('\t'); // optional
-  configuration::observe("v");
-  configuration::observe("I_Na"); // Needs I_Na to be part of input file
+  configuration::mpi::initialize(argc, argv);
+  configuration::mpi::observe("v");
+  configuration::mpi::observe("I_Na"); // Needs I_Na to be part of input file
 
   engine::generate_neuron<HH_Neuron>();
-
+  
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, 100.0, 0.05, configuration::observer());
+                  0.0, 100.0, 0.05, configuration::mpi::observer());
 
-  configuration::finalize();
+  configuration::mpi::finalize();
 }
