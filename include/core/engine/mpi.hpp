@@ -75,32 +75,32 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
       }
     }
   }
-  std::vector< std::vector < unsigned > > updated_indices(insilico::mpi::size);
-  updated_indices[insilico::mpi::rank].insert(updated_indices[insilico::mpi::rank].end(),
+  std::vector< std::vector < unsigned > > updated_indices_from_each_process(insilico::mpi::size);
+  updated_indices_from_each_process[insilico::mpi::rank].insert(updated_indices_from_each_process[insilico::mpi::rank].end(),
                                               update_indices.begin(),
                                               update_indices.end());
   std::vector< unsigned > update_size(insilico::mpi::size);
+  std::vector< unsigned > updated_indices_for_single_process;
   update_size[insilico::mpi::rank] = engine::mpi::update_indices.size();
-  MPI_Bcast(&update_size[insilico::mpi::rank], 1, MPI_UNSIGNED, insilico::mpi::rank, MPI_COMM_WORLD);
   for(unsigned r = 0; r < insilico::mpi::size; ++r) {
-    if(r != insilico::mpi::rank) {
-      updated_indices[r].resize(update_size[r]);
+    MPI_Bcast(&update_size[r], 1, MPI_UNSIGNED, r, MPI_COMM_WORLD);
+    updated_indices_for_single_process.resize(update_size[r]);
+    MPI_Bcast(&updated_indices_for_single_process[0], update_size[r], MPI_UNSIGNED, r, MPI_COMM_WORLD);
+    for(unsigned index : updated_indices_for_single_process) {
+      updated_indices_from_each_process[r].push_back(index);
     }
-    MPI_Bcast(&updated_indices[r], update_size[r], MPI_UNSIGNED, r, MPI_COMM_WORLD);
   }
-  for(unsigned r = 0; r < insilico::mpi::size; ++r) {
-    for(unsigned id : updated_indices[r]) {
-      if(r != insilico::mpi::rank) {
-        for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
-          if(iterator->second == id) {
-            key = ".ids/.";
-            key += iterator->first;
-            fptr = fopen(key.c_str(), "rb");
-            fread(&updated_value, sizeof(double), 1, fptr);
-            _variables[id] = updated_value;
-            fclose(fptr);
-            break;
-          }
+  for(unsigned r = 0; r < insilico::mpi::rank; ++r) {
+    for(unsigned id : updated_indices_from_each_process[r]) {
+      for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
+        if(iterator->second == id) {
+          key = ".ids/.";
+          key += iterator->first;
+          fptr = fopen(key.c_str(), "rb");
+          fread(&updated_value, sizeof(double), 1, fptr);
+          _variables[id] = updated_value;
+          fclose(fptr);
+          break;
         }
       }
     }
@@ -125,7 +125,6 @@ auto block_assigned(unsigned _line_id) -> bool {
   assigner[(((global_rank + 1) >= insilico::mpi::size) ? (global_rank = 0) : ++global_rank)].push_back(_line_id);
   assigner_line.push_back(_line_id);
   if(insilico::mpi::rank == global_rank) {
-    std::cout << "RANK = "<<insilico::mpi::rank<<" of "<<insilico::mpi::size << " got line "<< _line_id <<"============="<< std::endl;
     return true;
   }
   return false;
