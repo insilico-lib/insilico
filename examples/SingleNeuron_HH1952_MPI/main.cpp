@@ -1,7 +1,9 @@
 /*
-  examples/SingleNeuron_HH1952/main.cpp - insilico's example using neuron and synapse for illustrations
+  examples/SingleNeuron_HH1952/main.cpp - insilico's example using neuron and
+                                          synapse for illustrations
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,12 +34,13 @@ using namespace std;
 
 class I_Na {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, unsigned index) {
     double gna = 120, ena = 115;
 
-    int v_index = engine::neuron_index(index, "v");
-    int m_index = engine::neuron_index(index, "m");
-    int h_index = engine::neuron_index(index, "h");
+    unsigned v_index = engine::neuron_index(index, "v");
+    unsigned m_index = engine::neuron_index(index, "m");
+    unsigned h_index = engine::neuron_index(index, "h");
     
     double v = variables[v_index];
     double m = variables[m_index];
@@ -60,11 +63,12 @@ class I_Na {
 
 class I_K {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, unsigned index) {
     double gk = 36, ek = -12;
 
-    int v_index = engine::neuron_index(index, "v");
-    int n_index = engine::neuron_index(index, "n");
+    unsigned v_index = engine::neuron_index(index, "v");
+    unsigned n_index = engine::neuron_index(index, "n");
 
     insilico_mpi_independent_variable(n_index);
 
@@ -81,7 +85,8 @@ class I_K {
 
 class I_Leak {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, unsigned index) {
     double gl = 0.3, el = 10.6;
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
@@ -92,16 +97,22 @@ class I_Leak {
 
 class HH_Neuron : public Neuron {
  public:
-  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  void ode_set(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     // synchronize intermediates
     insilico_mpi_synchronize(variables, t);
 
-    int v_index = engine::neuron_index(index, "v");
+    insilico_mpi_independent_unit {
+      I_Na::current(variables, dxdt, t, index);
+    }
+    insilico_mpi_independent_unit {
+      I_K::current(variables, dxdt, t, index);
+    }
+    insilico_mpi_independent_unit {
+      I_Leak::current(variables, dxdt, t, index);
+    }
 
-    insilico_mpi_independent_unit { I_Na::current(variables, dxdt, t, index); }
-    insilico_mpi_independent_unit { I_K::current(variables, dxdt, t, index); }
-    insilico_mpi_independent_unit { I_Leak::current(variables, dxdt, t, index); }
-
+    unsigned v_index = engine::neuron_index(index, "v");
     insilico_mpi_dependent_variable_block(v_index) {
       double I_Na = engine::neuron_value(index, "I_Na");
       double I_K = engine::neuron_value(index, "I_K");
