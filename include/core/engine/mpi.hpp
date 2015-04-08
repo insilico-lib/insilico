@@ -33,17 +33,24 @@
 #include <vector>
 
 // for block with indices, assigned to specific rank
-#define INSILICO_MPI_IUNIT(x)     if(insilico::engine::mpi::block_assigned(x, __LINE__))
-#define INSILICO_MPI_DUNIT(x)     if(insilico::engine::mpi::dependent_block_assigned(x, __LINE__))
+#define insilico_mpi_independent_variable_block(x) \
+  if(insilico::engine::mpi::block_assigned(x, __LINE__))
+#define insilico_mpi_dependent_variable_block(x) \
+  if(insilico::engine::mpi::dependent_block_assigned(x, __LINE__))
 
 // for block without indices, assigned to specific rank
-#define INSILICO_MPI_UPDATE       if(insilico::engine::mpi::block_assigned(__LINE__))
+#define insilico_mpi_independent_unit \
+  if(insilico::engine::mpi::block_assigned(__LINE__))
 
 // for indices without block and not assigned to specific rank
-#define INSILICO_MPI_IREGISTER(x) insilico::engine::mpi::register_block(x)
-#define INSILICO_MPI_DREGISTER(x) insilico::engine::mpi::dependent_register_block(x)
+#define insilico_mpi_independent_variable(x) \
+  insilico::engine::mpi::register_block(x)
+#define insilico_mpi_dependent_variable(x) \
+  insilico::engine::mpi::dependent_register_block(x)
 
-#define INSILICO_MPI_SYNCHRONIZE(x,t) insilico::engine::mpi::synchronize_innerstate(x,t);
+// for synchronization among processes
+#define insilico_mpi_synchronize(x,t) \
+  insilico::engine::mpi::synchronize_innerstate(x,t);
 
 namespace insilico { namespace engine { namespace mpi {
 
