@@ -43,8 +43,8 @@ class I_Na {
     double m = variables[m_index];
     double h = variables[h_index];
 
-    INSILICO_MPI_IREGISTER(m_index);
-    INSILICO_MPI_IREGISTER(h_index);
+    insilico_mpi_independent_variable(m_index);
+    insilico_mpi_independent_variable(h_index);
 
     double alpha_m = (2.5 - 0.1 * v) / (exp(2.5-0.1 * v) - 1.0);
     double beta_m  = 4.0 * exp(-v / 18.0);
@@ -66,7 +66,7 @@ class I_K {
     int v_index = engine::neuron_index(index, "v");
     int n_index = engine::neuron_index(index, "n");
 
-    INSILICO_MPI_IREGISTER(n_index);
+    insilico_mpi_independent_variable(n_index);
 
     double v = variables[v_index];
     double n = variables[n_index];
@@ -94,15 +94,15 @@ class HH_Neuron : public Neuron {
  public:
   void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
     // synchronize intermediates
-    INSILICO_MPI_SYNCHRONIZE(variables, t);
+    insilico_mpi_synchronize(variables, t);
 
     int v_index = engine::neuron_index(index, "v");
 
-    INSILICO_MPI_UPDATE { I_Na::current(variables, dxdt, t, index); }
-    INSILICO_MPI_UPDATE { I_K::current(variables, dxdt, t, index); }
-    INSILICO_MPI_UPDATE { I_Leak::current(variables, dxdt, t, index); }
+    insilico_mpi_independent_unit { I_Na::current(variables, dxdt, t, index); }
+    insilico_mpi_independent_unit { I_K::current(variables, dxdt, t, index); }
+    insilico_mpi_independent_unit { I_Leak::current(variables, dxdt, t, index); }
 
-    INSILICO_MPI_DUNIT(v_index) {
+    insilico_mpi_dependent_variable_block(v_index) {
       double I_Na = engine::neuron_value(index, "I_Na");
       double I_K = engine::neuron_value(index, "I_K");
       double I_Leak = engine::neuron_value(index, "I_Leak");
