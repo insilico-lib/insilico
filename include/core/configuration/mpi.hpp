@@ -181,34 +181,13 @@ auto observe_header(const bool _flag) -> void {
   }
 }
 
-auto synchronize(state_type &_variables, const double _t) -> void {
-  std::string key;
-  double updated_value;
-  FILE* fptr;
-  for(unsigned id : engine::mpi::update_indices) {
-    for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
-      if(iterator->second == id) {
-        key = ".ids/.";
-        key += iterator->first;
-        updated_value = _variables[id];
-        fptr = fopen(key.c_str(), "wb");
-        fwrite(&updated_value, sizeof(double), 1, fptr);
-        fclose(fptr);
-        break;
-      }
-    }
-  }
-  engine::mpi::update_indices.clear();
-  MPI_Barrier(MPI_COMM_WORLD);
-}
-
 struct observer {
   bool engine_exechook = false;
   auto operator() (state_type &variables, const double t) -> void {
     MPI_Barrier(MPI_COMM_WORLD);
     if(!engine_exechook) { engine_exechook = true; }
     else { engine::mpi::exec_div = false; }
-    synchronize(variables, t);
+    engine::mpi::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
       insilico::configuration::write_header_once();
       insilico::configuration::outstream << t;
