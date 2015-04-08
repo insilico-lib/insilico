@@ -1,7 +1,8 @@
 /*
  core/configuration/mpi.hpp - insilico's MPI Configuration source
 
- Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                    IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -50,7 +51,8 @@ auto finalize() -> void {
     remove(".ids/.*");
     rmdir(".ids");
     outstream.close();
-    std::cerr << "[insilico::configuration::finalize] SUCCESS: Releasing resources."<<'\n';
+    std::cerr << "[insilico::configuration::finalize] "
+              << "SUCCESS: Releasing resources."<<'\n';
   }
   MPI_Finalize();
 }
@@ -60,11 +62,11 @@ auto synchronize_reads() -> void {
   std::string key;
   FILE* fptr;
   mkdir(dir_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  for(auto iterator = engine::value_map.cbegin(); iterator != engine::value_map.cend(); ++iterator) {
+  for(auto iterator : engine::value_map) {
     key = ".ids/.";
-    key += iterator->first;
+    key += iterator.first;
     fptr = fopen(key.c_str(), "wb");
-    double val = iterator->second;
+    double val = iterator.second;
     fwrite(&val, sizeof(double), 1, fptr);
     fclose(fptr);
   }
@@ -162,7 +164,7 @@ auto initialize(int argc, char **argv) -> void {
     }
   }
 
-  // Synchronization by Master node
+  // Synchronization by master node
   if(insilico::mpi::rank == insilico::mpi::master) {
     synchronize_reads();
   }
