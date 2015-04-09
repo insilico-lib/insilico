@@ -89,20 +89,22 @@ auto initialize(int argc, char **argv) -> void {
   context_share_size.push_back(engine::index_map.size());
 
   // Share context sizes
-  MPI_Bcast(&context_share_size[0], 3, MPI_UNSIGNED, insilico::mpi::master, MPI_COMM_WORLD);
+  MPI_Bcast(&context_share_size[0], 3, MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
   // Share variables vector
   if(insilico::mpi::rank != insilico::mpi::master) {
     engine::var_vals.resize(context_share_size[0]);
   }
-  MPI_Bcast(&engine::var_vals[0], context_share_size[0], MPI_DOUBLE, insilico::mpi::master, MPI_COMM_WORLD);
+  MPI_Bcast(&engine::var_vals[0], context_share_size[0], MPI_DOUBLE,
+            insilico::mpi::master, MPI_COMM_WORLD);
 
   // Share value unordered_map
   std::vector < std::string > value_map_keys;
   std::vector < double > value_map_values;
   if(insilico::mpi::rank == insilico::mpi::master) {
-    for(auto iterator = engine::value_map.cbegin(); iterator != engine::value_map.cend(); ++iterator) {
-      value_map_keys.push_back(iterator->first);
-      value_map_values.push_back(iterator->second);
+    for(auto item : engine::value_map) {
+      value_map_keys.push_back(item.first);
+      value_map_values.push_back(item.second);
     }
   }
   else {
@@ -111,19 +113,22 @@ auto initialize(int argc, char **argv) -> void {
   }
   for(unsigned it = 0; it < value_map_keys.size(); ++it) {
     unsigned size_var = value_map_keys[it].length();
-    MPI_Bcast(&size_var, 1, MPI_UNSIGNED, insilico::mpi::master, MPI_COMM_WORLD);
+    MPI_Bcast(&size_var, 1, MPI_UNSIGNED,
+              insilico::mpi::master, MPI_COMM_WORLD);
     char* key_c_string = new char[size_var + 1];
     if(insilico::mpi::rank != insilico::mpi::master) {
       strcpy(key_c_string, value_map_keys[it].c_str());
     }
-    MPI_Bcast(&key_c_string[0], size_var, MPI_CHAR, insilico::mpi::master, MPI_COMM_WORLD);
+    MPI_Bcast(&key_c_string[0], size_var, MPI_CHAR,
+              insilico::mpi::master, MPI_COMM_WORLD);
     value_map_keys[it].reserve(size_var);
     value_map_keys[it] = key_c_string;
     trim(value_map_keys[it]);
     value_map_keys[it].resize(size_var);
     delete [] key_c_string;
   }
-  MPI_Bcast(&value_map_values[0], context_share_size[1], MPI_DOUBLE, insilico::mpi::master, MPI_COMM_WORLD);
+  MPI_Bcast(&value_map_values[0], context_share_size[1], MPI_DOUBLE,
+            insilico::mpi::master, MPI_COMM_WORLD);
   if(insilico::mpi::rank != insilico::mpi::master) {
     for(unsigned it = 0; it < value_map_keys.size(); ++it) {
       engine::value_map[value_map_keys[it]] = value_map_values[it];
@@ -134,9 +139,9 @@ auto initialize(int argc, char **argv) -> void {
   std::vector < std::string > index_map_keys;
   std::vector < unsigned > index_map_values;
   if(insilico::mpi::rank == insilico::mpi::master) {
-    for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
-      index_map_keys.push_back(iterator->first);
-      index_map_values.push_back(iterator->second);
+    for(auto item : engine::index_map) {
+      index_map_keys.push_back(item.first);
+      index_map_values.push_back(item.second);
     }
   }
   else {
@@ -145,19 +150,22 @@ auto initialize(int argc, char **argv) -> void {
   }
   for(unsigned it = 0; it < index_map_keys.size(); ++it) {
     unsigned size_var = index_map_keys[it].length();
-    MPI_Bcast(&size_var, 1, MPI_UNSIGNED, insilico::mpi::master, MPI_COMM_WORLD);
+    MPI_Bcast(&size_var, 1, MPI_UNSIGNED,
+              insilico::mpi::master, MPI_COMM_WORLD);
     char* key_c_string = new char[size_var + 1];
     if(insilico::mpi::rank == insilico::mpi::master) {
       strcpy(key_c_string, index_map_keys[it].c_str());
     }
-    MPI_Bcast(&key_c_string[0], size_var, MPI_CHAR, insilico::mpi::master, MPI_COMM_WORLD);
+    MPI_Bcast(&key_c_string[0], size_var, MPI_CHAR,
+              insilico::mpi::master, MPI_COMM_WORLD);
     index_map_keys[it].reserve(size_var);
     index_map_keys[it] = key_c_string;
     trim(index_map_keys[it]);
     index_map_keys[it].resize(size_var);
     delete [] key_c_string;
   }
-  MPI_Bcast(&index_map_values[0], context_share_size[2], MPI_UNSIGNED, insilico::mpi::master, MPI_COMM_WORLD);
+  MPI_Bcast(&index_map_values[0], context_share_size[2], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
   if(insilico::mpi::rank != insilico::mpi::master) {
     for(unsigned it = 0; it < index_map_keys.size(); ++it) {
       engine::index_map[index_map_keys[it]] = index_map_values[it];
@@ -193,7 +201,8 @@ struct observer {
     else {
       engine::mpi::exec_div = false;
       // reseting insilico::mpi::size to new size of no. of computation units
-      if(!engine::mpi::rank_resizing && engine::mpi::assigner_line.size() < (unsigned)insilico::mpi::size) {
+      if(!engine::mpi::rank_resizing &&
+         engine::mpi::assigner_line.size() < (unsigned)insilico::mpi::size) {
         insilico::mpi::size = engine::mpi::assigner_line.size();
         if(insilico::mpi::rank == insilico::mpi::master) {
           std::cerr << "[insilico::configuration::mpi::observer] "
@@ -219,7 +228,9 @@ struct observer {
         key = ".ids/.";
         key += value_key;
         fptr = fopen(key.c_str(), "rb");
-        if(fread(&observed_value, sizeof(double), 1, fptr));
+        if(fread(&observed_value, sizeof(double), 1, fptr) != 1) {
+          configuration::mpi::severe_error();
+        }
         fclose(fptr);
         configuration::outstream << configuration::observer_delimiter
                                  << observed_value;
@@ -242,7 +253,7 @@ auto observe_neuron(unsigned _id, std::string _variable) -> void {
   }
 }
 
-auto observe_neuron(std::vector< unsigned > _ids, std::string _variable) -> void {
+auto observe_neuron(std::vector<unsigned> _ids, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
     configuration::observe_neuron(_ids, _variable);
   }
@@ -254,7 +265,7 @@ auto observe_synapse(unsigned _id, std::string _variable) -> void {
   }
 }
 
-auto observe_synapse(std::vector< unsigned > _ids, std::string _variable) -> void {
+auto observe_synapse(std::vector<unsigned> _ids, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
     configuration::observe_synapse(_ids, _variable);
   }
