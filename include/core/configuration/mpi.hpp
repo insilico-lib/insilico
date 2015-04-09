@@ -194,7 +194,8 @@ struct observer {
       engine::mpi::exec_div = false;
       // reseting insilico::mpi::size to new size of no. of computation units
       if(!engine::mpi::rank_resizing) {
-        if(engine::mpi::assigner_line.size() < insilico::mpi::size) {
+        int assigner_line_size = engine::mpi::assigner_line.size();
+        if(assigner_line_size < insilico::mpi::size) {
           insilico::mpi::size = engine::mpi::assigner_line.size();
         }
         if(insilico::mpi::rank == insilico::mpi::master) {
@@ -221,7 +222,7 @@ struct observer {
         key = ".ids/.";
         key += value_key;
         fptr = fopen(key.c_str(), "rb");
-        fread(&observed_value, sizeof(double), 1, fptr);
+        if(fread(&observed_value, sizeof(double), 1, fptr));
         fclose(fptr);
         configuration::outstream << configuration::observer_delimiter
                                  << observed_value;
