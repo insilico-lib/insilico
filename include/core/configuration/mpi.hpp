@@ -187,8 +187,20 @@ struct observer {
   bool engine_exechook = false;
   auto operator() (state_type &variables, const double t) -> void {
     MPI_Barrier(MPI_COMM_WORLD);
-    if(!engine_exechook) { engine_exechook = true; }
-    else { engine::mpi::exec_div = false; }
+    if(!engine_exechook) {
+      engine_exechook = true;
+    }
+    else {
+      engine::mpi::exec_div = false;
+      // reseting insilico::mpi::size to new size of no. of computation units
+      if(engine::mpi::assigner_line.size() < insilico::mpi::size) {
+        insilico::mpi::size = engine::mpi::assigner_line.size();
+      }
+      engine::mpi::assigner[insilico::mpi::master]
+          .insert(engine::mpi::assigner[insilico::mpi::master].end(),
+                  engine::mpi::assigner[insilico::mpi::size].begin(),
+                  engine::mpi::assigner[insilico::mpi::size].end());
+    }
     engine::mpi::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
       insilico::configuration::write_header_once();
