@@ -193,11 +193,8 @@ struct observer {
     else {
       engine::mpi::exec_div = false;
       // reseting insilico::mpi::size to new size of no. of computation units
-      if(!engine::mpi::rank_resizing) {
-        int assigner_line_size = engine::mpi::assigner_line.size();
-        if(assigner_line_size < insilico::mpi::size) {
-          insilico::mpi::size = engine::mpi::assigner_line.size();
-        }
+      if(!engine::mpi::rank_resizing && engine::mpi::assigner_line.size() < (unsigned)insilico::mpi::size) {
+        insilico::mpi::size = engine::mpi::assigner_line.size();
         if(insilico::mpi::rank == insilico::mpi::master) {
           std::cerr << "[insilico::configuration::mpi::observer] "
                     <<"Simulation is only using " << insilico::mpi::size
