@@ -62,6 +62,7 @@ bool exec_div = true;
 std::vector< std::vector < unsigned > > assigner;
 std::vector< unsigned > assigner_line;
 unsigned global_rank = 0;
+bool rank_resizing = false;
 
 // update events and indices manager
 std::vector< unsigned > update_indices;
