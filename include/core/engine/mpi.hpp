@@ -71,10 +71,10 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
   double updated_value;
   FILE* fptr;
   for(unsigned id : engine::mpi::update_indices) {
-    for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
-      if(iterator->second == id) {
+    for(auto iterator : engine::index_map) {
+      if(iterator.second == id) {
         key = ".ids/.";
-        key += iterator->first;
+        key += iterator.first;
         updated_value = _variables[id];
         fptr = fopen(key.c_str(), "wb");
         fwrite(&updated_value, sizeof(double), 1, fptr);
@@ -83,27 +83,28 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
       }
     }
   }
-  std::vector< std::vector < unsigned > > updated_indices_from_each_process(insilico::mpi::size);
-  updated_indices_from_each_process[insilico::mpi::rank].insert(updated_indices_from_each_process[insilico::mpi::rank].end(),
-                                              update_indices.begin(),
-                                              update_indices.end());
+  std::vector< std::vector < unsigned > > updated_idxpproc(insilico::mpi::size);
   std::vector< unsigned > update_size(insilico::mpi::size);
   std::vector< unsigned > updated_indices_for_single_process;
-  update_size[insilico::mpi::rank] = engine::mpi::update_indices.size();
+  if(insilico::mpi::rank < insilico::mpi::size) {
+    updated_idxpproc[insilico::mpi::rank]
+        .insert(updated_idxpproc[insilico::mpi::rank].end(),
+                update_indices.begin(), update_indices.end());
+    update_size[insilico::mpi::rank] = engine::mpi::update_indices.size();
+  }
   for(unsigned r = 0; r < insilico::mpi::size; ++r) {
     MPI_Bcast(&update_size[r], 1, MPI_UNSIGNED, r, MPI_COMM_WORLD);
     updated_indices_for_single_process.resize(update_size[r]);
-    MPI_Bcast(&updated_indices_for_single_process[0], update_size[r], MPI_UNSIGNED, r, MPI_COMM_WORLD);
+    MPI_Bcast(&updated_indices_for_single_process[0], update_size[r],
+              MPI_UNSIGNED, r, MPI_COMM_WORLD);
     for(unsigned index : updated_indices_for_single_process) {
-      updated_indices_from_each_process[r].push_back(index);
+      updated_idxpproc[r].push_back(index);
     }
-  }
-  for(unsigned r = 0; r < insilico::mpi::rank; ++r) {
-    for(unsigned id : updated_indices_from_each_process[r]) {
-      for(auto iterator = engine::index_map.cbegin(); iterator != engine::index_map.cend(); ++iterator) {
-        if(iterator->second == id) {
+    for(unsigned id : updated_idxpproc[r]) {
+      for(auto iterator : engine::index_map) {
+        if(iterator.second == id) {
           key = ".ids/.";
-          key += iterator->first;
+          key += iterator.first;
           fptr = fopen(key.c_str(), "rb");
           fread(&updated_value, sizeof(double), 1, fptr);
           _variables[id] = updated_value;
@@ -118,22 +119,34 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
 }
 
 auto block_assigned(unsigned _line_id) -> bool {
-  std::vector< unsigned >::iterator loc_for_line;
-  // if rank has been assigned with this line
-  loc_for_line = std::find(assigner[insilico::mpi::rank].begin(), assigner[insilico::mpi::rank].end(), _line_id);
-  if(loc_for_line != assigner[insilico::mpi::rank].end()) {
-    return true;
-  }
-  // if rank has not occured but line is already there, don't allow
-  loc_for_line = std::find(assigner_line.begin(), assigner_line.end(), _line_id);
-  if(loc_for_line != assigner_line.end()) {
-    return false;
-  }
-  // line block needs to be assigned to next rank - round robbin
-  assigner[(((global_rank + 1) >= insilico::mpi::size) ? (global_rank = 0) : ++global_rank)].push_back(_line_id);
-  assigner_line.push_back(_line_id);
-  if(insilico::mpi::rank == global_rank) {
-    return true;
+  if(insilico::mpi::rank < insilico::mpi::size) {
+    std::vector< unsigned >::iterator loc_for_line;
+    // if rank has been assigned with this line
+    loc_for_line = std::find(assigner[insilico::mpi::rank].begin(),
+                             assigner[insilico::mpi::rank].end(),
+                             _line_id);
+    if(loc_for_line != assigner[insilico::mpi::rank].end()) {
+      return true;
+    }
+    // if rank has not occured but line is already there, don't allow
+    loc_for_line = std::find(assigner_line.begin(),
+                             assigner_line.end(),
+                             _line_id);
+    if(loc_for_line != assigner_line.end()) {
+      return false;
+    }
+    // line block needs to be assigned to next rank - round robbin
+    if((global_rank + 1) >= insilico::mpi::size){
+      global_rank = 0;
+    }
+    else {
+      ++global_rank;
+    }
+    assigner[global_rank].push_back(_line_id);
+    assigner_line.push_back(_line_id);
+    if(insilico::mpi::rank == global_rank) {
+      return true;
+    }
   }
   return false;
 }
