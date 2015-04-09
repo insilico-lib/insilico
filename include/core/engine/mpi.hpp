@@ -61,7 +61,7 @@ bool exec_div = true;
 // global job identity assigner
 std::vector< std::vector < unsigned > > assigner;
 std::vector< unsigned > assigner_line;
-unsigned global_rank = 0;
+int global_rank = 0;
 bool rank_resizing = false;
 
 // update events and indices manager
@@ -93,7 +93,7 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
                 update_indices.begin(), update_indices.end());
     update_size[insilico::mpi::rank] = engine::mpi::update_indices.size();
   }
-  for(unsigned r = 0; r < insilico::mpi::size; ++r) {
+  for(int r = 0; r < insilico::mpi::size; ++r) {
     MPI_Bcast(&update_size[r], 1, MPI_UNSIGNED, r, MPI_COMM_WORLD);
     updated_indices_for_single_process.resize(update_size[r]);
     MPI_Bcast(&updated_indices_for_single_process[0], update_size[r],
