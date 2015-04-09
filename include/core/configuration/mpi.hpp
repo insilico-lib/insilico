@@ -212,20 +212,21 @@ struct observer {
     }
     engine::mpi::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
-      insilico::configuration::write_header_once();
-      insilico::configuration::outstream << t;
+      configuration::write_header_once();
+      configuration::outstream << t;
       std::string key;
       double observed_value;
       FILE* fptr;
-      for(std::string value_key : insilico::configuration::observation_header) {
+      for(std::string value_key : configuration::observation_header) {
         key = ".ids/.";
         key += value_key;
         fptr = fopen(key.c_str(), "rb");
         fread(&observed_value, sizeof(double), 1, fptr);
         fclose(fptr);
-        insilico::configuration::outstream << insilico::configuration::observer_delimiter << observed_value;
+        configuration::outstream << configuration::observer_delimiter
+                                 << observed_value;
       }
-      insilico::configuration::outstream << '\n';
+      configuration::outstream << '\n';
     }
     MPI_Barrier(MPI_COMM_WORLD);
   }
@@ -233,31 +234,31 @@ struct observer {
 
 auto observe(std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    insilico::configuration::observe(_variable);
+    configuration::observe(_variable);
   }
 }
 
 auto observe_neuron(unsigned _id, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    insilico::configuration::observe_neuron(_id, _variable);
+    configuration::observe_neuron(_id, _variable);
   }
 }
 
 auto observe_neuron(std::vector< unsigned > _ids, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    insilico::configuration::observe_neuron(_ids, _variable);
+    configuration::observe_neuron(_ids, _variable);
   }
 }
 
 auto observe_synapse(unsigned _id, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    insilico::configuration::observe_synapse(_id, _variable);
+    configuration::observe_synapse(_id, _variable);
   }
 }
 
 auto observe_synapse(std::vector< unsigned > _ids, std::string _variable) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    insilico::configuration::observe_synapse(_ids, _variable);
+    configuration::observe_synapse(_ids, _variable);
   }
 }
 
