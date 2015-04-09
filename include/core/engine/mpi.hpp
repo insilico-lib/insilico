@@ -1,7 +1,8 @@
 /*
  core/engine/mpi.hpp - insilico's MPI Engine source
 
- Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                    IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -26,7 +27,7 @@
 #include "core/engine/generate.hpp"
 #include "core/engine/serial/common.hpp"
 #include "core/engine/serial/index.hpp" // MPI version uses the serial indexing
-#include "core/engine/mpi/value.hpp"    // MPI version has its own parallel value version
+#include "core/engine/mpi/value.hpp"    // MPI version owns parallel value ver.
 
 #include <algorithm>
 #include <stdio.h>
