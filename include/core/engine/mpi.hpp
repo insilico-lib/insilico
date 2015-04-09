@@ -107,7 +107,7 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
           key = ".ids/.";
           key += iterator.first;
           fptr = fopen(key.c_str(), "rb");
-          fread(&updated_value, sizeof(double), 1, fptr);
+          if(fread(&updated_value, sizeof(double), 1, fptr));
           _variables[id] = updated_value;
           fclose(fptr);
           break;

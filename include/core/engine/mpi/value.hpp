@@ -49,7 +49,7 @@ auto neuron_value(unsigned _id, std::string _variable) -> double {
               << " value for neuron " << _id << ".\n";
     configuration::mpi::severe_error();
   }
-  fread(&observed_value, sizeof(double), 1, fptr);
+  if(fread(&observed_value, sizeof(double), 1, fptr));
   fclose(fptr);
   return observed_value;
 }
@@ -68,7 +68,7 @@ auto synapse_value(unsigned _id, std::string _variable) -> double {
               << " value for synapse " << _id << ".\n";
     configuration::mpi::severe_error();
   }
-  fread(&observed_value, sizeof(double), 1, fptr);
+  if(fread(&observed_value, sizeof(double), 1, fptr));
   fclose(fptr);
   return observed_value;
 }
@@ -86,7 +86,7 @@ auto neuron_value(unsigned _id, std::string _variable, bool& error) -> double {
     error = true;
     return observed_value;
   }
-  fread(&observed_value, sizeof(double), 1, fptr);
+  if(fread(&observed_value, sizeof(double), 1, fptr));
   fclose(fptr);
   return observed_value;
 }
@@ -116,7 +116,7 @@ auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
     error = true;
     return observed_value;
   }
-  fread(&observed_value, sizeof(double), 1, fptr);
+  if(fread(&observed_value, sizeof(double), 1, fptr));
   fclose(fptr);
   return observed_value;
 }
