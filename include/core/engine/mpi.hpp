@@ -107,7 +107,11 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
           key = ".ids/.";
           key += iterator.first;
           fptr = fopen(key.c_str(), "rb");
-          if(fread(&updated_value, sizeof(double), 1, fptr));
+          if(fread(&updated_value, sizeof(double), 1, fptr) != 1) {
+            std::cerr << "[insilico::engine::mpi::synchronize_innerstate]"
+                      << " Synchronization failed.\n";
+            configuration::mpi::severe_error();
+          }
           _variables[id] = updated_value;
           fclose(fptr);
           break;
