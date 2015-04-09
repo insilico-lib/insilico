@@ -209,10 +209,6 @@ struct observer {
                     engine::mpi::assigner[insilico::mpi::size].end());
         engine::mpi::rank_resizing = true;
       }
-      engine::mpi::assigner[insilico::mpi::master]
-          .insert(engine::mpi::assigner[insilico::mpi::master].end(),
-                  engine::mpi::assigner[insilico::mpi::size].begin(),
-                  engine::mpi::assigner[insilico::mpi::size].end());
     }
     engine::mpi::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
