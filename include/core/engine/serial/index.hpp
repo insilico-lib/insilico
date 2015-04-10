@@ -22,6 +22,7 @@
 
 #include "core/type.hpp"
 #include "core/engine/data.hpp"
+#include "core/engine/serial/common.hpp"
 
 #include <algorithm>
 #include <cstdio>

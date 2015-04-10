@@ -21,6 +21,10 @@
 #define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_OBSERVER_HPP
 
 #include "core/configuration/error.hpp"
+#include "core/engine/serial/common.hpp"
+#include "core/engine/serial/index.hpp"
+#include "core/engine/serial/value.hpp"
+#include "core/type.hpp"
 
 #include <fstream>
 #include <iostream>
