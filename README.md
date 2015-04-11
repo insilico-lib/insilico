@@ -1,4 +1,4 @@
-``` insilico ```
+`insilico`
 ========
 
 ![GNU GPLv3 License](http://img.shields.io/badge/license-GPLv3-blue.svg)
