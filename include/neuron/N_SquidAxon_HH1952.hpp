@@ -1,8 +1,11 @@
 /*
- neuron/N_SquidAxon_HH1952.hpp - Hodgkin-Huxley Squid Axon experiment (Hodgkin-Huxley, 1952)
+ neuron/N_SquidAxon_HH1952.hpp - Hodgkin-Huxley Squid Axon experiment
+                                 (Hodgkin-Huxley, 1952)
 
- Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
- Copyright (C) 2014 Nishant Singh, Suhita Nadkarni Lab, IISER, Pune <nishant.singh@students.iiserpune.ac.in>
+ Copyright (C) 2014 Pranav Kulkarni, Collins Assisi Lab,
+                    IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014 Nishant Singh, Suhita Nadkarni Lab,
+                    IISER, Pune <nishant.singh@students.iiserpune.ac.in>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -32,7 +35,10 @@ namespace insilico {
 class N_SquidAxon_HH1952 : public Neuron {
  public:
   void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
-    int v_index = engine::neuron_index(index, "v");
+    std::vector<unsigned> g1_indices;
+    std::vector<double> esyn_values;
+
+    unsigned v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
 
     // note the spike
@@ -47,10 +53,10 @@ class N_SquidAxon_HH1952 : public Neuron {
 
     // incoming synaptic currents
     double I_Syn = 0;
-    std::vector<int> g1_indices = engine::get_pre_neuron_indices(index, "g1");
-    std::vector<double> esyn_values = engine::get_pre_neuron_values(index, "esyn");
+    g1_indices = engine::get_pre_neuron_indices(index, "g1");
+    esyn_values = engine::get_pre_neuron_values(index, "esyn");
 
-    for(std::vector<int>::size_type iterator = 0; iterator < g1_indices.size(); ++iterator) {
+    for(unsigned iterator = 0; iterator < g1_indices.size(); ++iterator) {
       I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
 
