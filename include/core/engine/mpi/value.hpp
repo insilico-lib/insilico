@@ -20,6 +20,7 @@
 
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_MPI_VALUE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_MPI_VALUE_HPP
+#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_VALUE_HPP
 
 #include "core/configuration/mpi/error.hpp"
 #include "core/engine/data.hpp"
