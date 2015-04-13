@@ -1,7 +1,8 @@
 /*
-  core/engine/serial/index.hpp - engine serial index management API header and source
+  core/engine/serial/index.hpp - engine serial index management API source
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -56,7 +57,8 @@ auto synapse_index(unsigned _id, std::string _variable) -> unsigned {
   return index_map[key];
 }
 
-auto neuron_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
+auto neuron_index(unsigned _id, std::string _variable, bool& error)
+    -> unsigned {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   if(index_map.find(key) == index_map.end()) {
@@ -66,7 +68,8 @@ auto neuron_index(unsigned _id, std::string _variable, bool& error) -> unsigned 
   return index_map[key];
 }
 
-auto synapse_index(unsigned _id, std::string _variable, bool& error) -> unsigned {
+auto synapse_index(unsigned _id, std::string _variable, bool& error)
+    -> unsigned {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   if(index_map.find(key) == index_map.end()) {
@@ -76,8 +79,8 @@ auto synapse_index(unsigned _id, std::string _variable, bool& error) -> unsigned
   return index_map[key];
 }
 
-auto get_neuron_indices(std::string _variable) -> std::vector< unsigned > {
-  std::vector< unsigned > indices;
+auto get_neuron_indices(std::string _variable) -> std::vector<unsigned> {
+  std::vector<unsigned> indices;
   bool error = false;
   unsigned idx;
   unsigned total_neurons = neuron_count();
@@ -89,8 +92,8 @@ auto get_neuron_indices(std::string _variable) -> std::vector< unsigned > {
   return indices;
 }
 
-auto get_synapse_indices(std::string _variable) -> std::vector< unsigned > {
-  std::vector< unsigned > indices;
+auto get_synapse_indices(std::string _variable) -> std::vector<unsigned> {
+  std::vector<unsigned> indices;
   bool error = false;
   unsigned idx;
   unsigned total_synapses = synapse_count();
@@ -102,8 +105,8 @@ auto get_synapse_indices(std::string _variable) -> std::vector< unsigned > {
   return indices;
 }
 
-auto get_indices(std::string _variable) -> std::vector< unsigned > {
-  std::vector< unsigned > indices;
+auto get_indices(std::string _variable) -> std::vector<unsigned> {
+  std::vector<unsigned> indices;
   indices.insert(indices.end(),
                  get_neuron_indices(_variable).begin(),
                  get_neuron_indices(_variable).end());
@@ -115,23 +118,39 @@ auto get_indices(std::string _variable) -> std::vector< unsigned > {
 
 auto neuron_id_from_index(unsigned _index) -> unsigned {
   unsigned idx = 0;
-  while(_index > neuron_start_list_ids[idx] && idx < neuron_start_list_ids.size()) { ++idx; }
-  if(idx >= neuron_start_list_ids.size()) --idx;
+  while(_index > neuron_start_list_ids[idx] &&
+        idx < neuron_start_list_ids.size()) {
+    ++idx;
+  }
+  if(idx >= neuron_start_list_ids.size()) {
+    --idx;
+  }
   return idx;
 }
 
 auto synapse_id_from_index(unsigned _index) -> unsigned {
   unsigned idx = 0;
-  while(_index > synapse_start_list_ids[idx] && idx < synapse_start_list_ids.size()) { ++idx; }
-  if(idx >= synapse_start_list_ids.size()) --idx;
+  while(_index > synapse_start_list_ids[idx] &&
+        idx < synapse_start_list_ids.size()) {
+    ++idx;
+  }
+  if(idx >= synapse_start_list_ids.size()) {
+    --idx;
+  }
   return idx;
 }
 
-auto get_pre_neuron_indices(int _id, std::string _variable) -> std::vector<int> {
-  std::vector<int> indices;
+auto get_pre_neuron_indices(unsigned _id, std::string _variable)
+    -> std::vector<unsigned> {
+  std::vector<unsigned> indices;
+  unsigned idx;
+  bool error = false;
   if(!pre_synaptic_lists.empty()) {
-    for(std::vector<int>::size_type index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
-      indices.push_back(synapse_index(pre_synaptic_lists[_id][index], _variable));
+    for(unsigned index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
+      idx = synapse_index(pre_synaptic_lists[_id][index], _variable, error);
+      if(!error) {
+        indices.push_back(idx);
+      }
     }
   }
   return indices;
