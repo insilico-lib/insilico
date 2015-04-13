@@ -1,7 +1,8 @@
 /*
-  core/engine/serial/value.hpp - insilico engine serial API header and source
+  core/engine/serial/value.hpp - insilico engine serial API
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -124,31 +125,39 @@ auto get_values(std::string _variable) -> std::vector< double > {
   return values;
 }
 
-auto get_pre_neuron_values(unsigned _id, std::string _variable) -> std::vector<double> {
+auto get_pre_neuron_values(unsigned _id, std::string _variable)
+    -> std::vector<double> {
   std::vector<double> values;
+  double value;
+  bool error = false;
   if(!pre_synaptic_lists.empty()) {
-    for(std::vector<double>::size_type index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
-      values.push_back(synapse_value(pre_synaptic_lists[_id][index], _variable));
+    for(unsigned index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
+      value = synapse_value(pre_synaptic_lists[_id][index], _variable, error);
+      if(!error) {
+        values.push_back(value);
+      }
     }
   }
   return values;
 }
 
-auto neuron_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
+auto neuron_value_key(unsigned _id, std::string _variable)
+    -> decltype(std::string()) {
   char key[128];
   sprintf(key, "n%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
   else { return ""; }
 }
 
-auto synapse_value_key(unsigned _id, std::string _variable) -> decltype(std::string()) {
+auto synapse_value_key(unsigned _id, std::string _variable)
+    -> decltype(std::string()) {
   char key[128];
   sprintf(key, "s%d%s", _id, _variable.c_str());
   if(value_map.find(key) != value_map.end()) { return key; }
   else { return ""; }
 }
 
-auto get_neuron_value_keys(std::string _variable) -> std::vector< std::string > {
+auto get_neuron_value_keys(std::string _variable) -> std::vector<std::string> {
   std::vector< std::string > value_keys;
   std::string key;
   unsigned total_neurons = neuron_count();
@@ -159,7 +168,7 @@ auto get_neuron_value_keys(std::string _variable) -> std::vector< std::string > 
   return value_keys;
 }
 
-auto get_synapse_value_keys(std::string _variable) -> std::vector< std::string > {
+auto get_synapse_value_keys(std::string _variable) -> std::vector<std::string> {
   std::vector< std::string > value_keys;
   std::string key;
   unsigned total_synapses = synapse_count();
@@ -170,7 +179,7 @@ auto get_synapse_value_keys(std::string _variable) -> std::vector< std::string >
   return value_keys;
 }
 
-auto get_value_keys(std::string _variable) -> std::vector< std::string > {
+auto get_value_keys(std::string _variable) -> std::vector<std::string> {
   std::vector< std::string > value_keys;
   std::vector< std::string > neuron_value_keys = get_neuron_value_keys(_variable);
   std::vector< std::string > synapse_value_keys = get_synapse_value_keys(_variable);
