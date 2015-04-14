@@ -27,10 +27,11 @@ namespace insilico {
 
 class N_LIF_S1967 : public Neuron {
  public:
-  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  void ode_set(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
-
     double v = variables[v_index];
+
     double g = engine::neuron_value(index, "g");
     double v_th = engine::neuron_value(index, "v_th");
     double iext = engine::neuron_value(index, "iext");
