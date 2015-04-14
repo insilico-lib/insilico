@@ -34,7 +34,8 @@ namespace insilico {
 
 class N_SquidAxon_HH1952 : public Neuron {
  public:
-  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  void ode_set(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     std::vector<unsigned> g1_indices;
     std::vector<double> esyn_values;
 
@@ -57,7 +58,7 @@ class N_SquidAxon_HH1952 : public Neuron {
     esyn_values = engine::get_pre_neuron_values(index, "esyn");
 
     for(unsigned iterator = 0; iterator < g1_indices.size(); ++iterator) {
-      I_Syn = I_Syn + variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
+      I_Syn += variables[g1_indices[iterator]] * (v - esyn_values[iterator]);
     }
 
     // ODE set
