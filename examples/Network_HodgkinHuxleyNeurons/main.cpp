@@ -2,8 +2,10 @@
   main.cpp - insilico's example using neuron and synapse for illustrations
 
   Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
-  Copyright (C) 2014 Arun Neru, Collins Assisi Lab, IISER, Pune <areinsdel@gmail.com>
-  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2014 Arun Neru, Collins Assisi Lab,
+                IISER, Pune <areinsdel@gmail.com>
+  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
+                IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
