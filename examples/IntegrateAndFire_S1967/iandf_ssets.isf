@@ -1,0 +1,11 @@
+"IF Synapse 0"
+    dxdt : 2,
+    g1   : 0.1,
+    g2	 : 10,
+    gsyn : 0.2,
+    tau_psp : 10,
+    esyn  : 20,
+    delay : 0.5,
+    us   : -100,
+    pre  : 0,
+    post : 1;

@@ -1,9 +1,19 @@
+"IF Neuron 0"
+	v_th: 1,
+	dxdt: 1,
+	v: 0,
+	t_rest: 0,
+	iext: 2.5,
+	g: 1,
+	tau_m: 5,
+	tau_ref: 3;
 "IF Neuron 1"
 	v_th: 1,
 	dxdt: 1,
 	v: 0,
 	t_rest: 0,
-	iext: 1.5,
+	iext: 0,
 	g: 1,
 	tau_m: 5,
 	tau_ref: 4;
+	
