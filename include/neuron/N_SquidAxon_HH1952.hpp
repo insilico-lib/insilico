@@ -25,6 +25,7 @@
 #define INCLUDED_N_SQUIDAXON_HH1952_HPP
 
 #include "core/engine.hpp"
+#include "neuron/helper/spike_list.hpp"
 
 #include "current/I_K_SquidAxon_HH_HH1952.hpp"
 #include "current/I_Leak_SquidAxon_HH_HH1952.hpp"
