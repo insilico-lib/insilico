@@ -23,6 +23,7 @@
 
 #include "core.hpp"
 
+#include "neuron/helper/spike_list.hpp" // storing past spike list for neuron
 #include "neuron/N_SquidAxon_HH1952.hpp"
 #include "synapse/S_DefaultSynapse.hpp"
 
