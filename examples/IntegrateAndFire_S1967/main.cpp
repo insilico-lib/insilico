@@ -1,8 +1,10 @@
 /*
   main.cpp - Integrate and Fire neuron example's main()
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
-  Copyright (C) 2015 Himanshu Rajmane, Suhita Nadkarni Lab, IISER, Pune <himanshu14121992@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Himanshu Rajmane, Suhita Nadkarni Lab,
+                     IISER, Pune <himanshu14121992@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,7 +22,9 @@
 
 #include "core.hpp"
 
+#include "neuron/helper/spike_list.hpp"
 #include "neuron/N_LIF_S1967.hpp"
+#include "synapse/S_LIF_Synapse.hpp"
 
 #include <boost/numeric/odeint.hpp>
 #include <fstream>
@@ -37,7 +41,14 @@ int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
-  engine::generate_neuron<N_LIF_S1967>();
+  // 2 N_LIF_S1967 neurons
+  engine::generate_neuron<N_LIF_S1967>(2);
+  // Single S_LIF_Synapse synapse between our two LIF neurons
+  engine::generate_synapse<S_LIF_Synapse>();
+
+  // Spike list maintains neuron specific spike information
+  // In our case we have two neurons
+  engine::spike_list.resize(2);
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
