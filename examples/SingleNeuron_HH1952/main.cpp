@@ -32,11 +32,12 @@ using namespace insilico;
 using namespace std;
 
 class I_Na {
+ private:
+  double gna = 120;
+  double ena = 115;
  public:
-  static void current(state_type &variables, state_type &dxdt,
-                      const double t, unsigned index) {
-    double gna = 120, ena = 115;
-
+  void current(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     int m_index = engine::neuron_index(index, "m");
     int h_index = engine::neuron_index(index, "h");
@@ -58,11 +59,12 @@ class I_Na {
 };
 
 class I_K {
+ private:
+  double gk = 36;
+  double ek = -12;
  public:
-  static void current(state_type &variables, state_type &dxdt,
-                      const double t, unsigned index) {
-    double gk = 36, ek = -12;
-
+  void current(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     int n_index = engine::neuron_index(index, "n");
 
@@ -79,11 +81,12 @@ class I_K {
 };
 
 class I_Leak {
+ private:
+  double gl = 0.3;
+  double el = 10.6;
  public:
-  static void current(state_type &variables, state_type &dxdt,
-                      const double t, unsigned index) {
-    double gl = 0.3, el = 10.6;
-
+  void current(state_type &variables, state_type &dxdt,
+               const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
 
@@ -92,14 +95,18 @@ class I_Leak {
 };
 
 class HH_Neuron : public Neuron {
+ private:
+  I_Na i_na_component;
+  I_K i_k_component;
+  I_Leak i_leak_component;
  public:
   void ode_set(state_type &variables, state_type &dxdt,
                const double t, unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     
-    I_Na::current(variables, dxdt, t, index);
-    I_K::current(variables, dxdt, t, index);
-    I_Leak::current(variables, dxdt, t, index);
+    i_na_component.current(variables, dxdt, t, index);
+    i_k_component.current(variables, dxdt, t, index);
+    i_leak_component.current(variables, dxdt, t, index);
 
     double I_Na = engine::neuron_value(index, "I_Na");
     double I_K = engine::neuron_value(index, "I_K");
