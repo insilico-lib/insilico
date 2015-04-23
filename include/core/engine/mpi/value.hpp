@@ -1,5 +1,5 @@
 /*
-  core/engine/mpi/value.hpp - insilico engine Parallel value API source
+  core/engine/mpi/value.hpp - engine MPI value API source
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
                      IISER, Pune <pranavcode@gmail.com>
