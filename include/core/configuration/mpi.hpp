@@ -76,7 +76,8 @@ auto initialize(int argc, char **argv) -> void {
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &insilico::mpi::rank);
   MPI_Comm_size(MPI_COMM_WORLD, &insilico::mpi::size);
-  insilico::engine::mpi::assigner.resize(insilico::mpi::size);
+  insilico::engine::mpi::assigner_line_master.resize(insilico::mpi::size);
+  insilico::engine::mpi::assigner_index_master.resize(insilico::mpi::size);
 
   if(insilico::mpi::rank == insilico::mpi::master) {
     insilico::configuration::initialize(argc, argv);
@@ -210,10 +211,14 @@ struct observer {
                     <<" processes (0 - " << insilico::mpi::size - 1
                     <<").\n";
         }
-        engine::mpi::assigner[insilico::mpi::master]
-            .insert(engine::mpi::assigner[insilico::mpi::master].end(),
-                    engine::mpi::assigner[insilico::mpi::size].begin(),
-                    engine::mpi::assigner[insilico::mpi::size].end());
+        engine::mpi::assigner_line_master[insilico::mpi::master]
+            .insert(engine::mpi::assigner_line_master[insilico::mpi::master].end(),
+                    engine::mpi::assigner_line_master[insilico::mpi::size].begin(),
+                    engine::mpi::assigner_line_master[insilico::mpi::size].end());
+        engine::mpi::assigner_index_master[insilico::mpi::master]
+            .insert(engine::mpi::assigner_index_master[insilico::mpi::master].end(),
+                    engine::mpi::assigner_index_master[insilico::mpi::size].begin(),
+                    engine::mpi::assigner_index_master[insilico::mpi::size].end());
         engine::mpi::rank_resizing = true;
       }
     }
