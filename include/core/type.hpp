@@ -1,7 +1,8 @@
 /*
   core/engine/type.hpp - insilico's Simulation Engine API header and source
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@
 
 #include <iostream>
 #include <vector>
+#include <boost/numeric/odeint/external/mpi/mpi.hpp>
 
 namespace insilico {
 
@@ -29,14 +31,20 @@ using state_type = std::vector<double>;
 
 class Neuron {
  public:
-  virtual void ode_set(state_type &, state_type &, const double, unsigned) {
+  virtual void ode_set(state_type &,
+                       state_type &,
+                       const double,
+                       const unsigned) {
     std::cerr << "*** THIS IS A BUG ***\n";
   }
 };
 
 class Synapse {
  public:
-  virtual void ode_set(state_type &, state_type &, const double, unsigned) {
+  virtual void ode_set(state_type &,
+                       state_type &,
+                       const double,
+                       const unsigned) {
     std::cerr << "*** THIS IS A BUG ***\n";
   }
 };
