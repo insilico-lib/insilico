@@ -26,7 +26,7 @@
 #include "core/engine/driver.hpp"
 #include "core/engine/generate.hpp"
 #include "core/engine/serial/common.hpp"
-#include "core/engine/serial/index.hpp" // MPI version uses the serial indexing
+#include "core/engine/mpi/index.hpp"    // MPI version uses the serial indexing
 #include "core/engine/mpi/value.hpp"    // MPI version owns parallel value ver.
 
 #include <algorithm>
