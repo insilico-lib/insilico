@@ -34,14 +34,14 @@
 #include <vector>
 
 // for block with indices, assigned to specific rank
-#define insilico_mpi_independent_variable_block(x) \
-  if(insilico::engine::mpi::block_assigned(x, __LINE__))
-#define insilico_mpi_dependent_variable_block(x) \
-  if(insilico::engine::mpi::dependent_block_assigned(x, __LINE__))
+#define insilico_mpi_independent_variable_block(id, x) \
+  if(insilico::engine::mpi::block_assigned(id, x, __LINE__))
+#define insilico_mpi_dependent_variable_block(id, x) \
+  if(insilico::engine::mpi::dependent_block_assigned(id, x, __LINE__))
 
 // for block without indices, assigned to specific rank
-#define insilico_mpi_independent_unit \
-  if(insilico::engine::mpi::block_assigned(__LINE__))
+#define insilico_mpi_independent_unit(x) \
+  if(insilico::engine::mpi::block_assigned(x, __LINE__))
 
 // for indices without block and not assigned to specific rank
 #define insilico_mpi_independent_variable(x) \
@@ -59,15 +59,18 @@ namespace insilico { namespace engine { namespace mpi {
 bool exec_div = true;
 
 // global job identity assigner
-std::vector< std::vector < unsigned > > assigner;
+std::vector<std::vector<unsigned>> assigner_line_master;
+std::vector<std::vector<unsigned>> assigner_index_master;
 std::vector< unsigned > assigner_line;
+std::vector< unsigned > assigner_index;
 int global_rank = 0;
 bool rank_resizing = false;
 
 // update events and indices manager
 std::vector< unsigned > update_indices;
 
-auto synchronize_innerstate(state_type &_variables, double _time) -> void {
+auto synchronize_innerstate(state_type &_variables, const double &_time)
+    -> void {
   std::string key;
   double updated_value;
   FILE* fptr;
@@ -84,60 +87,35 @@ auto synchronize_innerstate(state_type &_variables, double _time) -> void {
       }
     }
   }
-  std::vector< std::vector < unsigned > > updated_idxpproc(insilico::mpi::size);
-  std::vector< unsigned > update_size(insilico::mpi::size);
-  std::vector< unsigned > updated_indices_for_single_process;
-  if(insilico::mpi::rank < insilico::mpi::size) {
-    updated_idxpproc[insilico::mpi::rank]
-        .insert(updated_idxpproc[insilico::mpi::rank].end(),
-                update_indices.begin(), update_indices.end());
-    update_size[insilico::mpi::rank] = engine::mpi::update_indices.size();
-  }
-  for(int r = 0; r < insilico::mpi::size; ++r) {
-    MPI_Bcast(&update_size[r], 1, MPI_UNSIGNED, r, MPI_COMM_WORLD);
-    updated_indices_for_single_process.resize(update_size[r]);
-    MPI_Bcast(&updated_indices_for_single_process[0], update_size[r],
-              MPI_UNSIGNED, r, MPI_COMM_WORLD);
-    for(unsigned index : updated_indices_for_single_process) {
-      updated_idxpproc[r].push_back(index);
-    }
-    for(unsigned id : updated_idxpproc[r]) {
-      for(auto iterator : engine::index_map) {
-        if(iterator.second == id) {
-          key = ".ids/.";
-          key += iterator.first;
-          fptr = fopen(key.c_str(), "rb");
-          if(fread(&updated_value, sizeof(double), 1, fptr) != 1) {
-            std::cerr << "[insilico::engine::mpi::synchronize_innerstate]"
-                      << " Synchronization failed.\n";
-            configuration::mpi::severe_error();
-          }
-          _variables[id] = updated_value;
-          fclose(fptr);
-          break;
-        }
-      }
-    }
-  }
   engine::mpi::update_indices.clear();
   MPI_Barrier(MPI_COMM_WORLD);
 }
 
-auto block_assigned(unsigned _line_id) -> bool {
+auto block_assigned(const unsigned &_index,
+                    const unsigned &_line_id) -> bool {
   if(insilico::mpi::rank < insilico::mpi::size) {
-    std::vector< unsigned >::iterator loc_for_line;
-    // if rank has been assigned with this line
-    loc_for_line = std::find(assigner[insilico::mpi::rank].begin(),
-                             assigner[insilico::mpi::rank].end(),
+    std::vector< unsigned >::iterator loc_for_line, loc_for_index;
+    // if this rank has been assigned with this line-index pair
+    loc_for_line = std::find(assigner_line_master[insilico::mpi::rank].begin(),
+                             assigner_line_master[insilico::mpi::rank].end(),
                              _line_id);
-    if(loc_for_line != assigner[insilico::mpi::rank].end()) {
-      return true;
+    loc_for_index = std::find(assigner_index_master[insilico::mpi::rank].begin(),
+                              assigner_index_master[insilico::mpi::rank].end(),
+                              _index);
+    if(loc_for_line != assigner_line_master[insilico::mpi::rank].end() &&
+       loc_for_line != assigner_index_master[insilico::mpi::rank].end()) {
+      return true; // yes, this line-index pair is assigned to this rank!
     }
-    // if rank has not occured but line is already there, don't allow
+    // if line-index pair is already assigned to some other process,
+    // don't allow this process
     loc_for_line = std::find(assigner_line.begin(),
                              assigner_line.end(),
                              _line_id);
-    if(loc_for_line != assigner_line.end()) {
+    loc_for_index = std::find(assigner_index.begin(),
+                             assigner_index.end(),
+                              _index);
+    if(loc_for_line != assigner_line.end() &&
+       loc_for_index != assigner_index.end()) {
       return false;
     }
     // line block needs to be assigned to next rank - round robbin
@@ -147,8 +125,10 @@ auto block_assigned(unsigned _line_id) -> bool {
     else {
       ++global_rank;
     }
-    assigner[global_rank].push_back(_line_id);
+    assigner_line_master[global_rank].push_back(_line_id);
+    assigner_index_master[global_rank].push_back(_index);
     assigner_line.push_back(_line_id);
+    assigner_index.push_back(_index);
     if(insilico::mpi::rank == global_rank) {
       return true;
     }
@@ -156,24 +136,28 @@ auto block_assigned(unsigned _line_id) -> bool {
   return false;
 }
 
-auto block_assigned(unsigned _index, unsigned _line_id) -> bool {
-  if(block_assigned(_line_id)) {
-    update_indices.push_back(_index);
+auto block_assigned(const unsigned &_index,
+                    const unsigned &_var_index,
+                    const unsigned &_line_id) -> bool {
+  if(block_assigned(_index, _line_id)) {
+    update_indices.push_back(_var_index);
     return true;
   }
   return false;
 }
 
-auto dependent_block_assigned(unsigned _index, unsigned _line_id) -> bool {
+auto dependent_block_assigned(const unsigned &_index,
+                              const unsigned &_var_index,
+                              const unsigned &_line_id) -> bool {
   MPI_Barrier(MPI_COMM_WORLD);
-  return block_assigned(_index, _line_id);
+  return block_assigned(_index, _var_index, _line_id);
 }
 
-auto register_block(unsigned _index) -> void {
+auto register_block(const unsigned &_index) -> void {
   update_indices.push_back(_index);
 }
 
-auto dependent_register_block(unsigned _index) -> void {
+auto dependent_register_block(const unsigned &_index) -> void {
   update_indices.push_back(_index);
 }
 
