@@ -20,11 +20,11 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core.hpp"
+#include "insilico/core.hpp"
 
-#include "neuron/helper/spike_list.hpp"
-#include "neuron/N_LIF_S1967.hpp"
-#include "synapse/S_LIF_Synapse.hpp"
+#include "insilico/neuron/helper/spike_list.hpp"
+#include "insilico/neuron/N_LIF_S1967.hpp"
+#include "insilico/synapse/S_LIF_Synapse.hpp"
 
 #include <boost/numeric/odeint.hpp>
 #include <fstream>

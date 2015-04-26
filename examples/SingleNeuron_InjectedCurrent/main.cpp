@@ -1,7 +1,10 @@
 /*
-  examples/SingleNeuron_InjectedCurrent/main.cpp - insilico's example using neuron and synapse for illustrations
+  examples/SingleNeuron_InjectedCurrent/main.cpp - insilico's example using
+                                                   neuron and synapse for
+                                                   illustrations
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,7 +20,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core.hpp"
+#include "insilico/core.hpp"
 
 #include <boost/numeric/odeint.hpp>
 
@@ -32,7 +35,8 @@ using namespace std;
 
 class I_Na {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, const unsigned index) {
     double gna = 120, ena = 115;
 
     int v_index = engine::neuron_index(index, "v");
@@ -57,7 +61,8 @@ class I_Na {
 
 class I_K {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, const unsigned index) {
     double gk = 36, ek = -12;
 
     int v_index = engine::neuron_index(index, "v");
@@ -77,7 +82,8 @@ class I_K {
 
 class I_Leak {
  public:
-  static void current(state_type &variables, state_type &dxdt, const double t, int index) {
+  static void current(state_type &variables, state_type &dxdt,
+                      const double t, const unsigned index) {
     double gl = 0.3, el = 10.6;
 
     int v_index = engine::neuron_index(index, "v");
@@ -89,7 +95,8 @@ class I_Leak {
 
 class HH_Neuron : public Neuron {
  public:
-  void ode_set(state_type &variables, state_type &dxdt, const double t, unsigned index) {
+  void ode_set(state_type &variables, state_type &dxdt,
+               const double t, const unsigned index) {
     int v_index = engine::neuron_index(index, "v");
 
     I_Na::current(variables, dxdt, t, index);
@@ -118,8 +125,9 @@ int main(int argc, char **argv) {
   engine::generate_neuron<HH_Neuron>();
 
   state_type variables = engine::get_variables();
-  boost::numeric::odeint::integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
-                  engine::driver(), variables, 0.0, 100.0, 0.05, configuration::observer());
+  using namespace boost::numeric::odeint;
+  integrate_const(runge_kutta4<state_type>(), engine::driver(), variables,
+                  0.0, 100.0, 0.05, configuration::observer());
 
   configuration::finalize();
 }

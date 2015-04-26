@@ -21,11 +21,11 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core.hpp"
+#include "insilico/core.hpp"
 
-#include "neuron/helper/spike_list.hpp" // storing past spike list for neuron
-#include "neuron/N_SquidAxon_HH1952.hpp"
-#include "synapse/S_DefaultSynapse.hpp"
+#include "insilico/neuron/helper/spike_list.hpp" //storing spike-list
+#include "insilico/neuron/N_SquidAxon_HH1952.hpp"
+#include "insilico/synapse/S_DefaultSynapse.hpp"
 
 #include <boost/numeric/odeint.hpp>
 

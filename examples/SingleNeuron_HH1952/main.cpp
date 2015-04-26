@@ -18,7 +18,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core.hpp"
+#include "insilico/core.hpp"
 
 #include <boost/numeric/odeint.hpp>
 
