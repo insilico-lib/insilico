@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
   configuration::mpi::observe("v");
   configuration::mpi::observe("I_Na");
 
-  engine::generate_neuron<HH_Neuron>();
+  engine::generate_neuron<HH_Neuron>(10000);
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
