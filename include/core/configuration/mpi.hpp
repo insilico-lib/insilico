@@ -41,14 +41,21 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <unordered_map>
 #include <vector>
 
 namespace insilico { namespace configuration { namespace mpi {
 
+/* double gettimes() {
+  timeval tv;
+  gettimeofday (&tv, NULL);
+  return (double) (((double)tv.tv_sec * 1000000) + (double)tv.tv_usec);
+  } */
+
 auto finalize() -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
-    remove(".ids/.*");
+    remove(".ids/*");
     rmdir(".ids");
     outstream.close();
     std::cerr << "[insilico::configuration::finalize] "
@@ -177,7 +184,6 @@ auto initialize(int argc, char **argv) -> void {
   if(insilico::mpi::rank == insilico::mpi::master) {
     synchronize_reads();
   }
-  MPI_Barrier(MPI_COMM_WORLD);
 }
 
 auto observe_delimiter(const char _delim) -> void {
@@ -195,9 +201,70 @@ auto observe_header(const bool _flag) -> void {
 struct observer {
   bool engine_exechook = false;
   auto operator() (state_type &variables, const double t) -> void {
-    MPI_Barrier(MPI_COMM_WORLD);
+    std::string key;
+    double observed_value;
+    FILE* fptr;
+    unsigned ohs = configuration::observation_header.size();
+    unsigned dist_size = 0;
     if(!engine_exechook) {
       engine_exechook = true;
+      // Share the observation header
+      MPI_Bcast(&ohs, 1, MPI_UNSIGNED,
+                insilico::mpi::master, MPI_COMM_WORLD);
+      if(insilico::mpi::rank == insilico::mpi::master) {
+        configuration::outstream.close();
+        remove(configuration::observation_file.c_str()); // remove obs file
+        mkdir(configuration::observation_file.c_str(),   // create obs dir
+              S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        configuration::observation_file += "/";
+      }
+      else {
+        configuration::observation_header.reserve(ohs);
+        configuration::observation_header.resize(ohs);
+      }
+      unsigned size_obs_var = configuration::observation_file.length();
+      MPI_Bcast(&size_obs_var, 1, MPI_UNSIGNED,
+                insilico::mpi::master, MPI_COMM_WORLD);
+      char* observation_file_cstr = new char[size_obs_var + 1];
+      if(insilico::mpi::rank == insilico::mpi::master) {
+        strcpy(observation_file_cstr,
+               configuration::observation_file.c_str());
+      }
+      MPI_Bcast(&observation_file_cstr[0], size_obs_var, MPI_CHAR,
+                insilico::mpi::master, MPI_COMM_WORLD);
+      if(insilico::mpi::rank != insilico::mpi::master) {
+        configuration::observation_file = observation_file_cstr;
+        trim(configuration::observation_file);
+        configuration::observation_file.resize(size_obs_var);
+      }
+      delete [] observation_file_cstr;
+      for(unsigned it = 0; it < ohs; ++it) {
+        unsigned size_var = configuration::observation_header[it].length();
+        MPI_Bcast(&size_var, 1, MPI_UNSIGNED,
+                  insilico::mpi::master, MPI_COMM_WORLD);
+        char* key_c_string = new char[size_var + 1];
+        if(insilico::mpi::rank == insilico::mpi::master) {
+          strcpy(key_c_string, configuration::observation_header[it].c_str());
+        }
+        MPI_Bcast(&key_c_string[0], size_var, MPI_CHAR,
+                  insilico::mpi::master, MPI_COMM_WORLD);
+        if(insilico::mpi::rank != insilico::mpi::master) {
+          configuration::observation_header[it].reserve(size_var);
+          configuration::observation_header[it] = key_c_string;
+          trim(configuration::observation_header[it]);
+          configuration::observation_header[it].resize(size_var);
+        }
+        delete [] key_c_string;
+      }
+      dist_size = ohs / insilico::mpi::size;
+      for(unsigned obs_iter = insilico::mpi::rank * dist_size;
+          obs_iter < ((insilico::mpi::rank + 1) * dist_size);
+          ++obs_iter) {
+        key = configuration::observation_file;
+        key += configuration::observation_header[obs_iter];
+        fptr = fopen(key.c_str(), "w");
+        fclose(fptr);
+      }
     }
     else {
       engine::mpi::exec_div = false;
@@ -211,37 +278,39 @@ struct observer {
                     <<" processes (0 - " << insilico::mpi::size - 1
                     <<").\n";
         }
-        engine::mpi::assigner_line_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_line_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].end());
-        engine::mpi::assigner_index_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_index_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].end());
+        engine::mpi::assigner_line_master[insilico::mpi::master].insert(
+            engine::mpi::assigner_line_master[insilico::mpi::master].end(),
+            engine::mpi::assigner_line_master[insilico::mpi::size].begin(),
+            engine::mpi::assigner_line_master[insilico::mpi::size].end());
+        engine::mpi::assigner_index_master[insilico::mpi::master].insert(
+            engine::mpi::assigner_index_master[insilico::mpi::master].end(),
+            engine::mpi::assigner_index_master[insilico::mpi::size].begin(),
+            engine::mpi::assigner_index_master[insilico::mpi::size].end());
         engine::mpi::rank_resizing = true;
       }
     }
     engine::mpi::synchronize_innerstate(variables, t);
-    if(insilico::mpi::rank == insilico::mpi::master) {
-      configuration::write_header_once();
-      configuration::outstream << t;
-      std::string key;
-      double observed_value;
-      FILE* fptr;
-      for(std::string value_key : configuration::observation_header) {
-        key = ".ids/.";
-        key += value_key;
-        fptr = fopen(key.c_str(), "rb");
-        if(fread(&observed_value, sizeof(double), 1, fptr) != 1) {
-          configuration::mpi::severe_error();
-        }
-        fclose(fptr);
-        configuration::outstream << configuration::observer_delimiter
-                                 << observed_value;
+    dist_size = ohs / insilico::mpi::size;
+    // double timew = gettimes();
+    for(unsigned obs_iter = insilico::mpi::rank * dist_size;
+        obs_iter < ((insilico::mpi::rank + 1) * dist_size);
+        ++obs_iter) {
+      key = ".ids/.";
+      key += configuration::observation_header[obs_iter];
+      fptr = fopen(key.c_str(), "rb");
+      if(fread(&observed_value, sizeof(double), 1, fptr) != 1) {
+        configuration::mpi::severe_error();
       }
-      configuration::outstream << '\n';
+      fclose(fptr);
+      key = configuration::observation_file;
+      key += configuration::observation_header[obs_iter];
+      fptr = fopen(key.c_str(), "a+");
+      fprintf(fptr, "%lf%c%lf\n", t, configuration::observer_delimiter,
+              observed_value);
+      fclose(fptr);
     }
+    // double timer = gettimes();
+    // std::cout << timer-timew << '\n';
     MPI_Barrier(MPI_COMM_WORLD);
   }
 };
