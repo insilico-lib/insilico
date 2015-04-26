@@ -103,7 +103,7 @@ auto block_assigned(const unsigned &_index,
                               assigner_index_master[insilico::mpi::rank].end(),
                               _index);
     if(loc_for_line != assigner_line_master[insilico::mpi::rank].end() &&
-       loc_for_line != assigner_index_master[insilico::mpi::rank].end()) {
+       loc_for_index != assigner_index_master[insilico::mpi::rank].end()) {
       return true; // yes, this line-index pair is assigned to this rank!
     }
     // if line-index pair is already assigned to some other process,
@@ -112,14 +112,14 @@ auto block_assigned(const unsigned &_index,
                              assigner_line.end(),
                              _line_id);
     loc_for_index = std::find(assigner_index.begin(),
-                             assigner_index.end(),
+                              assigner_index.end(),
                               _index);
     if(loc_for_line != assigner_line.end() &&
        loc_for_index != assigner_index.end()) {
       return false;
     }
     // line block needs to be assigned to next rank - round robbin
-    if((global_rank + 1) >= insilico::mpi::size){
+    if((global_rank + 1) >= insilico::mpi::size) {
       global_rank = 0;
     }
     else {
