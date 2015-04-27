@@ -1,7 +1,8 @@
 `insilico`
 ========
 
-![GNU GPLv3 License](http://img.shields.io/badge/license-GPLv3-blue.svg)
+![GNU GPLv3 License](http://img.shields.io/badge/license-GPLv3-green.svg)
+[![insilico Trello](https://img.shields.io/badge/Trello-insilico-blue.svg)](https://trello.com/b/lkXzPGqD/insilico)
 
 `insilico` is a Computational Neuroscience simulation library written in C++. `insilico` encourages ready-to-start approach for quick setup of simulation environment, without hindering programmers time and focus from intended experiment.
 
