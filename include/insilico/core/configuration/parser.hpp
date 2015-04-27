@@ -1,7 +1,9 @@
 /*
- core/configuration/parser.hpp - insilico's Configuration parser header and source
+ core/configuration/parser.hpp - insilico's Configuration
+                                 parser header and source
 
- Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
+                         IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -61,14 +63,14 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
 
   if(file_check(neuron_stream, neuron_file)) {
     while(getline(neuron_stream, part, linedelim)) {
-      std::stringstream l(part);
+      std::stringstream l(remove_comments(part));
       trim(part);
       if(part.length() > 0) {
         engine::neuron_start_list_ids.push_back(ncount);
         while(getline(l, part, worddelim)) {
           trim(part);
           if(part.length() > 0) {
-            std::stringstream k(remove_comments(part));
+            std::stringstream k(part);
             getline(k, part, pairdelim); trim(part); first_item = part;
             getline(k, part, pairdelim); trim(part); second_item = string_to_double(part);
             out.str("");
@@ -97,7 +99,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
 
   if(file_check(synapse_stream, synapse_file)) {
     while(getline(synapse_stream, part, linedelim)) {
-      std::stringstream l(part);
+      std::stringstream l(remove_comments(part));
       trim(part);
       if(part.length() > 0) {
         engine::synapse_start_list_ids.push_back(ncount);
