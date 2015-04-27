@@ -71,8 +71,12 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
           trim(part);
           if(part.length() > 0) {
             std::stringstream k(part);
-            getline(k, part, pairdelim); trim(part); first_item = part;
-            getline(k, part, pairdelim); trim(part); second_item = string_to_double(part);
+            getline(k, part, pairdelim);
+            trim(part);
+            first_item = part;
+            getline(k, part, pairdelim);
+            trim(part);
+            second_item = string_to_double(part);
             out.str("");
             out << ntrack;
             key = "n" + out.str() + first_item;
@@ -106,9 +110,13 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
         while(getline(l, part, worddelim)) {
           trim(part);
           if(part.length() > 0) {
-            std::stringstream k(remove_comments(part));
-            getline(k, part, pairdelim); trim(part); first_item = part;
-            getline(k, part, pairdelim); trim(part); second_item = string_to_double(part);
+            std::stringstream k(part);
+            getline(k, part, pairdelim);
+            trim(part);
+            first_item = part;
+            getline(k, part, pairdelim);
+            trim(part);
+            second_item = string_to_double(part);
             out.str("");
             out << strack;
             key = "s" + out.str() + first_item;
