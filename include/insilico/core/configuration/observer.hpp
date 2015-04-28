@@ -133,6 +133,11 @@ auto observe(std::string _variable) -> void {
       observation_header.push_back(value_key);
     }
   }
+  if(error) {
+    std::cerr << "[insilico::configuration] Observer failed to find "
+              << _variable << ".\n";
+    configuration::severe_error();
+  }
 }
 
 auto observe_neuron(unsigned id, std::string _variable) -> void {
