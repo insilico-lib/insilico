@@ -128,7 +128,9 @@ auto observe(std::string _variable) -> void {
     }
   }
   else if(!synapse_keys.empty()) {
-    pre_computed_keys.insert(pre_computed_keys.end(), synapse_keys.begin(), synapse_keys.end());
+    pre_computed_keys.insert(pre_computed_keys.end(),
+                             synapse_keys.begin(),
+                             synapse_keys.end());
     for(std::string value_key : neuron_keys) {
       observation_header.push_back(value_key);
     }
