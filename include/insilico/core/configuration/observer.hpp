@@ -100,8 +100,11 @@ auto observe(std::string _variable) -> void {
                                 neuron_indices.begin(),
                                 neuron_indices.end());
     for(unsigned index : neuron_indices) {
-      sprintf(key, "n%d%s", engine::neuron_id_from_index(index), _variable.c_str());
-      observation_header.push_back(key);
+      unsigned id = engine::neuron_id_from_index(index, error);
+      if(error) {
+        sprintf(key, "n%d%s", id, _variable.c_str());
+        observation_header.push_back(key);
+      }
     }
   }
   else if(!neuron_keys.empty()) {
@@ -117,8 +120,11 @@ auto observe(std::string _variable) -> void {
                                 synapse_indices.begin(),
                                 synapse_indices.end());
     for(unsigned index : synapse_indices) {
-      sprintf(key, "s%d%s", engine::synapse_id_from_index(index), _variable.c_str());
-      observation_header.push_back(key);
+      unsigned id = engine::synapse_id_from_index(index, error);
+      if(error) {
+        sprintf(key, "s%d%s", id, _variable.c_str());
+        observation_header.push_back(key);
+      }
     }
   }
   else if(!synapse_keys.empty()) {
