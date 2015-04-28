@@ -184,6 +184,26 @@ auto synapse_id_from_index(unsigned _index, bool &error) -> unsigned {
   return idx;
 }
 
+auto variable_name_from_index(unsigned _index) -> std::string {
+  unsigned id;
+  bool error = false ;
+  for(auto iterator = engine::index_map.begin();
+      iterator != engine::index_map.end();
+      ++iterator) {
+    if(iterator->second == _index) {
+      id = neuron_id_from_index(_index, error);
+      if(error == false) {
+        return iterator->first.substr(std::to_string(id).length()+1);
+      }
+      id = synapse_id_from_index(_index, error);
+      if(error == false) {
+        return iterator->first.substr(std::to_string(id).length()+1);
+      }
+    }
+  }
+  return "";
+}
+
 auto get_pre_neuron_indices(unsigned _id, std::string _variable)
     -> std::vector<unsigned> {
   std::vector<unsigned> indices;
