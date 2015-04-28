@@ -117,25 +117,69 @@ auto get_indices(std::string _variable) -> std::vector<unsigned> {
 }
 
 auto neuron_id_from_index(unsigned _index) -> unsigned {
-  unsigned idx = 0;
-  while(_index > neuron_start_list_ids[idx] &&
-        idx < neuron_start_list_ids.size()) {
-    ++idx;
+  unsigned idx;
+  if(neuron_start_list_ids.empty() ||
+     _index < neuron_start_list_ids.front() ||
+     _index > neuron_end_list_ids.back())  {
+    std::cerr << "[insilico::engine::neuron_id_from_index] "
+              << "Failed to find index "<<_index <<'\n';
+    exit(0);
   }
-  if(idx >= neuron_start_list_ids.size()) {
-    --idx;
+  for(idx = 0; idx < neuron_end_list_ids.size(); ++idx) {
+    if(_index >= neuron_start_list_ids[idx] &&
+       _index <= neuron_end_list_ids[idx]) {
+      return idx;
+    }
+  }
+  return idx;
+}
+
+auto neuron_id_from_index(unsigned _index, bool &error) -> unsigned {
+  unsigned idx;
+  if(neuron_start_list_ids.empty() ||
+     _index < neuron_start_list_ids.front() ||
+     _index > neuron_end_list_ids.back())  {
+    error = true;
+  }
+  for(idx = 0; idx < neuron_end_list_ids.size(); ++idx) {
+    if(_index >= neuron_start_list_ids[idx] &&
+       _index <= neuron_end_list_ids[idx]) {
+      return idx;
+    }
   }
   return idx;
 }
 
 auto synapse_id_from_index(unsigned _index) -> unsigned {
-  unsigned idx = 0;
-  while(_index > synapse_start_list_ids[idx] &&
-        idx < synapse_start_list_ids.size()) {
-    ++idx;
+  unsigned idx;
+  if(synapse_start_list_ids.empty() ||
+     _index < synapse_start_list_ids.front() ||
+     _index > synapse_end_list_ids.back())  {
+    std::cerr << "[insilico::engine::synapse_id_from_index] "
+              << "Failed to find index "<<_index <<'\n';
+    exit(0);
   }
-  if(idx >= synapse_start_list_ids.size()) {
-    --idx;
+  for(idx = 0; idx < synapse_end_list_ids.size(); ++idx) {
+    if(_index >= synapse_start_list_ids[idx] &&
+       _index <= synapse_end_list_ids[idx]) {
+      return idx;
+    }
+  }
+  return idx;
+}
+
+auto synapse_id_from_index(unsigned _index, bool &error) -> unsigned {
+  unsigned idx;
+  if(synapse_start_list_ids.empty() ||
+     _index < synapse_start_list_ids.front() ||
+     _index > synapse_end_list_ids.back())  {
+    error = true;
+  }
+  for(idx = 0; idx < synapse_end_list_ids.size(); ++idx) {
+    if(_index >= synapse_start_list_ids[idx] &&
+       _index <= synapse_end_list_ids[idx]) {
+      return idx;
+    }
   }
   return idx;
 }
