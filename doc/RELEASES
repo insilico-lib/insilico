@@ -3,6 +3,33 @@ Release Notes for Stable releases
 
 (Please refer IDC (insilico Developer Channel, https://groups.google.com/forum/#!forum/insilico) mail for detailed description)
 
+Version 0.24
+------------
+Release: Apr. 29, 2015
+
+New Features:
+* Observer can observe model parameters and runtime variables if available in input file
+* Get variable name from its index (location) in global vector using Engine API as given below
+
+Enhancements:
+* Headers are part of include/insilico
+* Observer supports custom delimiter
+* Headers for observer can be disabled
+* Value and Index functions does handles exceptions due to failures better than before
+* Command-line interface allows space between options to help tab completion
+* Example code demonstrate object-oriented insilico (SingleNeuron_HH1952 as of now)
+* Use of const in non-variable contexts
+* Warnings from GCC and clang are resolved by making code interoperable
+
+Deprecation:
+* insilico::engine::current_value() function are deprecated (read removed)
+
+Bug Fixes:
+* Comments support in input files improved (neuron and synapse input files only)
+* Malfunction in Injector is resolved
+* DefaultSynapse uses spike history
+* Erroneous exceptions are resolved and will not occur again
+
 Version 0.21
 ------------
 Released: Mar. 18, 2015
