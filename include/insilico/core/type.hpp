@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include <vector>
-#include <boost/numeric/odeint/external/mpi/mpi.hpp>
 
 namespace insilico {
 
