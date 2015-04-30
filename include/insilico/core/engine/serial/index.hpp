@@ -125,11 +125,15 @@ auto neuron_id_from_index(unsigned _index) -> unsigned {
               << "Failed to find index "<<_index <<'\n';
     exit(0);
   }
-  for(idx = 0; idx < neuron_end_list_ids.size(); ++idx) {
+  for(idx = 0; idx < neuron_start_list_ids.size(); ++idx) {
     if(_index >= neuron_start_list_ids[idx] &&
-       _index <= neuron_end_list_ids[idx]) {
+       _index < neuron_end_list_ids[idx])
       return idx;
-    }
+  }
+  if(idx >= neuron_start_list_ids.size()) {
+    std::cerr << "[insilico::engine::neuron_id_from_index] "
+              << "Failed to find index "<<_index <<'\n';
+    exit(0);
   }
   return idx;
 }
@@ -141,12 +145,13 @@ auto neuron_id_from_index(unsigned _index, bool &error) -> unsigned {
      _index > neuron_end_list_ids.back())  {
     error = true;
   }
-  for(idx = 0; idx < neuron_end_list_ids.size(); ++idx) {
+  for(idx = 0; idx < neuron_start_list_ids.size(); ++idx) {
     if(_index >= neuron_start_list_ids[idx] &&
-       _index <= neuron_end_list_ids[idx]) {
+       _index < neuron_end_list_ids[idx])
       return idx;
-    }
   }
+  if(idx >= neuron_start_list_ids.size())
+    error = true;
   return idx;
 }
 
@@ -159,11 +164,15 @@ auto synapse_id_from_index(unsigned _index) -> unsigned {
               << "Failed to find index "<<_index <<'\n';
     exit(0);
   }
-  for(idx = 0; idx < synapse_end_list_ids.size(); ++idx) {
+  for(idx = 0; idx < synapse_start_list_ids.size(); ++idx) {
     if(_index >= synapse_start_list_ids[idx] &&
-       _index <= synapse_end_list_ids[idx]) {
+       _index < synapse_end_list_ids[idx])
       return idx;
-    }
+  }
+  if(idx >= synapse_start_list_ids.size()) {
+    std::cerr << "[insilico::engine::synapse_id_from_index] "
+              << "Failed to find index "<<_index <<'\n';
+    exit(0);
   }
   return idx;
 }
@@ -175,12 +184,13 @@ auto synapse_id_from_index(unsigned _index, bool &error) -> unsigned {
      _index > synapse_end_list_ids.back())  {
     error = true;
   }
-  for(idx = 0; idx < synapse_end_list_ids.size(); ++idx) {
+  for(idx = 0; idx < synapse_start_list_ids.size(); ++idx) {
     if(_index >= synapse_start_list_ids[idx] &&
-       _index <= synapse_end_list_ids[idx]) {
+       _index < synapse_end_list_ids[idx])
       return idx;
-    }
   }
+  if(idx >= synapse_start_list_ids.size())
+    error = true;
   return idx;
 }
 
