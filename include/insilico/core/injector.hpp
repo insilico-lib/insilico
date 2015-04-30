@@ -1,7 +1,8 @@
 /*
  core/injector.hpp - insilico's external current injector header and source
 
- Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                    IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -26,8 +27,9 @@
 
 namespace insilico { namespace injector {
 
-std::vector< double > external_current(const int _neuron_id, const double _time) {
-  std::vector< double > current_values;
+auto external_current(const int _id, const double _time)
+    -> std::vector<double> {
+  std::vector< double > currents;
   long index = -1;
   for(unsigned time_id = 0; time_id < injector::time_seq.size(); ++time_id) {
     if(std::abs(injector::time_seq[time_id] - _time) < 0.001) {
@@ -36,13 +38,13 @@ std::vector< double > external_current(const int _neuron_id, const double _time)
     }
   }
   if(index >= 0) {
-    for(unsigned current_id = 0; current_id < injector::neurons_seq.size(); ++current_id) {
-      if(_neuron_id == injector::neurons_seq[current_id]) {
-        current_values.push_back(injector::external_current_seq[_neuron_id][index]);
+    for(unsigned id = 0; id < injector::neurons_seq.size(); ++id) {
+      if(_id == injector::neurons_seq[id]) {
+        currents.push_back(injector::external_current_seq[_id][index]);
       }
     }
   }
-  return current_values;
+  return currents;
 }
 
 } } // namespace insilico::injector
