@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
 
   engine::generate_neuron<N_SquidAxon_HH1952>(2);
   engine::generate_synapse<S_DefaultSynapse>(2);
+  engine::spike_list.resize(2);
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
