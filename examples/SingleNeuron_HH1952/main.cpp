@@ -37,7 +37,7 @@ class I_Na {
   double ena = 115;
  public:
   void current(state_type &variables, state_type &dxdt,
-               const double t, unsigned index) {
+               const double t, const unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     int m_index = engine::neuron_index(index, "m");
     int h_index = engine::neuron_index(index, "h");
@@ -64,7 +64,7 @@ class I_K {
   double ek = -12;
  public:
   void current(state_type &variables, state_type &dxdt,
-               const double t, unsigned index) {
+               const double t, const unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     int n_index = engine::neuron_index(index, "n");
 
@@ -86,7 +86,7 @@ class I_Leak {
   double el = 10.6;
  public:
   void current(state_type &variables, state_type &dxdt,
-               const double t, unsigned index) {
+               const double t, const unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     double v = variables[v_index];
 
@@ -101,7 +101,7 @@ class HH_Neuron : public Neuron {
   I_Leak i_leak_component;
  public:
   void ode_set(state_type &variables, state_type &dxdt,
-               const double t, unsigned index) {
+               const double t, const unsigned index) {
     int v_index = engine::neuron_index(index, "v");
     
     i_na_component.current(variables, dxdt, t, index);
