@@ -195,34 +195,9 @@ auto observe_header(const bool _flag) -> void {
 struct observer {
   bool engine_exechook = false;
   auto operator() (state_type &variables, const double t) -> void {
+    engine::work_per_process();
     MPI_Barrier(MPI_COMM_WORLD);
-    if(!engine_exechook) {
-      engine_exechook = true;
-    }
-    else {
-      engine::mpi::exec_div = false;
-      // reseting insilico::mpi::size to new size of no. of computation units
-      if(!engine::mpi::rank_resizing &&
-         engine::mpi::assigner_line.size() < (unsigned)insilico::mpi::size) {
-        insilico::mpi::size = engine::mpi::assigner_line.size();
-        if(insilico::mpi::rank == insilico::mpi::master) {
-          std::cerr << "[insilico::configuration::mpi::observer] "
-                    <<"Simulation is only using " << insilico::mpi::size
-                    <<" processes (0 - " << insilico::mpi::size - 1
-                    <<").\n";
-        }
-        engine::mpi::assigner_line_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_line_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].end());
-        engine::mpi::assigner_index_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_index_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].end());
-        engine::mpi::rank_resizing = true;
-      }
-    }
-    engine::mpi::synchronize_innerstate(variables, t);
+    engine::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
       configuration::write_header_once();
       configuration::outstream << t;
