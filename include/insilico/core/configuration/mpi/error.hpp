@@ -28,7 +28,7 @@
 namespace insilico { namespace configuration { namespace mpi {
 
 auto severe_error() -> void {
-  std::cerr << "***...SIMULATION FAILED...***\n";
+  std::cerr << "***...SIMULATION FAILED...***" << std::endl;
   MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 }
 
