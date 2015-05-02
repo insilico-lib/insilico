@@ -29,19 +29,20 @@ namespace insilico { namespace dynamic_params {
 
 auto value(const std::string& _param, const double _time)
     -> double {
+  const double desired_error = 1e-5;
   double param_val = 0;
-  unsigned index = 0;
-  unsigned time_id;
-  for(time_id = 0; time_id < dynamic_params::time_seq.size();
+  unsigned index = 0, time_id = 0;
+  for(time_id = 0; time_id < time_seq.size();
       ++time_id) {
-    if(std::abs(dynamic_params::time_seq[time_id] - _time) < 0.001) {
+    if(std::abs(time_seq[time_id] - _time) <=
+       desired_error * std::abs(time_seq[time_id])) {
       index = time_id;
       break;
     }
   }
-  if(time_id < dynamic_params::time_seq.size()) {
-    auto iterator = dynamic_params::dynamic_params_seq.find(_param);
-    if(iterator != dynamic_params::dynamic_params_seq.end()) {
+  if(time_id < time_seq.size()) {
+    auto iterator = dynamic_params_seq.find(_param);
+    if(iterator != dynamic_params_seq.end()) {
       param_val = iterator->second[index];
     }
   }
