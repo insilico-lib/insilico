@@ -23,6 +23,7 @@
 
 #include "insilico/core/helper/file.hpp"
 #include "insilico/core/helper/string.hpp"
+#include "insilico/core/configuration/error.hpp"
 
 #include <fstream>
 #include <iostream>
