@@ -29,18 +29,20 @@ namespace insilico { namespace injector {
 
 auto external_current(const int _id, const double _time)
     -> std::vector<double> {
+  const double desired_error = 1e-5;
   std::vector< double > currents;
-  long index = -1;
-  for(unsigned time_id = 0; time_id < injector::time_seq.size(); ++time_id) {
-    if(std::abs(injector::time_seq[time_id] - _time) < 0.001) {
+  unsigned index = 0, time_id = 0;
+  for(time_id = 0; time_id < time_seq.size(); ++time_id) {
+    if(std::abs(time_seq[time_id] - _time) <=
+       desired_error * std::abs(time_seq[time_id])) {
       index = time_id;
       break;
     }
   }
-  if(index >= 0) {
-    for(unsigned id = 0; id < injector::neurons_seq.size(); ++id) {
-      if(_id == injector::neurons_seq[id]) {
-        currents.push_back(injector::external_current_seq[_id][index]);
+  if(time_id < time_seq.size()) {
+    for(unsigned id = 0; id < neurons_seq.size(); ++id) {
+      if(_id == neurons_seq[id]) {
+        currents.push_back(external_current_seq[_id][index]);
       }
     }
   }
