@@ -24,7 +24,7 @@
 #include "insilico/core/mpi.hpp"
 #include "insilico/core/engine/data.hpp"
 #include "insilico/core/engine/driver.hpp"
-#include "insilico/core/engine/generate.hpp"
+#include "insilico/core/engine/mpi/generate.hpp"
 #include "insilico/core/engine/serial/common.hpp"
 #include "insilico/core/engine/mpi/index.hpp"
 #include "insilico/core/engine/mpi/value.hpp"
