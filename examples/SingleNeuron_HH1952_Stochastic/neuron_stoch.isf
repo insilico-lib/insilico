@@ -1,0 +1,12 @@
+"My Neuron"
+    dxdt : 4,
+    v : -10,
+    m : 0, 
+    n : 0, 
+    h : 0, 
+    v_stoch : 1, 
+    m_stoch : -1, 
+    n_stoch : -1, 
+    h_stoch : -1, 
+    I_Ext : 10, 
+    I_Na : 0;
