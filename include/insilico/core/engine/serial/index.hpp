@@ -117,7 +117,6 @@ auto get_indices(std::string _variable) -> std::vector<unsigned> {
 }
 
 auto neuron_id_from_index(unsigned _index) -> unsigned {
-  unsigned idx;
   if(neuron_start_list_ids.empty() ||
      _index < neuron_start_list_ids.front() ||
      _index > neuron_end_list_ids.back())  {
@@ -125,38 +124,25 @@ auto neuron_id_from_index(unsigned _index) -> unsigned {
               << "Failed to find index "<<_index <<'\n';
     exit(0);
   }
-  for(idx = 0; idx < neuron_start_list_ids.size(); ++idx) {
-    if(_index >= neuron_start_list_ids[idx] &&
-       _index < neuron_end_list_ids[idx])
-      return idx;
-  }
-  if(idx >= neuron_start_list_ids.size()) {
-    std::cerr << "[insilico::engine::neuron_id_from_index] "
-              << "Failed to find index "<<_index <<'\n';
-    exit(0);
-  }
-  return idx;
+  auto it = std::lower_bound(neuron_start_list_ids.begin(),
+                             neuron_start_list_ids.end(),
+                             _index);  
+  return (it - neuron_start_list_ids.begin());
 }
 
 auto neuron_id_from_index(unsigned _index, bool &error) -> unsigned {
-  unsigned idx;
   if(neuron_start_list_ids.empty() ||
      _index < neuron_start_list_ids.front() ||
      _index > neuron_end_list_ids.back())  {
     error = true;
   }
-  for(idx = 0; idx < neuron_start_list_ids.size(); ++idx) {
-    if(_index >= neuron_start_list_ids[idx] &&
-       _index < neuron_end_list_ids[idx])
-      return idx;
-  }
-  if(idx >= neuron_start_list_ids.size())
-    error = true;
-  return idx;
+  auto it = std::lower_bound(neuron_start_list_ids.begin(),
+                             neuron_start_list_ids.end(),
+                             _index);  
+  return (it - neuron_start_list_ids.begin());
 }
 
 auto synapse_id_from_index(unsigned _index) -> unsigned {
-  unsigned idx;
   if(synapse_start_list_ids.empty() ||
      _index < synapse_start_list_ids.front() ||
      _index > synapse_end_list_ids.back())  {
@@ -164,34 +150,22 @@ auto synapse_id_from_index(unsigned _index) -> unsigned {
               << "Failed to find index "<<_index <<'\n';
     exit(0);
   }
-  for(idx = 0; idx < synapse_start_list_ids.size(); ++idx) {
-    if(_index >= synapse_start_list_ids[idx] &&
-       _index < synapse_end_list_ids[idx])
-      return idx;
-  }
-  if(idx >= synapse_start_list_ids.size()) {
-    std::cerr << "[insilico::engine::synapse_id_from_index] "
-              << "Failed to find index "<<_index <<'\n';
-    exit(0);
-  }
-  return idx;
+  auto it = std::lower_bound(synapse_start_list_ids.begin(),
+                             synapse_start_list_ids.end(),
+                             _index);
+  return (it - synapse_start_list_ids.begin());
 }
 
 auto synapse_id_from_index(unsigned _index, bool &error) -> unsigned {
-  unsigned idx;
   if(synapse_start_list_ids.empty() ||
      _index < synapse_start_list_ids.front() ||
      _index > synapse_end_list_ids.back())  {
     error = true;
   }
-  for(idx = 0; idx < synapse_start_list_ids.size(); ++idx) {
-    if(_index >= synapse_start_list_ids[idx] &&
-       _index < synapse_end_list_ids[idx])
-      return idx;
-  }
-  if(idx >= synapse_start_list_ids.size())
-    error = true;
-  return idx;
+  auto it = std::lower_bound(synapse_start_list_ids.begin(),
+                             synapse_start_list_ids.end(),
+                             _index);
+  return (it - synapse_start_list_ids.begin());
 }
 
 auto variable_name_from_index(unsigned _index) -> std::string {
