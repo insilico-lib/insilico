@@ -1,9 +1,11 @@
 /*
  core/configuration/observer.hpp - Simulation output observer
 
- Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
-                    IISER, Pune <pranavcode@gmail.com>
-
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune
+                    <pranavcode@gmail.com>
+ Copyright (C) 2015 Anup G Pillai, Suhita Nadkarni Lab, IISER, Pune
+                    <anupgpillai@gmail.com>
+                    
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -101,7 +103,7 @@ auto observe(std::string _variable) -> void {
                                 neuron_indices.end());
     for(unsigned index : neuron_indices) {
       unsigned id = engine::neuron_id_from_index(index, error);
-      if(error) {
+      if(!error) {
         sprintf(key, "n%d%s", id, _variable.c_str());
         observation_header.push_back(key);
       }
@@ -121,7 +123,7 @@ auto observe(std::string _variable) -> void {
                                 synapse_indices.end());
     for(unsigned index : synapse_indices) {
       unsigned id = engine::synapse_id_from_index(index, error);
-      if(error) {
+      if(!error) {
         sprintf(key, "s%d%s", id, _variable.c_str());
         observation_header.push_back(key);
       }
