@@ -22,9 +22,7 @@
 
 #include <boost/numeric/odeint.hpp>
 
-#include <fstream>
 #include <iostream>
-#include <iomanip>
 #include <string>
 #include <vector>
 
