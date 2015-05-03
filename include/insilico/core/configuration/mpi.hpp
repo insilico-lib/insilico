@@ -76,8 +76,6 @@ auto initialize(int argc, char **argv) -> void {
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &insilico::mpi::rank);
   MPI_Comm_size(MPI_COMM_WORLD, &insilico::mpi::size);
-  insilico::engine::mpi::assigner_line_master.resize(insilico::mpi::size);
-  insilico::engine::mpi::assigner_index_master.resize(insilico::mpi::size);
 
   if(insilico::mpi::rank == insilico::mpi::master) {
     insilico::configuration::initialize(argc, argv);
