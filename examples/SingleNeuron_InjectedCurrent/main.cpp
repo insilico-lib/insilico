@@ -1,7 +1,7 @@
 /*
-  examples/SingleNeuron_InjectedCurrent/main.cpp - insilico's example using
-                                                   neuron and synapse for
-                                                   illustrations
+  examples/SingleNeuron_InjectedCurrent/main.cpp -
+  insilico's example using neuron for illustrations
+  of external current
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
                      IISER, Pune <pranavcode@gmail.com>
