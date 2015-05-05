@@ -31,19 +31,17 @@ namespace insilico {
 class N_LIF_S1967 : public Neuron {
  public:
   void ode_set(state_type &variables, state_type &dxdt,
-               const double t, unsigned index) {
+               const double t, const unsigned index) {
     // Membrane potential (variable 'v')
     auto v_index = engine::neuron_index(index, "v");
     auto v = variables[v_index];
 
     // Incoming synaptic currents from all Synapses
     auto I_Syn = 0.0;
-    if(index == 1) {
-      auto g1_indices = engine::get_pre_neuron_indices(index, "g1");
-      auto esyn_values = engine::get_pre_neuron_values(index, "esyn");
-      for(unsigned iter = 0; iter < g1_indices.size(); ++iter) {
-        I_Syn = I_Syn + variables[g1_indices[iter]] * (v - esyn_values[iter]);
-      }
+    auto g1_indices = engine::get_pre_neuron_indices(index, "g1");
+    auto esyn_values = engine::get_pre_neuron_values(index, "esyn");
+    for(unsigned iter = 0; iter < g1_indices.size(); ++iter) {
+      I_Syn = I_Syn + variables[g1_indices[iter]] * (v - esyn_values[iter]);
     }
 
     // Parameters from file
