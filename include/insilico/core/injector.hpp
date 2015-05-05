@@ -22,27 +22,37 @@
 #define INCLUDED_INSILICO_CORE_INJECTOR_HPP
 
 #include "insilico/core/injector/parser.hpp"
+#include "insilico/core/helper/floating_comp.hpp"
 
 #include <cmath>
 
 namespace insilico { namespace injector {
 
-auto external_current(const int _id, const double _time)
+auto external_current(const unsigned _id, const double _time)
     -> std::vector<double> {
-  const double desired_error = 1e-5;
-  std::vector< double > currents;
-  unsigned index = 0, time_id = 0;
-  for(time_id = 0; time_id < time_seq.size(); ++time_id) {
-    if(std::abs(time_seq[time_id] - _time) <=
-       desired_error * std::abs(time_seq[time_id])) {
-      index = time_id;
-      break;
+  std::vector<double> currents;
+  unsigned index = 0;
+  bool found = false;
+  if(!time_seq.empty()) {
+    if(isequal(time_seq.front(), _time)) {
+      index = 0; found = true;
     }
-  }
-  if(time_id < time_seq.size()) {
-    for(unsigned id = 0; id < neurons_seq.size(); ++id) {
-      if(_id == neurons_seq[id]) {
-        currents.push_back(external_current_seq[_id][index]);
+    else if(isequal(time_seq.back(), _time)) {
+      index = time_seq.size() - 1; found = true;
+    }
+    else if(_time >= time_seq.front() && _time <= time_seq.back()) {
+      auto loc = std::upper_bound(time_seq.begin(), time_seq.end(), _time);
+      unsigned idx = loc - time_seq.begin();
+      if(isequal(time_seq[idx - 1], _time)) {
+        index = idx - 1; found = true;
+      }
+    }
+    if(found) {
+      auto bloc = std::lower_bound(neurons_seq.begin(), neurons_seq.end(), _id);
+      auto eloc = std::upper_bound(neurons_seq.begin(), neurons_seq.end(), _id);
+      for(auto id = (bloc - neurons_seq.begin());
+          id < (eloc - neurons_seq.begin()); ++id) {
+        currents.push_back(external_current_seq[id][index]);
       }
     }
   }
