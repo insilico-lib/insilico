@@ -22,6 +22,7 @@
 #define INCLUDED_INSILICO_CORE_DYNAMIC_PARAMS_HPP
 
 #include "insilico/core/dynamic_params/parser.hpp"
+#include "insilico/core/helper/floating_comp.hpp"
 
 #include <cmath>
 
@@ -29,21 +30,23 @@ namespace insilico { namespace dynamic_params {
 
 auto value(const std::string& _param, const double _time)
     -> double {
-  const double desired_error = 1e-5;
   double param_val = 0;
-  unsigned index = 0, time_id = 0;
-  for(time_id = 0; time_id < time_seq.size();
-      ++time_id) {
-    if(std::abs(time_seq[time_id] - _time) <=
-       desired_error * std::abs(time_seq[time_id])) {
-      index = time_id;
-      break;
+  if(!time_seq.empty()) {
+    auto param_it = dynamic_params_seq.find(_param);
+    if(isequal(time_seq.front(), _time)) {
+      return param_it->second[0];
     }
-  }
-  if(time_id < time_seq.size()) {
-    auto iterator = dynamic_params_seq.find(_param);
-    if(iterator != dynamic_params_seq.end()) {
-      param_val = iterator->second[index];
+    if(isequal(time_seq.back(), _time)) {
+      return param_it->second[time_seq.size() - 1];
+    }
+    if(_time >= time_seq.front() && _time <= time_seq.back()) {
+      auto loc = std::upper_bound(time_seq.begin(), time_seq.end(), _time);
+      unsigned idx = loc - time_seq.begin();
+      if(isequal(time_seq[idx - 1], _time)) {
+        if(param_it != dynamic_params_seq.end()) {
+          param_val = param_it->second[idx - 1];
+        }
+      }
     }
   }
   return param_val;
