@@ -2,7 +2,8 @@
  core/injector/parser.hpp - insilico Current injector's parsing
                             capability header and source
 
- Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                    IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -34,9 +35,9 @@
 
 namespace insilico { namespace injector {
 
-std::vector< std::vector<double> > external_current_seq;
+std::vector<std::vector<double>> external_current_seq;
 std::vector<double> time_seq;
-std::vector<int> neurons_seq;
+std::vector<unsigned> neurons_seq;
 
 void read(const std::string &external_current_file) {
   bool header;
@@ -64,7 +65,8 @@ void read(const std::string &external_current_file) {
             }
             else {
               if(neurons_seq.empty()) {
-                std::cerr << "[insilico::injector] External current input file is incorrect or malformed.";
+                std::cerr << "[insilico::injector] External current input file "
+                    "is incorrect or malformed.";
                 configuration::severe_error();
               }
               seq.push_back(string_to_double(part));
@@ -73,9 +75,10 @@ void read(const std::string &external_current_file) {
         }
         if(!seq.empty()) {
           time_seq.push_back(seq[0]);
-          external_current_seq.resize(*std::max_element(neurons_seq.begin(), neurons_seq.end()) + 1);
-          for(std::vector<int>::size_type iter = 0; iter < neurons_seq.size(); ++iter) {
-            external_current_seq[neurons_seq[iter]].push_back(seq[iter+1]);
+          external_current_seq.resize(neurons_seq.size());
+          for(std::vector<unsigned>::size_type iter = 0;
+              iter < neurons_seq.size(); ++iter) {
+            external_current_seq[iter].push_back(seq[iter+1]);
           }
         }
       }
