@@ -60,8 +60,34 @@ External Current file
     List of Neuron IDs (simulator specific ids, which are read from Neuron file and starts from 0). A given ID can be repeated to denote the different compartment of the same neuron. And this should be handled by programmer.
 
   - tstart, +tstep and tend:
-    Increasing time of simulation run. Simulation starts at 'tstart', with increments of 'tstep' and ends at 'tend'.
+    Increasing time of simulation run. Simulation needs current starting from time 'tstart', and end at 'tend'. '+tsteps' can be steps in between.
 
   - (cur-val-1 to cur-val-n) to (cur-val-1m to cur-val-nm):
     External current for a specific neuron in its column for all neurons available in header and for all time steps from 'tstart' to 'tend'.
 
+Dynamic Parameters file
+-----------------------
+
+  Dynamic parameters file is a special file with named parameters like value-params in neuron file. This input file is optional.
+
+  Use the following insilico Simulation File format for dynamic params (isfdp).
+
+  -----------------------------------------------------------
+  | time   , param-name-1, param-name-2, ... , param-name-n |
+  | tstart , param-val-1 , param-val-2 , ... , param-val-n  |
+  | +tstep , ...         , ...         , ... , ...          |
+  | ...                                                     |
+  | tend   , param-val-1m, param-val-2m, ... , param-val-nm |
+  -----------------------------------------------------------
+
+  - time:
+    String to signify the header of the input file
+
+  - param-name-1 to param-name-n:
+    List of parameters name. Parameter should not be repeated.
+
+  - tstart, +tstep and tend:
+    Increasing time of simulation run. Simulation parameters can start from time 'tstart', and end at 'tend'. '+tsteps' can be steps in between.
+
+  - (param-val-1 to param-val-n) to (param-val-1m to param-val-nm):
+    Dynamic param values for all time steps from 'tstart' to 'tend'.

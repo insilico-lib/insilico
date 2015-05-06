@@ -1,7 +1,22 @@
-Release Notes for Stable releases
-=================================
+insilico: Release Notes for Stable releases
+===========================================
 
 (Please refer IDC (insilico Developer Channel, https://groups.google.com/forum/#!forum/insilico) mail for detailed description)
+
+Version 0.25
+------------
+Release: May 6, 2015
+
+New Features:
+* Dynamic parameters
+
+Enhancements:
+* These functions are more efficient: injector, neuron_id_from_index, synapse_id_from_index, variable_name_from_index
+* New example SingleNeuron_HH1952_Stochastic added to demonstrate stochastic integration possibility
+
+Bug Fixes:
+* neuron_id_from_index and synapse_id_from_index are now accurate
+* Observer header is not skipped if parameters and variables are observed out-of-order
 
 Version 0.24
 ------------
