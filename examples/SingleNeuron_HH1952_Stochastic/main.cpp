@@ -154,7 +154,7 @@ class stoch_driver {
         }
       }
       else if(!serror) {
-        if(engine::synapse_value(nid, var_str_cpy) > 0) {
+        if(engine::synapse_value(sid, var_str_cpy) > 0) {
           e_noise = random::rand(4.928);
           i_noise = random::rand(4.2);
           dxdt[index] = e_noise - i_noise;
