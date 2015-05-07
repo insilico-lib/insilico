@@ -34,7 +34,8 @@ class Neuron {
                        state_type &,
                        const double,
                        const unsigned) {
-    std::cerr << "*** THIS IS A BUG ***\n";
+    std::cerr << "*** Your Neuron class or Neuron ode_set "
+        "function is not well-formed ***\n";
   }
 };
 
@@ -44,7 +45,8 @@ class Synapse {
                        state_type &,
                        const double,
                        const unsigned) {
-    std::cerr << "*** THIS IS A BUG ***\n";
+    std::cerr << "*** Your Synapse class or Synapse ode_set "
+        "function is not well-formed ***\n";
   }
 };
 
