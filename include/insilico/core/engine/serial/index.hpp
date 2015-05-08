@@ -65,6 +65,7 @@ auto neuron_index(unsigned _id, std::string _variable, bool& error)
     error = true;
     return 0;
   }
+  error = false;
   return index_map[key];
 }
 
@@ -76,6 +77,7 @@ auto synapse_index(unsigned _id, std::string _variable, bool& error)
     error = true;
     return 0;
   }
+  error = false;
   return index_map[key];
 }
 
