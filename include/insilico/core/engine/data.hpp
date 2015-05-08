@@ -37,6 +37,10 @@ std::vector< unsigned > neuron_start_list_ids;
 
 std::vector< unsigned > neuron_end_list_ids;
 
+std::vector< unsigned > prepopulated_neuron_ids;
+
+std::vector< unsigned > prepopulated_synapse_ids;
+
 std::vector< unsigned > synapse_start_list_ids;
 
 std::vector< unsigned > synapse_end_list_ids;
