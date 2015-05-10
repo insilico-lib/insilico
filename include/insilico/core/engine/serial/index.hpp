@@ -119,29 +119,25 @@ auto get_indices(std::string _variable) -> std::vector<unsigned> {
 }
 
 auto neuron_id_from_index(unsigned _index) -> unsigned {
-  if(neuron_start_list_ids.empty() ||
+  if(prepopulated_neuron_ids.empty() ||
      _index < neuron_start_list_ids.front() ||
      _index > neuron_end_list_ids.back())  {
     std::cerr << "[insilico::engine::neuron_id_from_index] "
               << "Failed to find index "<<_index <<'\n';
     exit(0);
   }
-  auto it = std::lower_bound(neuron_start_list_ids.begin(),
-                             neuron_start_list_ids.end(),
-                             _index);  
-  return (it - neuron_start_list_ids.begin());
+  return prepopulated_neuron_ids[_index - neuron_start_list_ids.front()];
 }
 
 auto neuron_id_from_index(unsigned _index, bool &error) -> unsigned {
-  if(neuron_start_list_ids.empty() ||
+  if(prepopulated_neuron_ids.empty() ||
      _index < neuron_start_list_ids.front() ||
-     _index > neuron_end_list_ids.back())  {
+     _index >= neuron_end_list_ids.back())  {
     error = true;
+    return 0;
   }
-  auto it = std::lower_bound(neuron_start_list_ids.begin(),
-                             neuron_start_list_ids.end(),
-                             _index);  
-  return (it - neuron_start_list_ids.begin());
+  error = false;
+  return prepopulated_neuron_ids[_index - neuron_start_list_ids.front()];
 }
 
 auto synapse_id_from_index(unsigned _index) -> unsigned {
