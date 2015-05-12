@@ -69,6 +69,7 @@ auto neuron_value(unsigned _id, std::string _variable, bool& error) -> double {
     error = true;
     return 0;
   }
+  error = false;
   return value_map[key];
 }
 
@@ -85,6 +86,7 @@ auto synapse_value(unsigned _id, std::string _variable, bool& error) -> double {
     error = true;
     return 0;
   }
+  error = false;
   return value_map[key];
 }
 
@@ -185,7 +187,6 @@ auto get_value_keys(std::string _variable) -> std::vector<std::string> {
   std::vector< std::string > value_keys;
   std::vector< std::string > neuron_value_keys;
   std::vector< std::string > synapse_value_keys;
-
   neuron_value_keys = get_neuron_value_keys(_variable);
   synapse_value_keys = get_synapse_value_keys(_variable);
   value_keys.insert(value_keys.end(), neuron_value_keys.begin(),
