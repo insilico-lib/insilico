@@ -84,6 +84,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
               dxdt_count = (int)(ceil(second_item));
             }
             else if(dxdt_count > 0) {
+              engine::prepopulated_neuron_ids.push_back(ntrack);
               engine::var_list_ids.push_back(first_item);
               engine::var_vals.push_back(second_item);
               engine::index_map[key] = ncount;
@@ -130,6 +131,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
               engine::post_neuron.push_back((int)(ceil(second_item)));
             }
             else if(dxdt_count > 0) {
+              engine::prepopulated_synapse_ids.push_back(strack);
               engine::var_list_ids.push_back(first_item);
               engine::var_vals.push_back(second_item);
               engine::index_map[key] = ncount;
