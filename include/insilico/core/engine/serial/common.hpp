@@ -35,11 +35,11 @@ inline auto get_variables() -> state_type {
 }
 
 inline auto neuron_count() -> int {
-  return neuron_start_list_ids.size();
+  return (prepopulated_neuron_ids.back() + 1);
 }
 
 inline auto synapse_count() -> int {
-  return synapse_start_list_ids.size();
+  return (prepopulated_synapse_ids.back() + 1);
 }
 
 } } // namespace insilico::engine
