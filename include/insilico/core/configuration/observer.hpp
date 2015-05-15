@@ -80,7 +80,8 @@ auto build_header_once() -> void {
 }
 
 auto write_header_once() -> void {
-  if(observer_header && !header_observed_flag && !observation_header.empty()) {
+  if(observer_header && !header_observed_flag) {
+    build_header_once();
     outstream << "time";
     for(std::string _variable : observation_header) {
       outstream << observer_delimiter << _variable;
