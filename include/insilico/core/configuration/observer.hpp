@@ -3,9 +3,7 @@
 
  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune
                     <pranavcode@gmail.com>
- Copyright (C) 2015 Anup G Pillai, Suhita Nadkarni Lab, IISER, Pune
-                    <anupgpillai@gmail.com>
-                    
+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
