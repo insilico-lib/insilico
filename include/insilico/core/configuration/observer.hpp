@@ -53,6 +53,32 @@ auto observe_header(const bool _flag) -> void {
   observer_header = _flag;
 }
 
+auto build_header_once() -> void {
+  char key[128];
+  bool error = false;
+  unsigned id;
+  std::string var;
+  for(unsigned index : pre_computed_indices) {
+    id = engine::neuron_id_from_index(index, error);
+    if(!error) {
+      var = engine::variable_name_from_index(index);
+      sprintf(key, "n%d%s", id, var.c_str());
+      observation_header.push_back(key);
+    }
+    else {
+      id = engine::synapse_id_from_index(index, error);
+      if(!error) {
+        var = engine::variable_name_from_index(index);
+        sprintf(key, "s%d%s", id, var.c_str());
+        observation_header.push_back(key);
+      }
+    }
+  }
+  for(std::string value_key : pre_computed_keys) {
+    observation_header.push_back(value_key);
+  }
+}
+
 auto write_header_once() -> void {
   if(observer_header && !header_observed_flag && !observation_header.empty()) {
     outstream << "time";
