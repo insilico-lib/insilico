@@ -106,8 +106,6 @@ struct observer {
 };
 
 auto observe(std::string _variable) -> void {
-  char key[128];
-  bool error = false;
   std::vector< unsigned > neuron_indices;
   std::vector< unsigned > synapse_indices;
   std::vector< std::string > neuron_keys;
@@ -126,46 +124,21 @@ auto observe(std::string _variable) -> void {
     pre_computed_indices.insert(pre_computed_indices.end(),
                                 neuron_indices.begin(),
                                 neuron_indices.end());
-    for(unsigned index : neuron_indices) {
-      unsigned id = engine::neuron_id_from_index(index, error);
-      if(!error) {
-        sprintf(key, "n%d%s", id, _variable.c_str());
-        observation_header.push_back(key);
-      }
-    }
   }
   else if(!neuron_keys.empty()) {
     pre_computed_keys.insert(pre_computed_keys.end(),
                              neuron_keys.begin(),
                              neuron_keys.end());
-    for(std::string value_key : neuron_keys) {
-      observation_header.push_back(value_key);
-    }
   }
   if(!synapse_indices.empty()) {
     pre_computed_indices.insert(pre_computed_indices.end(),
                                 synapse_indices.begin(),
                                 synapse_indices.end());
-    for(unsigned index : synapse_indices) {
-      unsigned id = engine::synapse_id_from_index(index, error);
-      if(!error) {
-        sprintf(key, "s%d%s", id, _variable.c_str());
-        observation_header.push_back(key);
-      }
-    }
   }
   else if(!synapse_keys.empty()) {
     pre_computed_keys.insert(pre_computed_keys.end(),
                              synapse_keys.begin(),
                              synapse_keys.end());
-    for(std::string value_key : neuron_keys) {
-      observation_header.push_back(value_key);
-    }
-  }
-  if(error) {
-    std::cerr << "[insilico::configuration] Observer failed to find "
-              << _variable << ".\n";
-    configuration::severe_error();
   }
 }
 
