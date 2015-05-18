@@ -146,7 +146,6 @@ auto observe_neuron(unsigned id, std::string _variable) -> void {
   bool error_index = false;
   int neuron_index = engine::neuron_index(id, _variable, error_index);
   std::string neuron_key = engine::neuron_value_key(id, _variable);
-  char key[128];
   if(error_index && (neuron_key.compare("") == 0)) {
     std::cerr << "[insilico::configuration] Observer failed to find "
               << _variable << " for Neuron " << id << ".\n";
@@ -154,12 +153,9 @@ auto observe_neuron(unsigned id, std::string _variable) -> void {
   }
   else if(!error_index) {
     pre_computed_indices.push_back(neuron_index);
-    sprintf(key, "n%d%s", id, _variable.c_str());
-    observation_header.push_back(key);
   }
   else {
     pre_computed_keys.push_back(neuron_key);
-    observation_header.push_back(neuron_key);
   }
 }
 
@@ -173,7 +169,6 @@ auto observe_synapse(unsigned id, std::string _variable) -> void {
   bool error_index = false;
   int synapse_index = engine::synapse_index(id, _variable, error_index);
   std::string synapse_key = engine::synapse_value_key(id, _variable);
-  char key[128];
   if(error_index && (synapse_key.compare("") == 0)) {
     std::cerr << "[insilico::configuration] Observer failed to find "
               << _variable << " for Synapse " << id << ".\n";
@@ -181,12 +176,9 @@ auto observe_synapse(unsigned id, std::string _variable) -> void {
   }
   else if(!error_index) {
     pre_computed_indices.push_back(synapse_index);
-    sprintf(key, "s%d%s", id, _variable.c_str());
-    observation_header.push_back(key);
   }
   else {
     pre_computed_keys.push_back(synapse_key);
-    observation_header.push_back(synapse_key);
   }
 }
 
