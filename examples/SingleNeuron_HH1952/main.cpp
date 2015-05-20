@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
   configuration::observe_delimiter('\t');
   configuration::observe_header(false);
   configuration::observe("v");
-  configuration::observe("I_Na"); // Needs I_Na to be part of input file
+  configuration::observe("I_Na");
 
   engine::generate_neuron<HH_Neuron>();
 
