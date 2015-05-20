@@ -39,7 +39,10 @@ std::vector< std::string > observation_header;
 std::vector< std::string > pre_computed_keys;
 std::vector< int > pre_computed_indices;
 std::ofstream outstream;
+std::stringstream write_buffer;
 bool header_observed_flag = false;
+bool step_interval_feature = false;
+unsigned step_interval = 0, step_ctr = 0;
 
 // Observer defaults
 char observer_delimiter = ',';
@@ -51,6 +54,11 @@ auto observe_delimiter(const char _delim) -> void {
 
 auto observe_header(const bool _flag) -> void {
   observer_header = _flag;
+}
+
+auto observe_step_interval(const unsigned _interval) -> void {
+  step_interval = _interval;
+  step_interval_feature = true;
 }
 
 auto build_header_once() -> void {
@@ -94,14 +102,20 @@ auto write_header_once() -> void {
 struct observer {
   auto operator() (state_type &variables, const double t) -> void {
     write_header_once();
-    outstream << t;
+    if(step_ctr >= step_interval) {
+      outstream << write_buffer.str();
+      write_buffer.str("");
+      step_ctr = 0;
+    }
+    write_buffer << t;
     for(unsigned id : pre_computed_indices) {
-      outstream << observer_delimiter << (variables[id]);
+      write_buffer << observer_delimiter << (variables[id]);
     }
     for(std::string key : pre_computed_keys) {
-      outstream << observer_delimiter << (engine::value_map[key]);
+      write_buffer << observer_delimiter << (engine::value_map[key]);
     }
-    outstream << '\n';
+    write_buffer << '\n';
+    ++step_ctr;
   }
 };
 
