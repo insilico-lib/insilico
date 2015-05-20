@@ -124,10 +124,13 @@ int main(int argc, char **argv) {
 
   engine::generate_neuron<HH_Neuron>();
 
+  // integration period with stepsize
+  double t_start = 0.0, t_end = 100.0, t_stepsize = 0.05;
+
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, 100.0, 0.05, configuration::observer());
+                  t_start, t_end, t_stepsize, configuration::observer());
 
   configuration::finalize();
 }
