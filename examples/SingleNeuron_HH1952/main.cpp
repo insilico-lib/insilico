@@ -117,8 +117,8 @@ class HH_Neuron : public Neuron {
 
 int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
-  configuration::observe_header(false);   // optional
-  configuration::observe_delimiter('\t'); // optional
+  configuration::observe_delimiter('\t');
+  configuration::observe_header(false);
   configuration::observe("v");
   configuration::observe("I_Na"); // Needs I_Na to be part of input file
 
