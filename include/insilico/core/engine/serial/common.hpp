@@ -35,10 +35,14 @@ inline auto get_variables() -> state_type {
 }
 
 inline auto neuron_count() -> int {
+  if(prepopulated_neuron_ids.empty())
+    return 0;
   return (prepopulated_neuron_ids.back() + 1);
 }
 
 inline auto synapse_count() -> int {
+  if(prepopulated_synapse_ids.empty())
+    return 0;
   return (prepopulated_synapse_ids.back() + 1);
 }
 
