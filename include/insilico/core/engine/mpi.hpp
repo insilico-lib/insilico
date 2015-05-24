@@ -26,8 +26,8 @@
 #include "insilico/core/engine/driver.hpp"
 #include "insilico/core/engine/generate.hpp"
 #include "insilico/core/engine/serial/common.hpp"
-#include "insilico/core/engine/mpi/index.hpp"    // MPI version uses the serial indexing
-#include "insilico/core/engine/mpi/value.hpp"    // MPI version owns parallel value ver.
+#include "insilico/core/engine/mpi/index.hpp"
+#include "insilico/core/engine/mpi/value.hpp"
 
 #include <algorithm>
 #include <stdio.h>
