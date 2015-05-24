@@ -24,7 +24,7 @@ SOURCE = main.cpp
 TARGET = insilico.out
 
 # Compiler to use
-CC = g++ # mpic++
+CC = mpic++
 
 # Windows specific compiler flags
 ifdef SystemRoot
@@ -33,7 +33,7 @@ endif
 
 # Flags to specify the compilation startegy
 CFLAGS = $(MPIFLAG)
-CFLAGS += -O3 -std=c++11 -Wall -I../../include -o
+CFLAGS += -DINSILICO_MPI_ENABLE -O3 -std=c++11 -Wall -I../../include -o
 
 all: $(TARGET)
 
