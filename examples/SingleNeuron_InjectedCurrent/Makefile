@@ -1,5 +1,5 @@
 #
-#  Makefile - nsim project source compilation
+#  Makefile - insilico project source compilation
 #
 #  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 #
