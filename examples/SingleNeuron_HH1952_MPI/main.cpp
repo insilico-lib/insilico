@@ -117,9 +117,8 @@ class HH_Neuron : public Neuron {
 int main(int argc, char **argv) {
   configuration::mpi::initialize(argc, argv);
   configuration::mpi::observe("v");
-  configuration::mpi::observe("I_Na");
 
-  engine::generate_neuron<HH_Neuron>(10000);
+  engine::generate_neuron<HH_Neuron>(4);
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
