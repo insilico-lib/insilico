@@ -92,31 +92,25 @@ class I_Leak {
 };
 
 class HH_Neuron : public Neuron {
+ private:
+  I_Na i_na_component;
+  I_K i_k_component;
+  I_Leak i_leak_component;
  public:
   void ode_set(state_type &variables, state_type &dxdt,
                const double t, const unsigned index) {
-    // synchronize intermediates
-    insilico_mpi_synchronize(variables, t);
-
-    insilico_mpi_independent_unit(index) {
-      I_Na::current(variables, dxdt, t, index);
-    }
-    insilico_mpi_independent_unit(index) {
-      I_K::current(variables, dxdt, t, index);
-    }
-    insilico_mpi_independent_unit(index) {
-      I_Leak::current(variables, dxdt, t, index);
-    }
-
     unsigned v_index = engine::neuron_index(variables, index, "v");
-    insilico_mpi_dependent_variable_block(index, v_index) {
-      double I_Na = engine::neuron_value(index, "I_Na");
-      double I_K = engine::neuron_value(index, "I_K");
-      double I_Leak = engine::neuron_value(index, "I_Leak");
-      double I_Ext = engine::neuron_value(index, "I_Ext");
 
-      dxdt[v_index] = - I_Na - I_K - I_Leak + I_Ext;
-    }
+    i_na_component.current(variables, dxdt, t, index);
+    i_k_component.current(variables, dxdt, t, index);
+    i_leak_component.current(variables, dxdt, t, index);
+
+    double I_Na = engine::neuron_value(index, "I_Na");
+    double I_K = engine::neuron_value(index, "I_K");
+    double I_Leak = engine::neuron_value(index, "I_Leak");
+    double I_Ext = engine::neuron_value(index, "I_Ext");
+
+    dxdt[v_index] = - I_Na - I_K - I_Leak + I_Ext;
   }
 };
 
