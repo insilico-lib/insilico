@@ -33,11 +33,11 @@ using namespace insilico;
 using namespace std;
 
 class I_Na {
+ private:
+  double gna = 120, ena = 115;
  public:
-  static void current(state_type &variables, state_type &dxdt,
+  void current(state_type &variables, state_type &dxdt,
                       const double t, const unsigned index) {
-    double gna = 120, ena = 115;
-
     unsigned v_index = engine::neuron_index(variables, index, "v");
     unsigned m_index = engine::neuron_index(variables, index, "m");
     unsigned h_index = engine::neuron_index(variables, index, "h");
@@ -46,15 +46,12 @@ class I_Na {
     double m = variables[m_index];
     double h = variables[h_index];
 
-    insilico_mpi_independent_variable(m_index);
-    insilico_mpi_independent_variable(h_index);
-
     double alpha_m = (2.5 - 0.1 * v) / (exp(2.5-0.1 * v) - 1.0);
     double beta_m  = 4.0 * exp(-v / 18.0);
-    dxdt[m_index] = (alpha_m * (1-m) - beta_m * m);
-
     double alpha_h = 0.07 * exp(-v / 20.0);
     double beta_h  = 1.0 / (exp(3 - 0.1 * v) + 1);
+
+    dxdt[m_index] = (alpha_m * (1-m) - beta_m * m);
     dxdt[h_index] = (alpha_h * (1-h) - beta_h * h);
 
     engine::neuron_value(index, "I_Na", (gna * pow(m, 3) * h * (v - ena)));
@@ -62,15 +59,13 @@ class I_Na {
 };
 
 class I_K {
+ private:
+  double gk = 36, ek = -12;
  public:
-  static void current(state_type &variables, state_type &dxdt,
+  void current(state_type &variables, state_type &dxdt,
                       const double t, const unsigned index) {
-    double gk = 36, ek = -12;
-
     unsigned v_index = engine::neuron_index(variables, index, "v");
     unsigned n_index = engine::neuron_index(variables, index, "n");
-
-    insilico_mpi_independent_variable(n_index);
 
     double v = variables[v_index];
     double n = variables[n_index];
@@ -84,10 +79,11 @@ class I_K {
 };
 
 class I_Leak {
+ private:
+  double gl = 0.3, el = 10.6;
  public:
-  static void current(state_type &variables, state_type &dxdt,
+  void current(state_type &variables, state_type &dxdt,
                       const double t, const unsigned index) {
-    double gl = 0.3, el = 10.6;
     int v_index = engine::neuron_index(variables, index, "v");
     double v = variables[v_index];
 
