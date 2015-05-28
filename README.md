@@ -27,7 +27,7 @@ Support and Contact info
 
 Example
 =======
-```C++11
+```C++
 #include "insilico/core.hpp"
 #include <boost/numeric/odeint.hpp>
 
