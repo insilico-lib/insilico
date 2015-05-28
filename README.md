@@ -8,25 +8,25 @@ insilico
 
 Library homepage: http://insilico-lib.github.io/insilico/
 
-Download `insilico`'s Source
-========================
+Download insilico's Source
+----------------------------
 
 We currently have insilico C++ source available in beta versions. These can be downloaded from [`insilico`'s Releases](https://github.com/insilico-lib/insilico/releases) page.
 
 Install insilico
-================
+----------------
 
 Please refer to [INSTALL](https://github.com/insilico-lib/insilico/blob/master/doc/INSTALL) file for more details on installation.
 
 Support and Contact info
-========================
+------------------------
 
 - Google Groups: https://groups.google.com/forum/#!forum/insilico
 - Email: insilicolib@gmail.com
 - Github issues: https://github.com/insilico-lib/insilico/issues
 
 Example
-=======
+-------
 ```C++11
 #include "insilico/core.hpp"
 #include <boost/numeric/odeint.hpp>
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 ```
 
 Documentation
-=============
+-------------
 
 You can find total documentation: here (will be updated soon)
 
@@ -61,11 +61,11 @@ Quick Links:
 - [Examples](https://github.com/insilico-lib/insilico/tree/master/examples)
 
 Contribute
-==========
+----------
 
 Contributions are more than welcome! Please refer to this [document](https://github.com/insilico-lib/insilico/blob/master/doc/CONTRIBUTION) to learn more.
 
-insilico License
-================
+Licence
+-------
 
 This simulator library is licensed under GNU GPLv3 which can be found in `LICENSE` file under home directory of this project.
