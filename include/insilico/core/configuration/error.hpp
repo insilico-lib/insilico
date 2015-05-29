@@ -26,7 +26,7 @@
 namespace insilico { namespace configuration {
 
 auto severe_error() -> void {
-  std::cerr << "***...SIMULATION FAILED...***\n";
+  std::cerr << "***...SIMULATION FAILED...***" << std::endl;
   exit( EXIT_FAILURE );
 }
 
