@@ -52,7 +52,7 @@ auto finalize() -> void {
     rmdir(".ids");
     outstream.close();
     std::cerr << "[insilico::configuration::finalize] "
-              << "SUCCESS: Releasing resources."<<'\n';
+              << "SUCCESS: Releasing resources." << std::endl;
   }
   MPI_Finalize();
 }
