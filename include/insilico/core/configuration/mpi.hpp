@@ -100,8 +100,8 @@ auto initialize(int argc, char **argv) -> void {
             insilico::mpi::master, MPI_COMM_WORLD);
 
   // Share value unordered_map
-  std::vector < std::string > value_map_keys;
-  std::vector < double > value_map_values;
+  std::vector<std::string> value_map_keys;
+  std::vector<double> value_map_values;
   if(insilico::mpi::rank == insilico::mpi::master) {
     for(auto item : engine::value_map) {
       value_map_keys.push_back(item.first);
