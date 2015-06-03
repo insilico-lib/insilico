@@ -111,12 +111,8 @@ auto get_indices(std::string _variable) -> std::vector<unsigned> {
   std::vector<unsigned> indices;
   auto neuron_indices = get_neuron_indices(_variable);
   auto synapse_indices = get_synapse_indices(_variable);
-  indices.insert(indices.end(),
-                 neuron_indices.begin(),
-                 neuron_indices.end());
-  indices.insert(indices.end(),
-                 synapse_indices.begin(),
-                 synapse_indices.end());
+  indices.insert(indices.end(), neuron_indices.begin(), neuron_indices.end());
+  indices.insert(indices.end(), synapse_indices.begin(), synapse_indices.end());
   return indices;
 }
 
