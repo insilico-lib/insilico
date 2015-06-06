@@ -86,10 +86,17 @@ auto initialize(int argc, char **argv) -> void {
   context_share_size.push_back(engine::var_vals.size());
   context_share_size.push_back(engine::value_map.size());
   context_share_size.push_back(engine::index_map.size());
+  context_share_size.push_back(engine::neuron_start_list_ids.size());
+  context_share_size.push_back(engine::neuron_end_list_ids.size());
+  context_share_size.push_back(engine::synapse_start_list_ids.size());
+  context_share_size.push_back(engine::synapse_end_list_ids.size());
+  context_share_size.push_back(engine::prepopulated_neuron_ids.size());
+  context_share_size.push_back(engine::prepopulated_synapse_ids.size());
 
   // Share context sizes
-  MPI_Bcast(&context_share_size[0], 3, MPI_UNSIGNED,
+  MPI_Bcast(&context_share_size[0], context_share_size.size(), MPI_UNSIGNED,
             insilico::mpi::master, MPI_COMM_WORLD);
+
   // Share variables vector
   if(insilico::mpi::rank != insilico::mpi::master) {
     engine::var_vals.resize(context_share_size[0]);
