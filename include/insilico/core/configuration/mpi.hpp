@@ -178,6 +178,48 @@ auto initialize(int argc, char **argv) -> void {
     }
   }
 
+  // Share neuron start list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::neuron_start_list_ids.resize(context_share_size[3]);
+  }
+  MPI_Bcast(&engine::neuron_start_list_ids[0], context_share_size[3], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share neuron end list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::neuron_end_list_ids.resize(context_share_size[4]);
+  }
+  MPI_Bcast(&engine::neuron_end_list_ids[0], context_share_size[4], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share synapse start list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::synapse_start_list_ids.resize(context_share_size[5]);
+  }
+  MPI_Bcast(&engine::synapse_start_list_ids[0], context_share_size[5], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share synapse end list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::synapse_end_list_ids.resize(context_share_size[6]);
+  }
+  MPI_Bcast(&engine::synapse_end_list_ids[0], context_share_size[6], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share prepopulated neuron IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::prepopulated_neuron_ids.resize(context_share_size[7]);
+  }
+  MPI_Bcast(&engine::prepopulated_neuron_ids[0], context_share_size[7], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share prepopulated synapse IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::prepopulated_synapse_ids.resize(context_share_size[8]);
+  }
+  MPI_Bcast(&engine::prepopulated_synapse_ids[0], context_share_size[8], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
   // Synchronization by master node
   if(insilico::mpi::rank == insilico::mpi::master) {
     synchronize_reads();
