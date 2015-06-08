@@ -52,7 +52,7 @@ auto finalize() -> void {
     rmdir(".ids");
     outstream.close();
     std::cerr << "[insilico::configuration::finalize] "
-              << "SUCCESS: Releasing resources."<<'\n';
+              << "SUCCESS: Releasing resources." << std::endl;
   }
   MPI_Finalize();
 }
@@ -76,8 +76,6 @@ auto initialize(int argc, char **argv) -> void {
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &insilico::mpi::rank);
   MPI_Comm_size(MPI_COMM_WORLD, &insilico::mpi::size);
-  insilico::engine::mpi::assigner_line_master.resize(insilico::mpi::size);
-  insilico::engine::mpi::assigner_index_master.resize(insilico::mpi::size);
 
   if(insilico::mpi::rank == insilico::mpi::master) {
     insilico::configuration::initialize(argc, argv);
@@ -88,10 +86,17 @@ auto initialize(int argc, char **argv) -> void {
   context_share_size.push_back(engine::var_vals.size());
   context_share_size.push_back(engine::value_map.size());
   context_share_size.push_back(engine::index_map.size());
+  context_share_size.push_back(engine::neuron_start_list_ids.size());
+  context_share_size.push_back(engine::neuron_end_list_ids.size());
+  context_share_size.push_back(engine::synapse_start_list_ids.size());
+  context_share_size.push_back(engine::synapse_end_list_ids.size());
+  context_share_size.push_back(engine::prepopulated_neuron_ids.size());
+  context_share_size.push_back(engine::prepopulated_synapse_ids.size());
 
   // Share context sizes
-  MPI_Bcast(&context_share_size[0], 3, MPI_UNSIGNED,
+  MPI_Bcast(&context_share_size[0], context_share_size.size(), MPI_UNSIGNED,
             insilico::mpi::master, MPI_COMM_WORLD);
+
   // Share variables vector
   if(insilico::mpi::rank != insilico::mpi::master) {
     engine::var_vals.resize(context_share_size[0]);
@@ -100,8 +105,8 @@ auto initialize(int argc, char **argv) -> void {
             insilico::mpi::master, MPI_COMM_WORLD);
 
   // Share value unordered_map
-  std::vector < std::string > value_map_keys;
-  std::vector < double > value_map_values;
+  std::vector<std::string> value_map_keys;
+  std::vector<double> value_map_values;
   if(insilico::mpi::rank == insilico::mpi::master) {
     for(auto item : engine::value_map) {
       value_map_keys.push_back(item.first);
@@ -173,6 +178,48 @@ auto initialize(int argc, char **argv) -> void {
     }
   }
 
+  // Share neuron start list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::neuron_start_list_ids.resize(context_share_size[3]);
+  }
+  MPI_Bcast(&engine::neuron_start_list_ids[0], context_share_size[3], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share neuron end list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::neuron_end_list_ids.resize(context_share_size[4]);
+  }
+  MPI_Bcast(&engine::neuron_end_list_ids[0], context_share_size[4], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share synapse start list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::synapse_start_list_ids.resize(context_share_size[5]);
+  }
+  MPI_Bcast(&engine::synapse_start_list_ids[0], context_share_size[5], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share synapse end list IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::synapse_end_list_ids.resize(context_share_size[6]);
+  }
+  MPI_Bcast(&engine::synapse_end_list_ids[0], context_share_size[6], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share prepopulated neuron IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::prepopulated_neuron_ids.resize(context_share_size[7]);
+  }
+  MPI_Bcast(&engine::prepopulated_neuron_ids[0], context_share_size[7], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
+  // Share prepopulated synapse IDs
+  if(insilico::mpi::rank != insilico::mpi::master) {
+    engine::prepopulated_synapse_ids.resize(context_share_size[8]);
+  }
+  MPI_Bcast(&engine::prepopulated_synapse_ids[0], context_share_size[8], MPI_UNSIGNED,
+            insilico::mpi::master, MPI_COMM_WORLD);
+
   // Synchronization by master node
   if(insilico::mpi::rank == insilico::mpi::master) {
     synchronize_reads();
@@ -195,34 +242,9 @@ auto observe_header(const bool _flag) -> void {
 struct observer {
   bool engine_exechook = false;
   auto operator() (state_type &variables, const double t) -> void {
+    engine::work_per_process();
     MPI_Barrier(MPI_COMM_WORLD);
-    if(!engine_exechook) {
-      engine_exechook = true;
-    }
-    else {
-      engine::mpi::exec_div = false;
-      // reseting insilico::mpi::size to new size of no. of computation units
-      if(!engine::mpi::rank_resizing &&
-         engine::mpi::assigner_line.size() < (unsigned)insilico::mpi::size) {
-        insilico::mpi::size = engine::mpi::assigner_line.size();
-        if(insilico::mpi::rank == insilico::mpi::master) {
-          std::cerr << "[insilico::configuration::mpi::observer] "
-                    <<"Simulation is only using " << insilico::mpi::size
-                    <<" processes (0 - " << insilico::mpi::size - 1
-                    <<").\n";
-        }
-        engine::mpi::assigner_line_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_line_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_line_master[insilico::mpi::size].end());
-        engine::mpi::assigner_index_master[insilico::mpi::master]
-            .insert(engine::mpi::assigner_index_master[insilico::mpi::master].end(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].begin(),
-                    engine::mpi::assigner_index_master[insilico::mpi::size].end());
-        engine::mpi::rank_resizing = true;
-      }
-    }
-    engine::mpi::synchronize_innerstate(variables, t);
+    engine::synchronize_innerstate(variables, t);
     if(insilico::mpi::rank == insilico::mpi::master) {
       configuration::write_header_once();
       configuration::outstream << t;

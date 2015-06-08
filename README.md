@@ -26,7 +26,7 @@ Support and Contact info
 - Github issues: https://github.com/insilico-lib/insilico/issues
 
 Example
--------
+=======
 ```C++
 #include "insilico/core.hpp"
 #include <boost/numeric/odeint.hpp>

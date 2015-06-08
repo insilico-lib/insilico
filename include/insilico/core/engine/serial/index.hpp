@@ -123,7 +123,7 @@ auto neuron_id_from_index(unsigned _index) -> unsigned {
      _index < neuron_start_list_ids.front() ||
      _index > neuron_end_list_ids.back())  {
     std::cerr << "[insilico::engine::neuron_id_from_index] "
-              << "Failed to find index "<<_index <<'\n';
+              << "Failed to find index "<< _index << std::endl;
     exit(0);
   }
   return prepopulated_neuron_ids[_index - neuron_start_list_ids.front()];
@@ -145,7 +145,7 @@ auto synapse_id_from_index(unsigned _index) -> unsigned {
      _index < synapse_start_list_ids.front() ||
      _index > synapse_end_list_ids.back())  {
     std::cerr << "[insilico::engine::synapse_id_from_index] "
-              << "Failed to find index "<<_index <<'\n';
+              << "Failed to find index "<<_index << std::endl;
     exit(0);
   }
   return prepopulated_synapse_ids[_index - synapse_start_list_ids.front()];
