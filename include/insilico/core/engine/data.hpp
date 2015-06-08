@@ -32,7 +32,8 @@
 #include <unordered_map>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
 std::unordered_map< std::string, unsigned > index_map;
 
