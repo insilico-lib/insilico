@@ -31,7 +31,8 @@
 #include <iostream>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
 class driver {
  public:
