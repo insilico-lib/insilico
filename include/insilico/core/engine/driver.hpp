@@ -24,8 +24,7 @@
  * Boost.odeint
  */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 
@@ -39,6 +38,5 @@ class driver {
   void operator()(state_type &variables, state_type &dxdt, const double time);
 };
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico
