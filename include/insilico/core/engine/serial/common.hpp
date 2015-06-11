@@ -33,7 +33,8 @@
 #include <unordered_map>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
 inline auto get_variables() -> state_type {
   return var_vals;
