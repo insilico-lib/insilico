@@ -17,6 +17,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * File: core/engine/data.hpp
+ *
+ * The collection of data stores used by insilico's engine component.
+ */
 
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
