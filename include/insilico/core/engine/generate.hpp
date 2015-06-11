@@ -38,35 +38,76 @@
 namespace insilico {
 namespace engine {
 
-std::vector< Neuron* > neuron_objects;
-std::vector< unsigned > neuron_objects_count;
+/**
+ * Generic store for all objects under Neuron types.
+ */
+std::vector<Neuron*> neuron_objects;
 
-std::vector< Synapse* > synapse_objects;
-std::vector< unsigned > synapse_objects_count;
+/**
+ * Maintains the total count of object of Neuron types.
+ */
+std::vector<unsigned> neuron_objects_count;
 
+/**
+ * Generic store for all objects under Synapse types.
+ */
+std::vector<Synapse*> synapse_objects;
+
+/**
+ * Maintains the total count of object of Synapse types.
+ */
+std::vector<unsigned> synapse_objects_count;
+
+/**
+ * Generates Neuron objects for any Neuron type and
+ * stores it for simulation.
+ *
+ * @param count An unsigned int count of number
+ *              of Neuron type objects to be generated,
+ *              defaulted to 1.
+ */
 template<class T>
-auto generate_neuron(unsigned count = 1) -> void {
+void generate_neuron(unsigned count = 1) {
   neuron_objects.push_back(new T());
   neuron_objects_count.push_back(count);
 }
 
+/**
+ * Generates Synapse objects for any Synapse type and
+ * stores it for simulation.
+ *
+ * @param count An unsigned int count of number
+ *              of Synapse type objects to be generated,
+ *              defaulted to 1.
+ */
 template<class T>
-auto generate_synapse(unsigned count = 1) -> void {
+void generate_synapse(unsigned count = 1) {
   synapse_objects.push_back(new T());
   synapse_objects_count.push_back(count);
 }
 
-auto driver::operator()(state_type &_state, state_type &_dxdt, const double _t) -> void {
-  unsigned ultimate_count = 0;
+/**
+ * Iterates over all generated Neuron and Synapse objects.
+ *
+ * For each type of Neuron and count of each type is considered and
+ * iterated over for each simulation integration step or as and when
+ * called by Boost.odeint.
+ *
+ * @param state State type ref for initial variables in simulation.
+ * @param dxdt State type ref for ODEs for respective variables in state.
+ * @param t Current time in simulation.
+ */
+void driver::operator()(state_type &state, state_type &dxdt, const double t) {
+  unsigned local_index = 0;
   for(std::vector<Neuron*>::size_type type = 0; type < neuron_objects.size(); ++type) {
-    for(unsigned iter = 0; iter < neuron_objects_count[type]; ++iter, ++ultimate_count) {
-      neuron_objects[type] -> ode_set(_state, _dxdt, _t, ultimate_count);
+    for(unsigned iter = 0; iter < neuron_objects_count[type]; ++iter, ++local_index) {
+      neuron_objects[type] -> ode_set(state, dxdt, t, local_index);
     }
   }
-  ultimate_count = 0;
+  local_index = 0;
   for(std::vector<Synapse*>::size_type type = 0; type < synapse_objects.size(); ++type) {
-    for(unsigned iter = 0; iter < synapse_objects_count[type]; ++iter, ++ultimate_count) {
-      synapse_objects[type] -> ode_set(_state, _dxdt, _t, ultimate_count);
+    for(unsigned iter = 0; iter < synapse_objects_count[type]; ++iter, ++local_index) {
+      synapse_objects[type] -> ode_set(state, dxdt, t, local_index);
     }
   }
 }
