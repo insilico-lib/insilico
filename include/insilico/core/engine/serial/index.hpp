@@ -17,9 +17,13 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine/serial/index.hpp
+ *
+ * Functions for accessing indices of simulation variables.
+ */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_INDEX_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_INDEX_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/data.hpp"
