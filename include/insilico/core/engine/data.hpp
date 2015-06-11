@@ -1,7 +1,8 @@
 /*
   core/engine/data.hpp - insilico engine data header
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
