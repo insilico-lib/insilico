@@ -1,5 +1,5 @@
 /*
-  core/engine/serial.hpp - insilico engine serial API header and source
+  core/engine/serial.hpp - Includes all required serial headers.
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
 
@@ -16,9 +16,12 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_HPP
+/**
+ * @file core/engine/serial.hpp
+ *
+ * Primary file to include engine's serial code.
+ */
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/driver.hpp"
@@ -27,13 +30,3 @@
 #include "insilico/core/engine/serial/common.hpp"
 #include "insilico/core/engine/serial/value.hpp"
 #include "insilico/core/engine/serial/index.hpp"
-
-#include <algorithm>
-#include <cstdio>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-#endif
