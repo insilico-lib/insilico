@@ -36,22 +36,26 @@
 namespace insilico {
 namespace engine {
 
-inline auto get_variables() -> state_type {
+/**
+ * Returns the list of values for variables from input files.
+ */
+inline state_type get_variables() {
   return var_vals;
 }
 
-inline auto neuron_count() -> int {
-  if(prepopulated_neuron_ids.empty())
-    return 0;
-  return (prepopulated_neuron_ids.back() + 1);
+/**
+ * Returns the total number of Neurons in the simulation.
+ */
+inline int neuron_count() {
+  return (prepopulated_neuron_ids.empty())?0:(prepopulated_neuron_ids.back() + 1);
 }
 
-inline auto synapse_count() -> int {
-  if(prepopulated_synapse_ids.empty())
-    return 0;
-  return (prepopulated_synapse_ids.back() + 1);
+/**
+ * Returns the total number of Synapses in the simulation.
+ */
+inline int synapse_count() {
+  return (prepopulated_synapse_ids.empty())?0:(prepopulated_synapse_ids.back() + 1);
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico
