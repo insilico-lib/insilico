@@ -17,6 +17,12 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * File: core/engine/driver.hpp
+ *
+ * Declaration specific to insilico's engine solver triggering by
+ * Boost.odeint
+ */
 
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_DRIVER_HPP
