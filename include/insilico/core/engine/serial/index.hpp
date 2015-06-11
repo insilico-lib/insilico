@@ -1,5 +1,5 @@
 /*
-  core/engine/serial/index.hpp - engine serial index management API source
+  core/engine/serial/index.hpp - engine's serial index management API
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
                      IISER, Pune <pranavcode@gmail.com>
