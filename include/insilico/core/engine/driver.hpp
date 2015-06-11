@@ -34,8 +34,15 @@
 namespace insilico {
 namespace engine {
 
+/**
+ * Handles Boost.odeint integration specific internal calls
+ */
 class driver {
  public:
+
+  /**
+   * Operator overload for Boost.odeint integrator call
+   */
   void operator()(state_type &variables, state_type &dxdt, const double time);
 };
 
