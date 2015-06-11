@@ -186,6 +186,13 @@ std::vector<unsigned> get_indices(std::string variable) {
   return indices;
 }
 
+/**
+ * Finds and returns Neuron ID for given Neuron variable index.
+ *
+ * @param index Neuron variable index.
+ *
+ * @return unsigned Neuron ID or dislay error message on STDERR.
+ */
 unsigned neuron_id_from_index(unsigned index) {
   if(prepopulated_neuron_ids.empty() ||
      index < neuron_start_list_ids.front() ||
@@ -197,6 +204,14 @@ unsigned neuron_id_from_index(unsigned index) {
   return prepopulated_neuron_ids[index - neuron_start_list_ids.front()];
 }
 
+/**
+ * Finds and returns Neuron ID for given Neuron variable index.
+ *
+ * @param index Neuron variable index.
+ * @param error Ref to bool.
+ *
+ * @return unsigned Neuron ID, if successful, else set error to true.
+ */
 unsigned neuron_id_from_index(unsigned index, bool &error) {
   if(prepopulated_neuron_ids.empty() ||
      index < neuron_start_list_ids.front() ||
@@ -208,6 +223,13 @@ unsigned neuron_id_from_index(unsigned index, bool &error) {
   return prepopulated_neuron_ids[index - neuron_start_list_ids.front()];
 }
 
+/**
+ * Finds and returns Synapse ID for given Synaptic variable index.
+ *
+ * @param index Synaptic variable index.
+ *
+ * @return unsigned Synapse ID or dislay error message on STDERR.
+ */
 unsigned synapse_id_from_index(unsigned index) {
   if(prepopulated_synapse_ids.empty() ||
      index < synapse_start_list_ids.front() ||
@@ -219,6 +241,14 @@ unsigned synapse_id_from_index(unsigned index) {
   return prepopulated_synapse_ids[index - synapse_start_list_ids.front()];
 }
 
+/**
+ * Finds and returns Synapse ID for given Synaptic variable index.
+ *
+ * @param index Synaptic variable index.
+ * @param error Ref to bool.
+ *
+ * @return unsigned Synaptic ID, if successful, else set error to true.
+ */
 unsigned synapse_id_from_index(unsigned index, bool &error) {
   if(prepopulated_synapse_ids.empty() ||
      index < synapse_start_list_ids.front() ||
