@@ -17,6 +17,13 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine/generate.hpp
+ *
+ * Uses generic containers for Neuron and Synapse types,
+ * object generation happens at run-time with
+ * non-object specific variable integration calls.
+ */
 
 #ifndef INCLUDED_INSILICO_CORE_ENGINE_GENERATE_HPP
 #define INCLUDED_INSILICO_CORE_ENGINE_GENERATE_HPP
