@@ -35,33 +35,88 @@
 namespace insilico {
 namespace engine {
 
-std::unordered_map< std::string, unsigned > index_map;
-
-std::unordered_map< std::string, double > value_map;
-
-std::vector< unsigned > neuron_start_list_ids;
-
-std::vector< unsigned > neuron_end_list_ids;
-
-std::vector< unsigned > prepopulated_neuron_ids;
-
-std::vector< unsigned > prepopulated_synapse_ids;
-
-std::vector< unsigned > synapse_start_list_ids;
-
-std::vector< unsigned > synapse_end_list_ids;
-
-std::vector< std::vector< unsigned > > pre_synaptic_lists;
-
-std::vector< unsigned > pre_neuron;
-
-std::vector< unsigned > post_neuron;
-
-std::vector< std::string > var_list_ids;
-
+/**
+ * List of values for each variable from input files
+ */
 state_type var_vals;
 
-} } //namespace insilico::engine
+/**
+ * List of names for each variable from input files
+ */
+std::vector<std::string> var_list_ids;
+
+/**
+ * Stores the map of variable index
+ * key - variable name
+ * value - variable index
+ */
+std::unordered_map<std::string, unsigned> index_map;
+
+/**
+ * Stores the map of initial values for variables and parameters
+ * key - variable/parameter name
+ * value - initial variable/parameter value supplied via input file
+ */
+std::unordered_map<std::string, double> value_map;
+
+/**
+ * List of indices of corresponding first variable
+ * for each Neuron
+ */
+std::vector<unsigned> neuron_start_list_ids;
+
+/**
+ * List of immediate next indices of corresponding
+ * last variable for each Neuron
+ */
+std::vector<unsigned> neuron_end_list_ids;
+
+/**
+ * List of indices of corresponding first variable
+ * for each Synapse
+ */
+std::vector<unsigned> synapse_start_list_ids;
+
+/**
+ * List of immediate next indices of corresponding
+ * last variable for each Synapse
+ */
+std::vector<unsigned> synapse_end_list_ids;
+
+/**
+ * Neuron IDs are pre-populated against
+ * each Neuron variable's index
+ */
+std::vector<unsigned> prepopulated_neuron_ids;
+
+/**
+ * Synapse IDs are pre-populated againt
+ * each Synapse variable's index
+ */
+std::vector<unsigned> prepopulated_synapse_ids;
+
+/**
+ * Lists the pre-synaptic Neuron IDs for each Neuron ID
+ */
+std::vector<std::vector<unsigned>> pre_synaptic_lists;
+
+/**
+ * Pre-synaptic Neuron ID for Neuron ID referred
+ * with index for this list
+ * E.g. pre_neuron[7] refers to Neuron ID 7 and
+ *      tries to fetch pre-synaptic Neuron ID for
+ *      that Neuron
+ */
+std::vector<unsigned> pre_neuron;
+
+/**
+ * Post-synaptic Neuron ID for Neuron ID referred
+ * with index for this list
+ * E.g. post_neuron[7] refers to Neuron ID 7 and
+ *      tries to fetch post-synaptic Neuron ID for
+ *      that Neuron
+ */
+std::vector< unsigned > post_neuron;
 
 } // namespace engine
 } // namespace insilico
