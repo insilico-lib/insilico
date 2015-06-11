@@ -37,7 +37,8 @@
 #include <unordered_map>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
 auto neuron_index(unsigned _id, std::string _variable) -> unsigned {
   char key[128];
