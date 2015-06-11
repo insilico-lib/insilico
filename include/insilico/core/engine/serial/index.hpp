@@ -183,6 +183,5 @@ auto get_pre_neuron_indices(unsigned _id, std::string _variable)
   return indices;
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico

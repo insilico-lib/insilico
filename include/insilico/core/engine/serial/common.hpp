@@ -17,9 +17,13 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine/serial/common.hpp
+ *
+ * Common functions for accessing data in engine's data store
+ */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_COMMON_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_COMMON_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/data.hpp"
