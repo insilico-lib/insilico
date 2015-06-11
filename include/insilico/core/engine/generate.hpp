@@ -25,8 +25,7 @@
  * non-object specific variable integration calls.
  */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_GENERATE_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_GENERATE_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/driver.hpp"
@@ -36,7 +35,8 @@
 #include <iostream>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
 std::vector< Neuron* > neuron_objects;
 std::vector< unsigned > neuron_objects_count;
@@ -71,6 +71,5 @@ auto driver::operator()(state_type &_state, state_type &_dxdt, const double _t) 
   }
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico
