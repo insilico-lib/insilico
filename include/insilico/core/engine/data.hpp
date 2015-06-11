@@ -23,8 +23,7 @@
  * The collection of data stores used by insilico's engine component.
  */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_DATA_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 
@@ -63,4 +62,5 @@ state_type var_vals;
 
 } } //namespace insilico::engine
 
-#endif
+} // namespace engine
+} // namespace insilico
