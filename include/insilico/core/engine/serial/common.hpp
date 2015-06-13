@@ -1,7 +1,8 @@
 /*
-  core/engine/serial/common.hpp - Common data handlers for engine header and source
+  core/engine/serial/common.hpp - Common API for engine's data store
 
-  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
+                     IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,9 +17,13 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine/serial/common.hpp
+ *
+ * Common functions for accessing data in engine's data store
+ */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_COMMON_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_COMMON_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/data.hpp"
@@ -28,24 +33,29 @@
 #include <unordered_map>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
-inline auto get_variables() -> state_type {
+/**
+ * Returns the list of values for variables from input files.
+ */
+inline state_type get_variables() {
   return var_vals;
 }
 
-inline auto neuron_count() -> int {
-  if(prepopulated_neuron_ids.empty())
-    return 0;
-  return (prepopulated_neuron_ids.back() + 1);
+/**
+ * Returns the total number of Neurons in the simulation.
+ */
+inline int neuron_count() {
+  return (prepopulated_neuron_ids.empty())?0:(prepopulated_neuron_ids.back() + 1);
 }
 
-inline auto synapse_count() -> int {
-  if(prepopulated_synapse_ids.empty())
-    return 0;
-  return (prepopulated_synapse_ids.back() + 1);
+/**
+ * Returns the total number of Synapses in the simulation.
+ */
+inline int synapse_count() {
+  return (prepopulated_synapse_ids.empty())?0:(prepopulated_synapse_ids.back() + 1);
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico

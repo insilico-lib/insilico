@@ -1,5 +1,5 @@
 /*
-  core/engine/serial/index.hpp - engine serial index management API source
+  core/engine/serial/index.hpp - engine's serial index management API
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
                      IISER, Pune <pranavcode@gmail.com>
@@ -17,9 +17,13 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine/serial/index.hpp
+ *
+ * Functions for accessing indices of simulation variables.
+ */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_SERIAL_INDEX_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_SERIAL_INDEX_HPP
+#pragma once
 
 #include "insilico/core/type.hpp"
 #include "insilico/core/engine/data.hpp"
@@ -33,34 +37,65 @@
 #include <unordered_map>
 #include <vector>
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
-auto neuron_index(unsigned _id, std::string _variable) -> unsigned {
+/**
+ * Finds and returns index of a Neuron variable for
+ * a given variable name and Neuron ID.
+ *
+ * @param local_id Neuron ID.
+ * @param variable Name of Neuronal variable to search index for.
+ *
+ * @return Index of the Neuronal variable in simulation, if successful, else
+ *         sends failure message to STDERR.
+ */
+unsigned neuron_index(unsigned local_id, std::string variable) {
   char key[128];
-  sprintf(key, "n%d%s", _id, _variable.c_str());
+  sprintf(key, "n%d%s", local_id, variable.c_str());
   if(index_map.find(key) == index_map.end()) {
-    std::cerr << "[insilico::engine::neuron_index] Failed to find "<<_variable
-              <<" index for neuron "<<_id<<".\n";
+    std::cerr << "[insilico::engine::neuron_index] Failed to find "<<variable
+              <<" index for neuron "<<local_id<<".\n";
     exit(1);
   }
   return index_map[key];
 }
 
-auto synapse_index(unsigned _id, std::string _variable) -> unsigned {
+/**
+ * Finds and returns index of a Synapse variable for
+ * a given variable name and Synapse ID.
+ *
+ * @param local_id Synapse ID.
+ * @param variable Name of Synaptic variable to search index for.
+ *
+ * @return Index of the Synaptic variable in simulation, if successful, else
+ *         sends failure message to STDERR.
+ */
+unsigned synapse_index(unsigned local_id, std::string variable) {
   char key[128];
-  sprintf(key, "s%d%s", _id, _variable.c_str());
+  sprintf(key, "s%d%s", local_id, variable.c_str());
   if(index_map.find(key) == index_map.end()) {
-    std::cerr << "[insilico::engine::synapse_index] Failed to find "<<_variable
-              <<" index for synapse "<<_id<<".\n";
+    std::cerr << "[insilico::engine::synapse_index] Failed to find "<<variable
+              <<" index for synapse "<<local_id<<".\n";
     exit(1);
   }
   return index_map[key];
 }
 
-auto neuron_index(unsigned _id, std::string _variable, bool& error)
-    -> unsigned {
+/**
+ * Finds and returns index of a Neuron variable for
+ * a given variable name and Neuron ID.
+ *
+ * @param local_id Neuron ID.
+ * @param variable Name of Neuronal variable to search index for.
+ * @param error Ref to bool.
+ *
+ * @return Index of the Neuronal variable in simulation, if successful, else
+ *         sets error to true.
+ */
+unsigned neuron_index(unsigned local_id, std::string variable, bool& error) {
   char key[128];
-  sprintf(key, "n%d%s", _id, _variable.c_str());
+  sprintf(key, "n%d%s", local_id, variable.c_str());
   if(index_map.find(key) == index_map.end()) {
     error = true;
     return 0;
@@ -69,10 +104,20 @@ auto neuron_index(unsigned _id, std::string _variable, bool& error)
   return index_map[key];
 }
 
-auto synapse_index(unsigned _id, std::string _variable, bool& error)
-    -> unsigned {
+/**
+ * Finds and returns index of a Synapse variable for
+ * a given variable name and Synapse ID.
+ *
+ * @param local_id Synapse ID.
+ * @param variable Name of Synaptic variable to search index for.
+ * @param error Ref to bool.
+ *
+ * @return Index of the Synaptic variable in simulation, if successful, else
+ *         sets error to true.
+ */
+unsigned synapse_index(unsigned local_id, std::string variable, bool& error) {
   char key[128];
-  sprintf(key, "s%d%s", _id, _variable.c_str());
+  sprintf(key, "s%d%s", local_id, variable.c_str());
   if(index_map.find(key) == index_map.end()) {
     error = true;
     return 0;
@@ -81,100 +126,127 @@ auto synapse_index(unsigned _id, std::string _variable, bool& error)
   return index_map[key];
 }
 
-auto get_neuron_indices(std::string _variable) -> std::vector<unsigned> {
+/**
+ * Finds and returns indices of all occurances of
+ * Neuronal variable with a given Neuronal variable name.
+ *
+ * @param variable Name of Neuronal variable to search indices for.
+ *
+ * @return indices of all found occurances of Neuronal variable.
+ */
+std::vector<unsigned> get_neuron_indices(std::string variable) {
   std::vector<unsigned> indices;
   bool error = false;
   unsigned idx;
   unsigned total_neurons = neuron_count();
   for(unsigned index = 0; index < total_neurons; ++index) {
-    idx = neuron_index(index, _variable, error);
+    idx = neuron_index(index, variable, error);
     if(!error) { indices.push_back(idx); }
     error = false;
   }
   return indices;
 }
 
-auto get_synapse_indices(std::string _variable) -> std::vector<unsigned> {
+/**
+ * Finds and returns indices of all occurances of
+ * Synaptic variable with a given Synaptic variable name.
+ *
+ * @param variable Name of Synaptic variable to search indices for.
+ *
+ * @return indices of all found occurances of Synaptic variable.
+ */
+std::vector<unsigned> get_synapse_indices(std::string variable) {
   std::vector<unsigned> indices;
   bool error = false;
   unsigned idx;
   unsigned total_synapses = synapse_count();
   for(unsigned index = 0; index < total_synapses; ++index) {
-    idx = synapse_index(index, _variable, error);
+    idx = synapse_index(index, variable, error);
     if(!error) { indices.push_back(idx); }
     error = false;
   }
   return indices;
 }
 
-auto get_indices(std::string _variable) -> std::vector<unsigned> {
+/**
+ * Finds and returns indices of all occurances of Neuronal and Synaptic
+ * variable with given variable name.
+ *
+ * @param variable Name of variable to search indices for.
+ *
+ * @return combined indices of all found occurances of Neuronal and
+ *         Synaptic variable.
+ */
+std::vector<unsigned> get_indices(std::string variable) {
   std::vector<unsigned> indices;
-  auto neuron_indices = get_neuron_indices(_variable);
-  auto synapse_indices = get_synapse_indices(_variable);
+  auto neuron_indices = get_neuron_indices(variable);
+  auto synapse_indices = get_synapse_indices(variable);
   indices.insert(indices.end(), neuron_indices.begin(), neuron_indices.end());
   indices.insert(indices.end(), synapse_indices.begin(), synapse_indices.end());
   return indices;
 }
 
-auto neuron_id_from_index(unsigned _index) -> unsigned {
+unsigned neuron_id_from_index(unsigned index) {
   if(prepopulated_neuron_ids.empty() ||
-     _index < neuron_start_list_ids.front() ||
-     _index > neuron_end_list_ids.back())  {
+     index < neuron_start_list_ids.front() ||
+     index > neuron_end_list_ids.back())  {
     std::cerr << "[insilico::engine::neuron_id_from_index] "
-              << "Failed to find index "<< _index << std::endl;
+              << "Failed to find index "<< index << std::endl;
     exit(1);
   }
-  return prepopulated_neuron_ids[_index - neuron_start_list_ids.front()];
+  return prepopulated_neuron_ids[index - neuron_start_list_ids.front()];
 }
 
-auto neuron_id_from_index(unsigned _index, bool &error) -> unsigned {
+unsigned neuron_id_from_index(unsigned index, bool &error) {
   if(prepopulated_neuron_ids.empty() ||
-     _index < neuron_start_list_ids.front() ||
-     _index >= neuron_end_list_ids.back())  {
+     index < neuron_start_list_ids.front() ||
+     index >= neuron_end_list_ids.back())  {
     error = true;
     return 0;
   }
   error = false;
-  return prepopulated_neuron_ids[_index - neuron_start_list_ids.front()];
+  return prepopulated_neuron_ids[index - neuron_start_list_ids.front()];
 }
 
-auto synapse_id_from_index(unsigned _index) -> unsigned {
+unsigned synapse_id_from_index(unsigned index) {
   if(prepopulated_synapse_ids.empty() ||
-     _index < synapse_start_list_ids.front() ||
-     _index > synapse_end_list_ids.back())  {
+     index < synapse_start_list_ids.front() ||
+     index > synapse_end_list_ids.back())  {
     std::cerr << "[insilico::engine::synapse_id_from_index] "
-              << "Failed to find index "<< _index << std::endl;
+              << "Failed to find index "<< index << std::endl;
     exit(1);
   }
-  return prepopulated_synapse_ids[_index - synapse_start_list_ids.front()];
+  return prepopulated_synapse_ids[index - synapse_start_list_ids.front()];
 }
 
-auto synapse_id_from_index(unsigned _index, bool &error) -> unsigned {
+unsigned synapse_id_from_index(unsigned index, bool &error) {
   if(prepopulated_synapse_ids.empty() ||
-     _index < synapse_start_list_ids.front() ||
-     _index >= synapse_end_list_ids.back())  {
+     index < synapse_start_list_ids.front() ||
+     index >= synapse_end_list_ids.back())  {
     error = true;
     return 0;
   }
   error = false;
-  return prepopulated_synapse_ids[_index - synapse_start_list_ids.front()];
+  return prepopulated_synapse_ids[index - synapse_start_list_ids.front()];
 }
 
-auto variable_name_from_index(unsigned _index) -> std::string {
-  if(_index < var_list_ids.size()) {
-    return var_list_ids[_index];
+std::string variable_name_from_index(unsigned index) {
+  if(index < var_list_ids.size()) {
+    return var_list_ids[index];
   }
   return "";
 }
 
-auto get_pre_neuron_indices(unsigned _id, std::string _variable)
-    -> std::vector<unsigned> {
+/**
+ *
+ */
+std::vector<unsigned> get_pre_neuron_indices(unsigned local_id, std::string variable) {
   std::vector<unsigned> indices;
   unsigned idx;
   bool error = false;
   if(!pre_synaptic_lists.empty()) {
-    for(unsigned index = 0; index < pre_synaptic_lists[_id].size(); ++index) {
-      idx = synapse_index(pre_synaptic_lists[_id][index], _variable, error);
+    for(unsigned index = 0; index < pre_synaptic_lists[local_id].size(); ++index) {
+      idx = synapse_index(pre_synaptic_lists[local_id][index], variable, error);
       if(!error) {
         indices.push_back(idx);
       }
@@ -183,6 +255,5 @@ auto get_pre_neuron_indices(unsigned _id, std::string _variable)
   return indices;
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico
