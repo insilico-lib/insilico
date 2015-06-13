@@ -1,32 +1,30 @@
 insilico
 ========
-
 ![GNU GPLv3 License](http://img.shields.io/badge/license-GPLv3-green.svg)
 [![insilico Trello](https://img.shields.io/badge/Trello-insilico-blue.svg)](https://trello.com/b/lkXzPGqD/insilico)
 
-`insilico` is a Computational Neuroscience simulation library written in C++. `insilico` encourages ready-to-start approach for quick setup of simulation environment, without hindering programmers time and focus from intended experiment.
+`insilico` is a Computational Neuroscience simulation library written in C++.
+
+`insilico` encourages ready-to-start approach for quick setup of simulation environment, without hindering programmers time and focus from intended experiment.
 
 Library homepage: http://insilico-lib.github.io/insilico/
 
 Download insilico's Source
 ----------------------------
-
 We currently have insilico C++ source available in beta versions. These can be downloaded from [`insilico`'s Releases](https://github.com/insilico-lib/insilico/releases) page.
 
 Install insilico
 ----------------
-
 Please refer to [INSTALL](https://github.com/insilico-lib/insilico/blob/master/doc/INSTALL) file for more details on installation.
 
 Support and Contact info
 ------------------------
-
 - Google Groups: https://groups.google.com/forum/#!forum/insilico
 - Email: insilicolib@gmail.com
 - Github issues: https://github.com/insilico-lib/insilico/issues
 
 Example
-=======
+-------
 ```C++
 #include "insilico/core.hpp"
 #include <boost/numeric/odeint.hpp>
@@ -50,8 +48,7 @@ int main(int argc, char **argv) {
 
 Documentation
 -------------
-
-You can find total documentation: here (will be updated soon)
+Complete documentation can be found here (Coming soon).
 
 Quick Links:
 
@@ -62,10 +59,8 @@ Quick Links:
 
 Contribute
 ----------
-
 Contributions are more than welcome! Please refer to this [document](https://github.com/insilico-lib/insilico/blob/master/doc/CONTRIBUTION) to learn more.
 
 Licence
 -------
-
 This simulator library is licensed under GNU GPLv3 which can be found in `LICENSE` file under home directory of this project.
