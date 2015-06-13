@@ -260,6 +260,13 @@ unsigned synapse_id_from_index(unsigned index, bool &error) {
   return prepopulated_synapse_ids[index - synapse_start_list_ids.front()];
 }
 
+/**
+ * Finds and returns the variable name for given index.
+ *
+ * @param index Neuronal or Synaptic variable index.
+ *
+ * @return Name of variable if index available or empty string.
+ */
 std::string variable_name_from_index(unsigned index) {
   if(index < var_list_ids.size()) {
     return var_list_ids[index];
@@ -268,7 +275,15 @@ std::string variable_name_from_index(unsigned index) {
 }
 
 /**
+ * Finds and returns the collection of indices for variables that belongs
+ * to Synapnes connected to the Neuron with given ID and has given variable name.
  *
+ * @param local_id Neuron ID.
+ * @param variable Name of the Synaptic variable.
+ *
+ * @return collection of indices for all Synaptic variable matching name "variable"
+ *         and are part of pre-synaptic terminals to Neuron with ID "local_id",
+ *         if successful, else returns empty collection.
  */
 std::vector<unsigned> get_pre_neuron_indices(unsigned local_id, std::string variable) {
   std::vector<unsigned> indices;
