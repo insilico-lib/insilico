@@ -1,5 +1,5 @@
 /*
-  core/engine/serial/index.hpp - engine's serial index management API
+  core/engine/serial/index.hpp - insilico's Engine variable index fetch API
 
   Copyright (C) 2015 Pranav Kulkarni, Collins Assisi Lab,
                      IISER, Pune <pranavcode@gmail.com>
