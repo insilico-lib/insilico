@@ -1,7 +1,8 @@
 /*
-  core/engine.hpp - insilico's Simulation Engine API header and source
+  core/engine.hpp - insilico's Engine primary inclusion header
 
-  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
+                          IISER, Pune <pranavcode@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,19 +17,32 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/engine.hpp
+ *
+ * Primary header for Engine's file inclusion and common functions.
+ */
 
-#ifndef INCLUDED_INSILICO_CORE_ENGINE_HPP
-#define INCLUDED_INSILICO_CORE_ENGINE_HPP
+#pragma once
 
+/**
+ * Flag to control the headers for serial or parallel (MPI) related files
+ * inclusion.
+ */
 #ifdef INSILICO_MPI_ENABLE
 #include "insilico/core/engine/mpi.hpp"
 #else
 #include "insilico/core/engine/serial.hpp"
 #endif
 
-namespace insilico { namespace engine {
+namespace insilico {
+namespace engine {
 
-auto populate_pre_synaptic_lists() -> void {
+/**
+ * Pre-populates the the list of all pre-Synaptic Neurons connected to
+ * a given Neuron against it Neuron ID.
+ */
+void populate_pre_synaptic_lists() {
   if(!post_neuron.empty()) {
     pre_synaptic_lists.resize( *max_element(post_neuron.begin(), post_neuron.end()) + 1 );
     for(unsigned iterator = 0; iterator < post_neuron.size(); ++iterator) {
@@ -37,6 +51,5 @@ auto populate_pre_synaptic_lists() -> void {
   }
 }
 
-} } // namespace insilico::engine
-
-#endif
+} // namespace engine
+} // namespace insilico
