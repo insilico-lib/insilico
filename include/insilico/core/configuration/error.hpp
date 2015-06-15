@@ -23,13 +23,13 @@
  * does an abrupt and immediate simulation shutdown.
  */
 
-#ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_ERROR_HPP
-#define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_ERROR_HPP
+#pragma once
 
 #include <iostream>
 #include <cstdlib>
 
-namespace insilico { namespace configuration {
+namespace insilico {
+namespace configuration {
 
 /**
  * Shuts down the simulation abruptly.
@@ -39,6 +39,5 @@ void severe_error() {
   exit( EXIT_FAILURE );
 }
 
-} } // namespace insilico::configuration
-
-#endif
+} // namespace configuration
+} // namespace insilico
