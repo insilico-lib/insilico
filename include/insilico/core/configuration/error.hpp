@@ -16,6 +16,12 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/configuration/error.hpp
+ *
+ * Common error message for severe error during simulation,
+ * does an abrupt and immediate simulation shutdown.
+ */
 
 #ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_ERROR_HPP
 #define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_ERROR_HPP
@@ -25,7 +31,10 @@
 
 namespace insilico { namespace configuration {
 
-auto severe_error() -> void {
+/**
+ * Shuts down the simulation abruptly.
+ */
+void severe_error() {
   std::cerr << "***...SIMULATION FAILED...***" << std::endl;
   exit( EXIT_FAILURE );
 }
