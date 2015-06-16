@@ -136,7 +136,11 @@ void observe_step_interval(const unsigned interval) {
   step_interval_feature = true;
 }
 
-auto build_header_once() -> void {
+/**
+ * Generate the observation header string to put into
+ * observation file.
+ */
+void build_header_once() {
   char key[128];
   bool error = false;
   unsigned id;
@@ -162,7 +166,10 @@ auto build_header_once() -> void {
   }
 }
 
-auto write_header_once() -> void {
+/**
+ * Writes the observation header to the simulation output file.
+ */
+void write_header_once() {
   if(observer_header && !header_observed_flag) {
     build_header_once();
     outstream << "time";
@@ -174,8 +181,19 @@ auto write_header_once() -> void {
   }
 }
 
+/**
+ * Configuration's custom entry point for observation,
+ * with overloaded parenthesis operator.
+ */
 struct observer {
-  auto operator() (state_type &variables, const double t) -> void {
+
+  /**
+   * Entry point for Boost.odeint observation function call.
+   *
+   * @param variables Ref to all variables involved in simulation.
+   * @param t current time in simulation.
+   */
+  void operator() (state_type &variables, const double t) {
     write_header_once();
     if(step_ctr >= step_interval) {
       outstream << write_buffer.str();
@@ -192,9 +210,16 @@ struct observer {
     write_buffer << '\n';
     ++step_ctr;
   }
-};
 
-auto observe(std::string _variable) -> void {
+}; // struct observer
+
+/**
+ * Generic function for observing any variable or parameter with given name,
+ * where variable or parameter can belong to either Neuron or Synapse.
+ *
+ * @param observe_this name of variable or parameter to be observed.
+ */
+void observe(std::string observe_this) {
   std::vector< unsigned > neuron_indices;
   std::vector< unsigned > synapse_indices;
   std::vector< std::string > neuron_keys;
@@ -231,7 +256,14 @@ auto observe(std::string _variable) -> void {
   }
 }
 
-auto observe_neuron(unsigned id, std::string _variable) -> void {
+/**
+ * Enable the observation of variable or parameter with given name and
+ * belonging to given Neuron ID.
+ *
+ * @param local_id Neuron ID.
+ * @param observe_this name of Neuronal variable or parameter to be observed.
+ */
+void observe_neuron(unsigned local_id, std::string observe_this) {
   bool error_index = false;
   int neuron_index = engine::neuron_index(id, _variable, error_index);
   std::string neuron_key = engine::neuron_value_key(id, _variable);
@@ -248,13 +280,27 @@ auto observe_neuron(unsigned id, std::string _variable) -> void {
   }
 }
 
-auto observe_neuron(std::vector<unsigned> ids, std::string _variable) -> void {
-  for(unsigned id : ids) {
-    observe_neuron(id, _variable);
+/**
+ * Enable the observation of all variables or parameters with given name and
+ * belonging to given set of Neuron IDs.
+ *
+ * @param local_ids collection of Neuron IDs.
+ * @param observe_this name of Neuronal variables or parameters to be observed.
+ */
+void observe_neuron(std::vector<unsigned> local_ids, std::string observe_this) {
+  for(unsigned local_id : local_ids) {
+    observe_neuron(local_id, observe_this);
   }
 }
 
-auto observe_synapse(unsigned id, std::string _variable) -> void {
+/**
+ * Enable the observation of variable or parameter with given name and
+ * belonging to given Synapse ID.
+ *
+ * @param local_id Synapse ID.
+ * @param observe_this name of Synaptic variable or parameter to be observed.
+ */
+void observe_synapse(unsigned local_id, std::string observe_this) {
   bool error_index = false;
   int synapse_index = engine::synapse_index(id, _variable, error_index);
   std::string synapse_key = engine::synapse_value_key(id, _variable);
@@ -271,9 +317,16 @@ auto observe_synapse(unsigned id, std::string _variable) -> void {
   }
 }
 
-auto observe_synapse(std::vector<unsigned> ids, std::string _variable) -> void {
-  for(unsigned id : ids) {
-    observe_synapse(id, _variable);
+/**
+ * Enable the observation of all variables or parameters with given name and
+ * belonging to given set of Synapse IDs.
+ *
+ * @param local_ids collection of Synapse IDs.
+ * @param observe_this name of Synaptic variables or parameters to be observed.
+ */
+void observe_synapse(std::vector<unsigned> local_ids, std::string observe_this) {
+  for(unsigned local_id : local_ids) {
+    observe_synapse(local_id, observe_this);
   }
 }
 
