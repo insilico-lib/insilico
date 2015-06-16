@@ -78,7 +78,6 @@ bool header_observed_flag = false;
  * is active or not, default is inactive.
  */
 bool step_interval_feature = false;
-unsigned step_interval = 0, step_ctr = 0;
 
 /**
  * Holds the value for step-level interval within
