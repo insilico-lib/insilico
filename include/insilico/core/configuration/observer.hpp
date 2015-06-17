@@ -40,29 +40,99 @@
 namespace insilico {
 namespace configuration {
 
-std::vector< std::string > observation_header;
-std::vector< std::string > pre_computed_keys;
-std::vector< int > pre_computed_indices;
+/**
+ * Collection of strings of all known header elements to be observed.
+ */
+std::vector<std::string> observation_header;
+
+/**
+ * Pre-computed collection of keys for variables and parameters
+ * to be observed.
+ */
+std::vector<std::string> pre_computed_keys;
+
+/**
+ * Pre-computaed collection of indices for variables
+ * to be observed.
+ */
+std::vector<int> pre_computed_indices;
+
+/**
+ * Observation output file stream.
+ */
 std::ofstream outstream;
+
+/**
+ * Observation file output stream buffer for step-level faeture.
+ */
 std::stringstream write_buffer;
+
+/**
+ * Temporary flag for checking if the one-time header is written
+ * to the observation file or not.
+ */
 bool header_observed_flag = false;
+
+/**
+ * Holds the decision, whether the step-level interval feature
+ * is active or not, default is inactive.
+ */
 bool step_interval_feature = false;
 unsigned step_interval = 0, step_ctr = 0;
 
-// Observer defaults
+/**
+ * Holds the value for step-level interval within
+ * two consecutive observations.
+ */
+unsigned step_interval = 0;
+
+/**
+ * Keeps the count of intermediate steps for step interval
+ * based observations.
+ */
+unsigned step_ctr = 0;
+
+/**
+ * Holds the value for delimiter for columns in observation file.
+ */
 char observer_delimiter = ',';
+
+/**
+ * Holds the boolean value for whether observation header should be
+ * enabled or disabled.
+ */
 bool observer_header = true;
 
-auto observe_delimiter(const char _delim) -> void {
-  observer_delimiter = _delim;
+/**
+ * Allows to change the column separator for observation file.
+ *
+ * @param delim character to differentiate the values between two
+ *              columns is observation file, default delimiter is ','
+ */
+void observe_delimiter(const char delim) {
+  observer_delimiter = delim;
 }
 
-auto observe_header(const bool _flag) -> void {
-  observer_header = _flag;
+/**
+ * Allows to enable or disable observation file header.
+ *
+ * @param flag observation file will get header only if this
+ *             flag is set true, else otherwise, and default
+ *             behavior says observation header should be written
+ *             to output file.
+ */
+void observe_header(const bool flag) {
+  observer_header = flag;
 }
 
-auto observe_step_interval(const unsigned _interval) -> void {
-  step_interval = _interval;
+/**
+ * Sets the step-level interval for observation.
+ *
+ * @param interval positive interger value for number of
+ *                 steps to be observed at once.
+ */
+void observe_step_interval(const unsigned interval) {
+  step_interval = interval;
   step_interval_feature = true;
 }
 
