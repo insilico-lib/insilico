@@ -17,9 +17,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/configuration/observer.hpp
+ *
+ * insilico's Configuration settings for observing simulation result.
+ */
 
-#ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_OBSERVER_HPP
-#define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_OBSERVER_HPP
+#pragma once
 
 #include "insilico/core/configuration/error.hpp"
 #include "insilico/core/engine/serial/common.hpp"
@@ -33,7 +37,8 @@
 #include <string>
 #include <vector>
 
-namespace insilico { namespace configuration {
+namespace insilico {
+namespace configuration {
 
 std::vector< std::string > observation_header;
 std::vector< std::string > pre_computed_keys;
@@ -202,6 +207,5 @@ auto observe_synapse(std::vector<unsigned> ids, std::string _variable) -> void {
   }
 }
 
-} } // namespace insilico::configuration
-
-#endif
+} // namespace configuration
+} // namespace insilico
