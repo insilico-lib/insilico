@@ -1,8 +1,8 @@
 /*
- core/configuration/serial.hpp - insilico configuration serial file handling header and source
+ core/configuration/serial.hpp - insilico Configuration API header
 
- Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
- Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
+                         IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,33 +17,44 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/configuration/serial.hpp
+ *
+ * insilico's Configuration initialization and finalization API
+ */
 
-#ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_SERIAL_HPP
-#define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_SERIAL_HPP
+#pragma once
 
 #include "insilico/core/engine.hpp"
-#include "insilico/core/helper/file.hpp"
-#include "insilico/core/helper/string.hpp"
-
+#include "insilico/core/dynamic_params.hpp"
 #include "insilico/core/configuration/observer.hpp"
 #include "insilico/core/configuration/parser.hpp"
+#include "insilico/core/helper/file.hpp"
+#include "insilico/core/helper/string.hpp"
 #include "insilico/core/injector.hpp"
-#include "insilico/core/dynamic_params.hpp"
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
-namespace insilico { namespace configuration {
+namespace insilico {
+namespace configuration {
 
-// initialization, check and handle commandline arguments
+/**
+ * Initialize insilico's Simulation environment.
+ *
+ * @param argc count for command line arguments, mostly an input param from
+ *             C++ main() function.
+ * @param argv pointer to the collection of string command line arguments.
+ */
 void initialize(int argc, char **argv) {
-  bool repeat[5] = {false, false, false, false, false};
-  std::string sargv, output_file, neuron_file, synapse_file,
-      external_current_file, dynamic_params_file;
+  // Error message for single time usage of a given command
+  // line option.
   std::string error_msg = "[insilico::configuration::initialize]"
       " Supply of file more than once not allowed.\n";
+
+  // Usage message during execution on command line interface.
   std::string usage_error_msg = "[insilico::configuration::initialize] USAGE: ";
   usage_error_msg += argv[0];
   usage_error_msg += " -o <output_file.csv> -n <neuron_file.isf> "
@@ -55,78 +66,167 @@ void initialize(int argc, char **argv) {
       "\t-e   External current configuration file (optional)\n"
       "\t-d   Dynamic parameters configuration file (optional)\n\n";
 
-  for(int i=1; i < argc; ++i) { sargv += argv[i]; sargv += ' '; }
+  // Boolean value for checking whether the specific command
+  // line option is present (true) or not (false).
+  // Default is not present (false).
+  bool repeat[5] = {false, false, false, false, false};
+
+  // Construct a combined command line, separated with spaces.
+  std::string sargv;
+  for(int i=1; i < argc; ++i) {
+    sargv += argv[i];
+    sargv += ' ';
+  }
+
+  // Split the combined command line arguments using space delimiter.
   std::vector<std::string> cmds = split(sargv, ' ');
+
+  // Check for proper number of command line arguments are
+  // supplied or not.
+  // Dependent on current command line features, min: 4, max: 10.
   if(cmds.size() < 4 || cmds.size() > 10) {
     std::cerr << usage_error_msg; exit(0);
   }
 
-  std::cerr << "[insilico::configuration::initialize]"
-      "SUCCESS: Initializing with following parameters:\n";
+  // Message displayed at start of initialization process.
+  std::cout << "[insilico::configuration::initialize] SUCCESS: Initializing with following parameters:\n";
+
+  // Local variables used for initialization.
+  std::string output_file, neuron_file, synapse_file,
+      external_current_file, dynamic_params_file;
+
+  // Iterate over all command line arguments now.
   for(unsigned iter = 0; iter < cmds.size(); iter+=2) {
     std::string cmd = cmds[iter];
+    // For each pair of command line argument, second character of
+    // first element will tell which option is being used.
     switch(cmd.at(1)) {
-      case 'o':
-        if(repeat[0]) { std::cerr<<error_msg<<'\n'<<usage_error_msg; exit(1); }
+
+      case 'o': // Operation for Output file option.
+        if(repeat[0]) {
+          std::cerr << error_msg << '\n' << usage_error_msg;
+          exit(1);
+        }
         output_file = cmds[iter+1];
-        std::cerr << "Output file: " << output_file << '\n';
+        std::cout << "Output file: " << output_file << '\n';
         repeat[0] = true;
         break;
-      case 'n':
-        if(repeat[1]) { std::cerr<<error_msg<<'\n'<<usage_error_msg; exit(1); }
+
+        // Synapse file is dependent on Neuron file.
+        // If Synapse file is given without Neuron file, simulation cannot be continued,
+        // Else If only Neuron file is given, simulation can be continued,
+        // Else none of the files are given, simulation cannot be continued.
+        // Neuron file is mandatory.
+        // Synapse file is optional.
+
+      case 'n': // Operation for Neuron file option.
+        if(repeat[1]) {
+          std::cerr << error_msg << '\n' << usage_error_msg;
+          exit(1);
+        }
         neuron_file = cmds[iter+1];
-        std::cerr << "Neuron file: " << neuron_file << '\n';
+        std::cout << "Neuron file: " << neuron_file << '\n';
         repeat[1] = true;
         break;
-      case 's':
-        if(repeat[2]) { std::cerr<<error_msg<<'\n'<<usage_error_msg; exit(1); }
+
+      case 's': // Operation for Synapse file option.
+        if(!repeat[1]) {
+          std::cerr << "[insilico::configuration::initialize]"
+              " Synapse file cannot be supplied without Neuron file.\n"
+                    << usage_error_msg;
+          exit(1);
+        }
+        if(repeat[2]) {
+          std::cerr << error_msg << usage_error_msg;
+          exit(1);
+        }
         synapse_file = cmds[iter+1];
-        std::cerr << "Synapse file: " << synapse_file << '\n';
+        std::cout << "Synapse file: " << synapse_file << '\n';
         repeat[2] = true;
         break;
-      case 'e':
-        if(repeat[3]) { std::cerr<<error_msg<<'\n'<<usage_error_msg; exit(1); }
+
+      case 'e': // Operation for External Current file option.
+        if(repeat[3]) {
+          std::cerr << error_msg << '\n'<<usage_error_msg;
+          exit(1);
+        }
         external_current_file = cmds[iter+1];
-        std::cerr << "External current file: " << external_current_file << '\n';
+        std::cout << "External current file: " << external_current_file << '\n';
         repeat[3] = true;
         break;
-      case 'd':
-        if(repeat[4]) { std::cerr<<error_msg<<'\n'<<usage_error_msg; exit(1); }
+
+      case 'd': // Operation for Dynamic Params file option.
+        if(repeat[4]) {
+          std::cerr << error_msg << '\n' << usage_error_msg;
+          exit(1);
+        }
         dynamic_params_file = cmds[iter+1];
-        std::cerr << "Dynamic parameters file: " << dynamic_params_file << '\n';
+        std::cout << "Dynamic parameters file: " << dynamic_params_file << '\n';
         repeat[4] = true;
         break;
-      default:
-        std::cerr << "Default error: Unknown argument " << cmd << std::endl;
-        std::cerr << usage_error_msg; exit(0);
+
+      default: // Operation for unknown option.
+        std::cerr << "Error: Unknown argument " << cmd << std::endl
+                  << usage_error_msg;
+        exit(1);
     }
   }
-  if(repeat[0]) { outstream.open(output_file, std::ios::out); }
+
+  // Check if output file is given. This file is mandatory.
+  if(repeat[0]) {
+    outstream.open(output_file, std::ios::out);
+  }
   else {
-    std::cerr << "[insilico::configuration::initialize]"
-        " Output file is required.\n";
+    std::cerr << "[insilico::configuration::initialize] Output file is required.\n";
     exit(1);
   }
-  if(repeat[2]) { read(neuron_file, synapse_file); }
-  else if(repeat[1]) { read(neuron_file); }
+
+  // Check Synapse file.
+  if(repeat[2]) {
+    read(neuron_file, synapse_file);
+  }
+  // Check Neuron file.
+  else if(repeat[1]) {
+    read(neuron_file);
+  }
+  // None of the files are present, display an error message for missing file.
   else {
-    std::cerr << "[insilico::configuration::initialize]"
-        " Neuron configuration file is required.\n";
+    std::cerr << "[insilico::configuration::initialize] Neuron configuration file is required.\n";
     exit(1);
   }
-  if(repeat[3]) { injector::read(external_current_file); }
-  if(repeat[4]) { dynamic_params::read(dynamic_params_file); }
-  std::cerr << "[insilico::configuration::read]"
-      " SUCCESS: Input file read complete." << '\n';
+
+  // Check if External Current file is given. This file is optional.
+  if(repeat[3]) {
+    injector::read(external_current_file);
+  }
+
+  // Check if Dynamic Params file is given. This file is optional.
+  if(repeat[4]) {
+    dynamic_params::read(dynamic_params_file);
+  }
+
+  // Notification message for successful input file reading.
+  std::cout << "[insilico::configuration::read] SUCCESS: Input file read complete.\n";
 }
 
-// close all output streams
+/**
+ * Finalize the simulation by releasing all the required resources.
+ */
 void finalize() {
+  // Call observer to write out observation for delayed observation.
+  // i.e. if configuraion::observe::delayed(true); is part of main().
+  // configuraion::observe::stored_observation()
+
+  // Close the observation simulation output file.
   outstream.close();
-  std::cerr << "[insilico::configuration::finalize]"
-      " SUCCESS: Releasing resources."<<'\n';
+
+  // One can add other required finalization steps here.
+  // Current system status requires only this much finalization.
+
+  // Success message to represent the successful completion of simulation
+  // and gives the resources release notification.
+  std::cout << "[insilico::configuration::finalize] SUCCESS: Releasing resources.\n";
 }
 
-} } // namespace insilico::configuration
-
-#endif
+} // namespace configuration
+} // namespace insilico
