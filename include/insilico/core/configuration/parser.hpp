@@ -39,7 +39,12 @@
 namespace insilico {
 namespace configuration {
 
-// clean input file inputs
+/**
+ * Removes comments from a string,
+ * default comment starts and ends with double quote.
+ *
+ * @param with_comments Ref to string with comment(s).
+ */
 std::string remove_comments(std::string &with_comments) {
   std::stringstream s(with_comments);
   char delim = '\"';
@@ -55,29 +60,60 @@ std::string remove_comments(std::string &with_comments) {
   return with_comments;
 }
 
-// read the input files - neuron_file and synapse_file
-//
-// Both neuron and synapse files are coupled
-// so parsers are placed in sync
-// the variable 'ncount' is coupling variable.
-// TODO: remove coupling of two different parsers
+/**
+ * Parses or reads and stores the input configurations for
+ * Neurons and Synapses in the simulation.
+ *
+ * @param neuron_file name of Neuron configuration input file.
+ * @param synapse_file name of Synapse confgiguration input file,
+ *                     empty if not supplied as argument.
+ */
 void read(const std::string neuron_file, const std::string synapse_file="") {
-  int ntrack = 0, strack = 0, ncount = 0, dxdt_count = 0;
-  double second_item = 0;
+  // Helps in keeping track of number of Neurons.
+  int ntrack = 0;
+
+  // Helps in keeping track of number of Synapses.
+  int strack = 0;
+
+  // Keeps the ID for Neurons and Synapses for mapping into map keys.
+  int ncount = 0;
+
+  // Keeps the track of upcoming dxdt variables.
+  int dxdt_count = 0;
+
+  // Input file delimiters for Line, Word and Key value pair.
   char linedelim = ';', worddelim = ',', pairdelim = ':';
 
-  std::string part, first_item, key;
+  // Temporary string.
+  std::string part;
+
+  // First half of key:value pair - key.
+  std::string first_item;
+
+  // Second half of key:value pair - value.
+  double second_item = 0;
+
+  // Unique key for storing key:values in map, generated at run-time.
+  std::string key;
+
+  // Buffered temporary helper string stream for generating keys.
   std::stringstream out;
+
+  // Input file streams for Neuron and Synapse configuration files.
   std::ifstream neuron_stream(neuron_file), synapse_stream(synapse_file);
 
+  // Parser for Neuron input file.
   if(file_check(neuron_stream, neuron_file)) {
+    // For each line in input file.
     while(getline(neuron_stream, part, linedelim)) {
+      // remove comments and create string stream.
       std::stringstream l(remove_comments(part));
-      trim(part);
+      trim(part); // trim out spaces.
       if(part.length() > 0) {
         engine::neuron_start_list_ids.push_back(ncount);
+        // For each key value pair.
         while(getline(l, part, worddelim)) {
-          trim(part);
+          trim(part); // trim out spaces.
           if(part.length() > 0) {
             std::stringstream k(part);
             getline(k, part, pairdelim);
@@ -90,9 +126,11 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
             out << ntrack;
             key = "n" + out.str() + first_item;
             if(first_item.compare("dxdt") == 0) {
+               // marks the start of dxdt variables.
               dxdt_count = (int)(ceil(second_item));
             }
             else if(dxdt_count > 0) {
+              // if the current variable is part of dxdt.
               engine::prepopulated_neuron_ids.push_back(ntrack);
               engine::var_list_ids.push_back(first_item);
               engine::var_vals.push_back(second_item);
@@ -100,7 +138,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
               ++ncount;
               --dxdt_count;
             }
-            // universal value map
+            // universal value map.
             engine::value_map[key] = second_item;
           }
         }
@@ -111,14 +149,18 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
   }
   neuron_stream.close();
 
+  // Parser for Synapse input file.
   if(file_check(synapse_stream, synapse_file)) {
+    // For each line in input file.
     while(getline(synapse_stream, part, linedelim)) {
+      // remove comments and create string stream
       std::stringstream l(remove_comments(part));
-      trim(part);
+      trim(part); // trim out spaces.
       if(part.length() > 0) {
         engine::synapse_start_list_ids.push_back(ncount);
+        // For each key value pair.
         while(getline(l, part, worddelim)) {
-          trim(part);
+          trim(part); // trim out spaces.
           if(part.length() > 0) {
             std::stringstream k(part);
             getline(k, part, pairdelim);
@@ -131,6 +173,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
             out << strack;
             key = "s" + out.str() + first_item;
             if(first_item.compare("dxdt") == 0) {
+              // marks the start of dxdt variables.
               dxdt_count = (int)(ceil(second_item));
             }
             else if(first_item.compare("pre") == 0) {
@@ -140,6 +183,7 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
               engine::post_neuron.push_back((int)(ceil(second_item)));
             }
             else if(dxdt_count > 0) {
+              // if the current variable is part of dxdt.
               engine::prepopulated_synapse_ids.push_back(strack);
               engine::var_list_ids.push_back(first_item);
               engine::var_vals.push_back(second_item);
