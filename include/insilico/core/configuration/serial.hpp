@@ -1,8 +1,8 @@
 /*
- core/configuration/serial.hpp - insilico configuration serial file handling header and source
+ core/configuration/serial.hpp - insilico Configuration API header
 
- Copyright (C) 2014 Collins Assisi, Collins Assisi Lab, IISER, Pune
- Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab, IISER, Pune <pranavcode@gmail.com>
+ Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
+                         IISER, Pune <pranavcode@gmail.com>
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,9 +17,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/configuration/serial.hpp
+ *
+ * insilico's Configuration initialization and finalization API
+ */
 
-#ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_SERIAL_HPP
-#define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_SERIAL_HPP
+#pragma once
 
 #include "insilico/core/engine.hpp"
 #include "insilico/core/helper/file.hpp"
@@ -35,7 +39,8 @@
 #include <string>
 #include <vector>
 
-namespace insilico { namespace configuration {
+namespace insilico {
+namespace configuration {
 
 // initialization, check and handle commandline arguments
 void initialize(int argc, char **argv) {
@@ -129,4 +134,5 @@ void finalize() {
 
 } } // namespace insilico::configuration
 
-#endif
+} // namespace configuration
+} // namespace insilico
