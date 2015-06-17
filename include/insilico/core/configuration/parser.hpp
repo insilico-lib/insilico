@@ -1,6 +1,5 @@
 /*
- core/configuration/parser.hpp - insilico's Configuration
-                                 parser header and source
+ core/configuration/parser.hpp - insilico's Configuration files parser
 
  Copyright (C) 2014-2015 Pranav Kulkarni, Collins Assisi Lab,
                          IISER, Pune <pranavcode@gmail.com>
@@ -18,17 +17,27 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+ * @file core/configuration/parser.hpp
+ *
+ * Parser for insilico Configuration's input files.
+ */
 
-#ifndef INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_PARSER_HPP
-#define INCLUDED_INSILICO_INCLUDE_CORE_CONFIGURATION_PARSER_HPP
+// TODO: The two parser (Neuron and Synapse) are strongly coupled due to parsing logic,
+// needs a work to improve design and reduce duplicate code. Should be done ASAP.
+// Will help in reducing complexity of parser as well.
+
+#pragma once
 
 #include "insilico/core/helper/file.hpp"
 #include "insilico/core/helper/string.hpp"
 
+#include <iostream>
 #include <sstream>
 #include <string>
 
-namespace insilico { namespace configuration {
+namespace insilico {
+namespace configuration {
 
 // clean input file inputs
 std::string remove_comments(std::string &with_comments) {
@@ -151,6 +160,5 @@ void read(const std::string neuron_file, const std::string synapse_file="") {
   synapse_stream.close();
 }
 
-} } // namespace insilico::configuration
-
-#endif
+} // namespace configuration
+} // namespace insilico
