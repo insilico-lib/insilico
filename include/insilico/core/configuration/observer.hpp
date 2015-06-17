@@ -142,20 +142,20 @@ void observe_step_interval(const unsigned interval) {
 void build_header_once() {
   char key[128];
   bool error = false;
-  unsigned id;
+  unsigned local_id;
   std::string var;
   for(unsigned index : pre_computed_indices) {
-    id = engine::neuron_id_from_index(index, error);
+    local_id = engine::neuron_id_from_index(index, error);
     if(!error) {
       var = engine::variable_name_from_index(index);
-      sprintf(key, "n%d%s", id, var.c_str());
+      sprintf(key, "n%d%s", local_id, var.c_str());
       observation_header.push_back(key);
     }
     else {
-      id = engine::synapse_id_from_index(index, error);
+      local_id = engine::synapse_id_from_index(index, error);
       if(!error) {
         var = engine::variable_name_from_index(index);
-        sprintf(key, "s%d%s", id, var.c_str());
+        sprintf(key, "s%d%s", local_id, var.c_str());
         observation_header.push_back(key);
       }
     }
@@ -172,8 +172,8 @@ void write_header_once() {
   if(observer_header && !header_observed_flag) {
     build_header_once();
     outstream << "time";
-    for(std::string _variable : observation_header) {
-      outstream << observer_delimiter << _variable;
+    for(std::string observe_this : observation_header) {
+      outstream << observer_delimiter << observe_this;
     }
     outstream << '\n';
     header_observed_flag = true;
@@ -200,8 +200,8 @@ struct observer {
       step_ctr = 0;
     }
     write_buffer << t;
-    for(unsigned id : pre_computed_indices) {
-      write_buffer << observer_delimiter << (variables[id]);
+    for(unsigned local_id : pre_computed_indices) {
+      write_buffer << observer_delimiter << (variables[local_id]);
     }
     for(std::string key : pre_computed_keys) {
       write_buffer << observer_delimiter << (engine::value_map[key]);
@@ -223,14 +223,17 @@ void observe(std::string observe_this) {
   std::vector< unsigned > synapse_indices;
   std::vector< std::string > neuron_keys;
   std::vector< std::string > synapse_keys;
-  neuron_indices = engine::get_neuron_indices(_variable);
-  synapse_indices = engine::get_synapse_indices(_variable);
-  neuron_keys = engine::get_neuron_value_keys(_variable);
-  synapse_keys = engine::get_synapse_value_keys(_variable);
+
+  neuron_indices = engine::get_neuron_indices(observe_this);
+  synapse_indices = engine::get_synapse_indices(observe_this);
+  neuron_keys = engine::get_neuron_value_keys(observe_this);
+  synapse_keys = engine::get_synapse_value_keys(observe_this);
+
+  // variable does not match to either variable or parameter
   if(neuron_indices.empty() && synapse_indices.empty() &&
      neuron_keys.empty() && synapse_keys.empty()) {
     std::cerr << "[insilico::configuration] Observer failed to find "
-              << _variable << ".\n";
+              << observe_this << ".\n";
     configuration::severe_error();
   }
   if(!neuron_indices.empty()) {
@@ -264,11 +267,11 @@ void observe(std::string observe_this) {
  */
 void observe_neuron(unsigned local_id, std::string observe_this) {
   bool error_index = false;
-  int neuron_index = engine::neuron_index(id, _variable, error_index);
-  std::string neuron_key = engine::neuron_value_key(id, _variable);
+  int neuron_index = engine::neuron_index(local_id, observe_this, error_index);
+  std::string neuron_key = engine::neuron_value_key(local_id, observe_this);
   if(error_index && (neuron_key.compare("") == 0)) {
     std::cerr << "[insilico::configuration] Observer failed to find "
-              << _variable << " for Neuron " << id << ".\n";
+              << observe_this << " for Neuron " << local_id << ".\n";
     configuration::severe_error();
   }
   else if(!error_index) {
@@ -301,11 +304,11 @@ void observe_neuron(std::vector<unsigned> local_ids, std::string observe_this) {
  */
 void observe_synapse(unsigned local_id, std::string observe_this) {
   bool error_index = false;
-  int synapse_index = engine::synapse_index(id, _variable, error_index);
-  std::string synapse_key = engine::synapse_value_key(id, _variable);
+  int synapse_index = engine::synapse_index(local_id, observe_this, error_index);
+  std::string synapse_key = engine::synapse_value_key(local_id, observe_this);
   if(error_index && (synapse_key.compare("") == 0)) {
     std::cerr << "[insilico::configuration] Observer failed to find "
-              << _variable << " for Synapse " << id << ".\n";
+              << observe_this << " for Synapse " << local_id << ".\n";
     configuration::severe_error();
   }
   else if(!error_index) {
