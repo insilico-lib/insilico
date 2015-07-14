@@ -7,11 +7,11 @@ Output files
 ============
 
   Simulation results will be written to this file as comma separated values (CSV) in following format for each line of output.
-
+```
   -----------------------------------------------------------------------
   | time-step , variable-1 , variable-2 , variable-3 , ... , variable-n |
   -----------------------------------------------------------------------
-
+```
   - time-step:
     current time-step
 
@@ -44,7 +44,7 @@ External Current file
   External current to be injected into Neuron(s) or their comparment. This input file is optional, if extrenal current is not involved or implemented into the simulation input or code.
 
   Use the following insilico Simulation File format for current (isfc).
-
+```
   ----------------------------------------------------------
   | time   , neuron-id-1 , neuron-id-2 , ... , neuron-id-n |
   | tstart , cur-val-1   , cur-val-2   , ... , cur-val-n   |
@@ -52,7 +52,7 @@ External Current file
   | ...                                                    |
   | tend   , cur-val-1m  , cur-val-2m  , ... , cur-val-nm  |
   ----------------------------------------------------------
-
+```
   - time:
     String to signify the header of the input file
 
@@ -71,7 +71,7 @@ Dynamic Parameters file
   Dynamic parameters file is a special file with named parameters like value-params in neuron file. This input file is optional.
 
   Use the following insilico Simulation File format for dynamic params (isfdp).
-
+```
   -----------------------------------------------------------
   | time   , param-name-1, param-name-2, ... , param-name-n |
   | tstart , param-val-1 , param-val-2 , ... , param-val-n  |
@@ -79,7 +79,7 @@ Dynamic Parameters file
   | ...                                                     |
   | tend   , param-val-1m, param-val-2m, ... , param-val-nm |
   -----------------------------------------------------------
-
+```
   - time:
     String to signify the header of the input file
 
