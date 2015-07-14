@@ -35,6 +35,18 @@
 namespace insilico {
 namespace engine {
 
+
+
+bool time_specified;
+
+/** Boolean which specifies whether the length of the simulation
+was provided during execution or not*/
+
+double simulation_time;
+/** 
+
+
+
 /**
  * List of values for each variable from input files
  */
