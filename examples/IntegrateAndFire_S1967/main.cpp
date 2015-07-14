@@ -41,6 +41,12 @@ int main(int argc, char **argv) {
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
+   double time_simul=50;
+
+  if(insilico::engine::time_specified){
+    time_simul = insilico::engine::simulation_time;
+  }
+
   // 2 N_LIF_S1967 neurons
   engine::generate_neuron<N_LIF_S1967>(2);
   // Single S_LIF_Synapse synapse between our two LIF neurons
@@ -53,7 +59,7 @@ int main(int argc, char **argv) {
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, 50.0, 0.01, configuration::observer());
+                  0.0, time_simul, 0.01, configuration::observer());
 
   configuration::finalize();
 }

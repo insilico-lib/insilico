@@ -122,10 +122,16 @@ int main(int argc, char **argv) {
   configuration::observe("v");
   configuration::observe("I_Na");
 
+   double time_simul=100;
+
+  if(insilico::engine::time_specified){
+    time_simul = insilico::engine::simulation_time;
+  }
+
   engine::generate_neuron<HH_Neuron>();
 
   // integration period with stepsize
-  double t_start = 0.0, t_end = 100.0, t_stepsize = 0.05;
+  double t_start = 0.0, t_end = t_start+time_simul, t_stepsize = 0.05;
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
