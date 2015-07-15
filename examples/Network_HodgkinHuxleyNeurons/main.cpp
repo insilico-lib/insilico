@@ -39,14 +39,11 @@ using namespace insilico;
 using namespace std;
 
 int main(int argc, char **argv) {
+  double default_simulation_time = 50.0;
+  insilico::engine::simulation_time = default_simulation_time;
+
   configuration::initialize(argc, argv);
   configuration::observe("v");
-
-   double time_simul=100;
-
-  if(insilico::engine::time_specified){
-    time_simul = insilico::engine::simulation_time;
-  }
 
   engine::generate_neuron<N_SquidAxon_HH1952>(2);
   engine::generate_synapse<S_DefaultSynapse>(2);
@@ -55,7 +52,7 @@ int main(int argc, char **argv) {
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, time_simul, 0.05, configuration::observer());
+                  0.0, (insilico::engine::simulation_time), 0.05, configuration::observer());
 
   configuration::finalize();
 }

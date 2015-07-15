@@ -168,7 +168,6 @@ void initialize(int argc, char **argv) {
       case 't':// Operation for Simulation Time
       std::cerr << "Simulation time: " << cmds[iter+1] << '\n';
       insilico::engine::simulation_time = insilico::string_to_double(cmds[iter+1]);
-      insilico::engine::time_specified = true;
       break;
         
       default: // Operation for unknown option.

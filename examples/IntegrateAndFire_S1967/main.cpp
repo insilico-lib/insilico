@@ -16,7 +16,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
+  You should have received a copy of git statusthe GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -38,14 +38,11 @@ using namespace insilico;
 using namespace std;
 
 int main(int argc, char **argv) {
+  double default_simulation_time = 50.0;
+  insilico::engine::simulation_time = default_simulation_time;
+
   configuration::initialize(argc, argv);
   configuration::observe("v");
-
-   double time_simul=50;
-
-  if(insilico::engine::time_specified){
-    time_simul = insilico::engine::simulation_time;
-  }
 
   // 2 N_LIF_S1967 neurons
   engine::generate_neuron<N_LIF_S1967>(2);
@@ -59,7 +56,7 @@ int main(int argc, char **argv) {
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, time_simul, 0.01, configuration::observer());
+                  0.0, (insilico::engine::simulation_time), 0.01, configuration::observer());
 
   configuration::finalize();
 }

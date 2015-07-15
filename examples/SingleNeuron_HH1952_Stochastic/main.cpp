@@ -188,22 +188,19 @@ class stochastic_euler {
 };
 
 int main(int argc, char **argv) {
+  double default_simulation_time = 50.0;
+  insilico::engine::simulation_time = default_simulation_time;
+
   configuration::initialize(argc, argv);
   configuration::observe_header(false);
   configuration::observe("v");
-
-   double time_simul=50.0;
-
-  if(insilico::engine::time_specified){
-    time_simul = insilico::engine::simulation_time;
-  }
 
   engine::generate_neuron<HH_Neuron>(1);
 
   state_type variables = engine::get_variables();
   integrate_const(stochastic_euler(),
                   make_pair(engine::driver(), stoch_driver()),
-                  variables, 0.0, time_simul, 0.01, configuration::observer());
+                  variables, 0.0, (insilico::engine::simulation_time), 0.01, configuration::observer());
 
   configuration::finalize();
 }
