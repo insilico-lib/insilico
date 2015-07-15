@@ -115,6 +115,9 @@ class HH_Neuron : public Neuron {
 };
 
 int main(int argc, char **argv) {
+  double default_time_step = 0.05;
+  engine::time_step = default_time_step;
+
   double default_simulation_time = 50.0;
   insilico::engine::simulation_time = default_simulation_time;
 
@@ -126,7 +129,7 @@ int main(int argc, char **argv) {
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, (insilico::engine::simulation_time), 0.05, configuration::mpi::observer());
+                  0.0, (insilico::engine::simulation_time), (engine::time_step), configuration::mpi::observer());
 
   configuration::mpi::finalize();
 }

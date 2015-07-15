@@ -39,6 +39,11 @@ namespace engine {
 * Value that specifies the length of the simulation
 */
 double simulation_time;
+
+/**
+*Value that specifies the magnitudde of the time step for integration
+*/
+double time_step;
  
 /**
  * List of values for each variable from input files

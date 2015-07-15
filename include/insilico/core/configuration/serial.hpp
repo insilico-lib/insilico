@@ -166,9 +166,14 @@ void initialize(int argc, char **argv) {
         break;
 
       case 't':// Operation for Simulation Time
-      std::cerr << "Simulation time: " << cmds[iter+1] << '\n';
-      insilico::engine::simulation_time = insilico::string_to_double(cmds[iter+1]);
-      break;
+        std::cerr << "Simulation time specified as : " << cmds[iter+1] << '\n';
+        engine::simulation_time = insilico::string_to_double(cmds[iter+1]);
+        break;
+
+      case 'f':// Operation for Simulation Time
+        std::cerr << "Time Step specified as : " << cmds[iter+1] << '\n';
+        engine::time_step = insilico::string_to_double(cmds[iter+1]);
+        break;
         
       default: // Operation for unknown option.
         std::cerr << "Error: Unknown argument " << cmd << std::endl
