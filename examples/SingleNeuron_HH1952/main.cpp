@@ -118,7 +118,7 @@ class HH_Neuron : public Neuron {
 int main(int argc, char **argv) {
   double default_time_step = 0.05;
   engine::time_step = default_time_step;
-  
+
   double default_simulation_time = 50.0;
   insilico::engine::simulation_time = default_simulation_time;
 
@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
   engine::generate_neuron<HH_Neuron>();
 
   // integration period with stepsize
-  double t_start = 0.0, t_end = t_start + (engine::simulation_time), t_stepsize = 0.05;
+  double t_start = 0.0, t_end = t_start + (engine::simulation_time), t_stepsize = engine::time_step;
 
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
