@@ -19,8 +19,8 @@
 
 all:
 	cd SingleNeuron_HH1952; make -B
-	cd ../Network_HodgkinHuxleyNeurons; make -B
-	cd ../SingleNeuron_InjectedCurrent; make -B
-	cd ../IntegrateAndFire_S1967; make -B
-	cd ../SingleNeuron_HH1952_Stochastic; make -B
+	cd Network_HodgkinHuxleyNeurons; make -B
+	cd SingleNeuron_InjectedCurrent; make -B
+	cd IntegrateAndFire_S1967; make -B
+	cd SingleNeuron_HH1952_Stochastic; make -B
 #	cd SingleNeuron_HH1952_MPI; make -B CC=mpic++ MPIFLAG=-DINSILICO_MPI_ENABLE
