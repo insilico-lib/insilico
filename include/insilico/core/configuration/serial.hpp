@@ -57,19 +57,20 @@ void initialize(int argc, char **argv) {
   // Usage message during execution on command line interface.
   std::string usage_error_msg = "[insilico::configuration::initialize] USAGE: ";
   usage_error_msg += argv[0];
-  usage_error_msg += " -o <output_file.csv> -n <neuron_file.isf> "
-      "-s <synapse_file.isf> -e <external_file.isfc> -d <dynamic_params.isfd>\n"
+  usage_error_msg += " <options>\n"
       "\n    Options:\n"
       "\t-o   Output file\n"
       "\t-n   Neuron configuration file\n"
       "\t-s   Synapse configuration file (optional)\n"
       "\t-e   External current configuration file (optional)\n"
-      "\t-d   Dynamic parameters configuration file (optional)\n\n";
+      "\t-d   Dynamic parameters configuration file (optional)\n"
+      "\t-t   Simulation time (floating, optional)\n"
+      "\t-f   Time step size (floating, optional)\n\n";
 
   // Boolean value for checking whether the specific command
   // line option is present (true) or not (false).
   // Default is not present (false).
-  bool repeat[5] = {false, false, false, false, false};
+  bool repeat[7] = {false, false, false, false, false, false, false};
 
   // Construct a combined command line, separated with spaces.
   std::string sargv;
@@ -166,12 +167,20 @@ void initialize(int argc, char **argv) {
         break;
 
       case 't':// Operation for Simulation Time
+        if(repeat[5]) {
+          std::cerr << error_msg << '\n' << usage_error_msg;
+          exit(1);
+        }
         std::cerr << "Simulation time specified as : " << cmds[iter+1] << '\n';
         engine::simulation_time = insilico::string_to_double(cmds[iter+1]);
         break;
 
-      case 'f':// Operation for Simulation Time
-        std::cerr << "Time Step specified as : " << cmds[iter+1] << '\n';
+      case 'f':// Operation for Time step
+        if(repeat[6]) {
+          std::cerr << error_msg << '\n' << usage_error_msg;
+          exit(1);
+        }
+        std::cerr << "Time step size specified as : " << cmds[iter+1] << '\n';
         engine::time_step = insilico::string_to_double(cmds[iter+1]);
         break;
         
