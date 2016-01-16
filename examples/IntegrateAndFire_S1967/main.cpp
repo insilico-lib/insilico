@@ -38,6 +38,12 @@ using namespace insilico;
 using namespace std;
 
 int main(int argc, char **argv) {
+  double default_time_step = 0.05;
+  engine::time_step = default_time_step;
+  
+  double default_simulation_time = 50.0;
+  engine::simulation_time = default_simulation_time;
+
   configuration::initialize(argc, argv);
   configuration::observe("v");
 
@@ -53,7 +59,7 @@ int main(int argc, char **argv) {
   state_type variables = engine::get_variables();
   integrate_const(boost::numeric::odeint::runge_kutta4<state_type>(),
                   engine::driver(), variables,
-                  0.0, 50.0, 0.01, configuration::observer());
+                  0.0, (engine::simulation_time), (engine::time_step), configuration::observer());
 
   configuration::finalize();
 }
